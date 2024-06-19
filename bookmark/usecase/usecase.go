@@ -1,9 +1,9 @@
 package usecase
 
 import (
+	"backend/bookmark"
+	"backend/models"
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
-	"github.com/zhashkevych/go-clean-architecture/models"
 )
 
 type BookmarkUseCase struct {

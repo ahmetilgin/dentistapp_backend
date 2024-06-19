@@ -1,10 +1,11 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/go-clean-architecture/auth"
+	"backend/auth"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AuthMiddleware struct {

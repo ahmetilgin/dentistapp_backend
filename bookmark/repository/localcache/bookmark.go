@@ -2,10 +2,10 @@ package localcache
 
 import (
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/models"
+	"models"
 	"sync"
 
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
+	"bookmark"
 )
 
 type BookmarkLocalStorage struct {

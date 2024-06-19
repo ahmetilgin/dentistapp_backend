@@ -1,9 +1,9 @@
 package localstorage
 
 import (
+	"auth"
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/models"
+	"models"
 	"sync"
 )
 

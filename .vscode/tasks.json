@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label":"copyConfig",
+            "type": "shell",
+            "command": "mkdir ${workspaceFolder}/bin/config; copy ${workspaceFolder}/config/config.yml ${workspaceFolder}/bin/config",
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "go build -o ${workspaceFolder}/bin/app ${workspaceFolder}/cmd/api/main.go",
+            "dependsOrder": "sequence",
+            "dependsOn": ["copyConfig"]
+        }
+    ]
+  }

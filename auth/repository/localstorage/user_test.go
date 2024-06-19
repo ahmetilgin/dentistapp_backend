@@ -1,11 +1,12 @@
 package localstorage
 
 import (
+	"auth"
 	"context"
-	"github.com/stretchr/testify/assert"
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/models"
+	"models"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetUser(t *testing.T) {

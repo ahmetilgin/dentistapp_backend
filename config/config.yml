@@ -6,7 +6,7 @@ auth:
   token_ttl: 86400
 
 mongo:
-  uri: "mongodb://mongodb:27017"
+  uri: "mongodb://localhost:27017"
   name: "testdb"
   user_collection: "users"
   bookmark_collection: "bookmarks"

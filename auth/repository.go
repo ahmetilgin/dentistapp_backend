@@ -1,8 +1,8 @@
 package auth
 
 import (
+	"backend/models"
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/models"
 )
 
 type UserRepository interface {

@@ -1,12 +1,13 @@
 package localcache
 
 import (
+	"backend/bookmark"
+	"backend/models"
 	"context"
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
-	"github.com/zhashkevych/go-clean-architecture/models"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetBookmarks(t *testing.T) {

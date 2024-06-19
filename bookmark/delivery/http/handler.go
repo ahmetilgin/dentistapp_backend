@@ -1,11 +1,12 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
-	"github.com/zhashkevych/go-clean-architecture/models"
+	"backend/auth"
+	"backend/bookmark"
+	"backend/models"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Bookmark struct {

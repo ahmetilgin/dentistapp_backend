@@ -1,9 +1,10 @@
 package usecase
 
 import (
+	"backend/models"
 	"context"
+
 	"github.com/stretchr/testify/mock"
-	"github.com/zhashkevych/go-clean-architecture/models"
 )
 
 type BookmarkUseCaseMock struct {

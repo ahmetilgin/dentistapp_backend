@@ -2,25 +2,25 @@ package server
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
+	"backend/auth"
+	authhttp "backend/auth/delivery/http"
+	authmongo "backend/auth/repository/mongo"
+	authusecase "backend/auth/usecase"
+	"backend/bookmark"
+	bmhttp "backend/bookmark/delivery/http"
+	bmmongo "backend/bookmark/repository/mongo"
+	bmusecase "backend/bookmark/usecase"
 
-	authhttp "github.com/zhashkevych/go-clean-architecture/auth/delivery/http"
-	authmongo "github.com/zhashkevych/go-clean-architecture/auth/repository/mongo"
-	authusecase "github.com/zhashkevych/go-clean-architecture/auth/usecase"
-	bmhttp "github.com/zhashkevych/go-clean-architecture/bookmark/delivery/http"
-	bmmongo "github.com/zhashkevych/go-clean-architecture/bookmark/repository/mongo"
-	bmusecase "github.com/zhashkevych/go-clean-architecture/bookmark/usecase"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type App struct {

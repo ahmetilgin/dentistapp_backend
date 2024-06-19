@@ -1,16 +1,17 @@
 package http
 
 import (
+	"auth"
+	"bookmark/usecase"
 	"bytes"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/bookmark/usecase"
-	"github.com/zhashkevych/go-clean-architecture/models"
+	"models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreate(t *testing.T) {

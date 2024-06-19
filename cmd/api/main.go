@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/spf13/viper"
-	"github.com/zhashkevych/go-clean-architecture/config"
-	"github.com/zhashkevych/go-clean-architecture/server"
+	"backend/config"
+	"backend/server"
 	"log"
+
+	"github.com/spf13/viper"
 )
 
 func main() {
