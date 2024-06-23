@@ -2,3 +2,7 @@
 .bin
 .data
 vendor
+./bin/*
+bin/*
+./bin
+./bin/app

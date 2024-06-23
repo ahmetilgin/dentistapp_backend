@@ -17,6 +17,7 @@ import (
 	bmmongo "backend/bookmark/repository/mongo"
 	bmusecase "backend/bookmark/usecase"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -54,6 +55,15 @@ func (a *App) Run(port string) error {
 		gin.Recovery(),
 		gin.Logger(),
 	)
+
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "https://dentistapp.netlify.app"}, // İzin verilen kaynaklar
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           6 * time.Hour,
+	}))
 
 	// Set up http handlers
 	// SignUp/SignIn endpoints
