@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/bin/app",
             "preLaunchTask": "build",
             "env": {},
-            "args": [],
+            "args": ["--prod"],
             "cwd": "${workspaceFolder}/bin",
         }
     ]

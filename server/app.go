@@ -31,8 +31,8 @@ type App struct {
 	authUC     auth.UseCase
 }
 
-func NewApp() *App {
-	db := initDB()
+func NewApp(isProduction bool) *App {
+	db := initDB(isProduction)
 
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
 	bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
@@ -101,8 +101,14 @@ func (a *App) Run(port string) error {
 	return a.httpServer.Shutdown(ctx)
 }
 
-func initDB() *mongo.Database {
-	client, err := mongo.NewClient(options.Client().ApplyURI(viper.GetString("mongo.uri")))
+func initDB(isProduction bool) *mongo.Database {
+	mongo_uri := ""
+	if isProduction {
+		mongo_uri = viper.GetString("mongo.production_database")
+	} else {
+		mongo_uri = viper.GetString("mongo.development_database")
+	}
+	client, err := mongo.NewClient(options.Client().ApplyURI(mongo_uri))
 	if err != nil {
 		log.Fatalf("Error occured while establishing connection to mongoDB")
 	}

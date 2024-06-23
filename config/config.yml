@@ -6,7 +6,8 @@ auth:
   token_ttl: 86400
 
 mongo:
-  uri: "mongodb+srv://admin:wqDohhdGEHR2lI6O@cluster0.s8igoep.mongodb.net/"
+  production_database: "mongodb+srv://admin:wqDohhdGEHR2lI6O@cluster0.s8igoep.mongodb.net/"
+  development_database: "mongodb+srv://admin:wqDohhdGEHR2lI6O@cluster0.s8igoep.mongodb.net/"
   name: "testdb"
   user_collection: "users"
   bookmark_collection: "bookmarks"
