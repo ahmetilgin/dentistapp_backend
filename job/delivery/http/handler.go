@@ -23,13 +23,13 @@ func NewHandler(useCase job.UseCase) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	inp := new(models.Job)
-	if err := c.BindJSON(inp); err != nil {
+ 	if err := c.BindJSON(inp); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
 	user := c.MustGet(auth.CtxUserKey).(*models.User)
-
+	inp.UserID = user.ID
 	if err := h.useCase.CreateJob(c.Request.Context(), user, inp); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -43,9 +43,7 @@ type getResponse struct {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	user := c.MustGet(auth.CtxUserKey).(*models.User)
-
-	bms, err := h.useCase.GetJobs(c.Request.Context(), user)
+	bms, err := h.useCase.GetJobs(c.Request.Context())
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -89,7 +87,6 @@ func toJobs(bs []*models.Job) []*models.Job {
 
 func toJob(b *models.Job) *models.Job {
 	return &models.Job{
-		ID:     b.ID,
 		UserID: b.UserID,
 		JobTitle : b.JobTitle,
 		Description : b.Description,

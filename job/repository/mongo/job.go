@@ -23,12 +23,11 @@ func NewJobRepository(db *mongo.Database, collection string) *JobRepository {
 
 func (r JobRepository) CreateJob(ctx context.Context, user *models.User, bm *models.Job) error {
 
-	res, err := r.db.InsertOne(ctx, bm)
+	_, err := r.db.InsertOne(ctx, bm)
 	if err != nil {
 		return err
 	}
 
-	bm.ID = res.InsertedID.(primitive.ObjectID)
 	return nil
 }
 

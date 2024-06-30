@@ -6,13 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, uc job.UseCase) {
+func RegisterHTTPEndpoints(router *gin.RouterGroup, uc job.UseCase, authUC gin.HandlerFunc ) {
 	h := NewHandler(uc)
-
 	jobs := router.Group("/jobs")
 	{
-		jobs.POST("", h.Create)
+		jobs.POST("", authUC,h.Create)
 		jobs.GET("", h.Get)
-		jobs.DELETE("", h.Delete)
+		jobs.DELETE("",  authUC,h.Delete)
 	}
 }

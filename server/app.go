@@ -16,6 +16,7 @@ import (
 	bmhttp "backend/bookmark/delivery/http"
 	bmmongo "backend/bookmark/repository/mongo"
 	bmusecase "backend/bookmark/usecase"
+	jobhttp "backend/job/delivery/http"
 	jobmongo "backend/job/repository/mongo"
 	jobusecase "backend/job/usecase"
 
@@ -80,6 +81,10 @@ func (a *App) Run(port string) error {
 	api := router.Group("/api", authMiddleware)
 
 	bmhttp.RegisterHTTPEndpoints(api, a.bookmarkUC)
+
+	publicAPI := router.Group("/public")
+	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
+
 
 	// HTTP Server
 	a.httpServer = &http.Server{
