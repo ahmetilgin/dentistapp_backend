@@ -11,3 +11,4 @@ mongo:
   name: "testdb"
   user_collection: "users"
   bookmark_collection: "bookmarks"
+  job_collection: "jobs"

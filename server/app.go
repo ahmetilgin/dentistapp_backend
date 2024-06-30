@@ -16,6 +16,10 @@ import (
 	bmhttp "backend/bookmark/delivery/http"
 	bmmongo "backend/bookmark/repository/mongo"
 	bmusecase "backend/bookmark/usecase"
+	jobmongo "backend/job/repository/mongo"
+	jobusecase "backend/job/usecase"
+
+	"backend/job"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -26,7 +30,7 @@ import (
 
 type App struct {
 	httpServer *http.Server
-
+	jobUC job.UseCase
 	bookmarkUC bookmark.UseCase
 	authUC     auth.UseCase
 }
@@ -36,9 +40,11 @@ func NewApp(isProduction bool) *App {
 
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
 	bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
+	jobRepo := jobmongo.NewJobRepository(db, viper.GetString("mongo.job_collection"))
 
 	return &App{
 		bookmarkUC: bmusecase.NewBookmarkUseCase(bookmarkRepo),
+		jobUC : jobusecase.NewJobUseCase(jobRepo),
 		authUC: authusecase.NewAuthUseCase(
 			userRepo,
 			viper.GetString("auth.hash_salt"),
