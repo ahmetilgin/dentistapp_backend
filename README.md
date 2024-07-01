@@ -1,3 +1,6 @@
+
+[![Go](https://github.com/ahmetilgin/dentistapp_backend/actions/workflows/go.yml/badge.svg)](https://github.com/ahmetilgin/dentistapp_backend/actions/workflows/go.yml)
+
 # Go Clean Architecture
 Example that shows core principles of the Clean Architecture in Golang projects.
 
