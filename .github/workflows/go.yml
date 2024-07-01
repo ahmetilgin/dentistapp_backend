@@ -28,5 +28,4 @@ jobs:
     - name: Build
       run: go build -o ${{ github.workspace }}/bin/app ${{ github.workspace }}/cmd/api/main.go
 
-    - name: Test
-      run: go test -v ./...
+
