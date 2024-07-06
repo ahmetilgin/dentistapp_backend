@@ -6,7 +6,9 @@ import (
 )
 
 type Repository interface {
-	CreateJob(ctx context.Context, user *models.User, bm *models.Job) error
+	CreateJob(ctx context.Context, user *models.BusinessUser, bm *models.Job) error
 	GetJobs(ctx context.Context) ([]*models.Job, error)
-	DeleteJob(ctx context.Context, user *models.User, id string) error
+	DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error
+	Search(ctx context.Context, location, keyword string) ([]*models.Job, error)
+	SearchProfession(ctx context.Context,  keyword string) ([]*models.Profession, error)
 }

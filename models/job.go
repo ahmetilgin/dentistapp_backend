@@ -2,10 +2,18 @@ package models
 
 import (
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Profession struct {
+    ProfessionID 	int    	`bson:"professionID"`
+    Name         	string 	`bson:"name"`
+	SearchCounter 	int   	`bson:"count"`
+}
+
 type Job struct {
-	UserID 				string `bson:"user_id"`
+	UserID 				primitive.ObjectID `bson:"user_id"`
 	JobTitle            string `bson:"job_title,omitempty"`
 	Description         string `bson:"description,omitempty"`
 	Requirements        string `bson:"requirements,omitempty"`  

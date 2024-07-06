@@ -15,3 +15,4 @@ mongo:
   region_collection: "regions"
   city_collection: "cities"
   district_collection: "districts"
+  profession_collection : "professions"

@@ -14,7 +14,7 @@ import (
 
 type AuthClaims struct {
 	jwt.StandardClaims
-	User *models.User `json:"user"`
+	User interface {}  `json:"user"`
 }
 
 type AuthUseCase struct {
@@ -37,28 +37,36 @@ func NewAuthUseCase(
 	}
 }
 
-func (a *AuthUseCase) SignUp(ctx context.Context, username, password string) error {
+func (a *AuthUseCase) SignUpBusinessUser(ctx context.Context, user *models.BusinessUser) error {
 	pwd := sha1.New()
-	pwd.Write([]byte(password))
+	
+	pwd.Write([]byte(user.Password))
 	pwd.Write([]byte(a.hashSalt))
+	user.Password = fmt.Sprintf("%x", pwd.Sum(nil));
 
-	user := &models.User{
-		Username: username,
-		Password: fmt.Sprintf("%x", pwd.Sum(nil)),
-	}
-
-	return a.userRepo.CreateUser(ctx, user)
+	return a.userRepo.CreateBusinessUser(ctx, user)
 }
 
-func (a *AuthUseCase) SignIn(ctx context.Context, username, password string) (string, error) {
+func (a *AuthUseCase) SignUpNormalUser(ctx context.Context, user *models.NormalUser) error {
+	pwd := sha1.New()
+	
+	pwd.Write([]byte(user.Password))
+	pwd.Write([]byte(a.hashSalt))
+	user.Password = fmt.Sprintf("%x", pwd.Sum(nil));
+
+	return a.userRepo.CreateNormalUser(ctx, user)
+}
+
+func (a *AuthUseCase) SignIn(ctx context.Context, username, password string) (interface{}, string, error)  {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
 	user, err := a.userRepo.GetUser(ctx, username, password)
+	
 	if err != nil {
-		return "", auth.ErrUserNotFound
+		return nil,"", auth.ErrUserNotFound
 	}
 
 	claims := AuthClaims{
@@ -69,14 +77,17 @@ func (a *AuthUseCase) SignIn(ctx context.Context, username, password string) (st
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	return token.SignedString(a.signingKey)
+	signedToken, err := token.SignedString(a.signingKey)
+    if err != nil {
+        return nil, "", err
+    }
+	return user, signedToken, nil
 }
 
-func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (*models.User, error) {
+func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (interface {}, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return a.signingKey, nil
 	})

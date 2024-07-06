@@ -13,11 +13,6 @@ import (
 	authmongo "backend/auth/repository/mongo"
 	authusecase "backend/auth/usecase"
 
-	"backend/bookmark"
-	bmhttp "backend/bookmark/delivery/http"
-	bmmongo "backend/bookmark/repository/mongo"
-	bmusecase "backend/bookmark/usecase"
-
 	"backend/job"
 	jobhttp "backend/job/delivery/http"
 	jobmongo "backend/job/repository/mongo"
@@ -38,7 +33,6 @@ import (
 type App struct {
 	httpServer *http.Server
 	jobUC job.UseCase
-	bookmarkUC bookmark.UseCase
 	authUC     auth.UseCase
 	regionUC region.UseCase
 }
@@ -47,15 +41,16 @@ func NewApp(isProduction bool) *App {
 	db := initDB(isProduction)
 
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
-	bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
-	jobRepo := jobmongo.NewJobRepository(db, viper.GetString("mongo.job_collection"))
+	jobRepo := jobmongo.NewJobRepository(db, 
+		viper.GetString("mongo.job_collection"), 
+		viper.GetString("mongo.profession_collection"))
+
 	regionRepo := regionmongo.NewRegionRepository(db,
 		viper.GetString("mongo.region_collection"), 
 		viper.GetString("mongo.city_collection"), 
 		viper.GetString("mongo.district_collection"))
 
 	return &App{
-		bookmarkUC: bmusecase.NewBookmarkUseCase(bookmarkRepo),
 		jobUC : jobusecase.NewJobUseCase(jobRepo),
 		authUC: authusecase.NewAuthUseCase(
 			userRepo,
@@ -91,10 +86,6 @@ func (a *App) Run(port string) error {
 
 	// API endpoints
 	authMiddleware := authhttp.NewAuthMiddleware(a.authUC)
-	api := router.Group("/api", authMiddleware)
-
-	bmhttp.RegisterHTTPEndpoints(api, a.bookmarkUC)
-
 	publicAPI := router.Group("/public")
 	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
 	regionhttp.RegisterHTTPEndpoints(publicAPI, a.regionUC, authMiddleware)
