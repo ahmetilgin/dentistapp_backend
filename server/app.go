@@ -12,15 +12,21 @@ import (
 	authhttp "backend/auth/delivery/http"
 	authmongo "backend/auth/repository/mongo"
 	authusecase "backend/auth/usecase"
+
 	"backend/bookmark"
 	bmhttp "backend/bookmark/delivery/http"
 	bmmongo "backend/bookmark/repository/mongo"
 	bmusecase "backend/bookmark/usecase"
+
+	"backend/job"
 	jobhttp "backend/job/delivery/http"
 	jobmongo "backend/job/repository/mongo"
 	jobusecase "backend/job/usecase"
 
-	"backend/job"
+	"backend/region"
+	regionhttp "backend/region/delivery/http"
+	regionmongo "backend/region/repository/mongo"
+	regionusecase "backend/region/usecase"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -34,6 +40,7 @@ type App struct {
 	jobUC job.UseCase
 	bookmarkUC bookmark.UseCase
 	authUC     auth.UseCase
+	regionUC region.UseCase
 }
 
 func NewApp(isProduction bool) *App {
@@ -42,6 +49,10 @@ func NewApp(isProduction bool) *App {
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
 	bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
 	jobRepo := jobmongo.NewJobRepository(db, viper.GetString("mongo.job_collection"))
+	regionRepo := regionmongo.NewRegionRepository(db,
+		viper.GetString("mongo.region_collection"), 
+		viper.GetString("mongo.city_collection"), 
+		viper.GetString("mongo.district_collection"))
 
 	return &App{
 		bookmarkUC: bmusecase.NewBookmarkUseCase(bookmarkRepo),
@@ -52,6 +63,8 @@ func NewApp(isProduction bool) *App {
 			[]byte(viper.GetString("auth.signing_key")),
 			viper.GetDuration("auth.token_ttl"),
 		),
+		regionUC:  regionusecase.NewRegionUseCase(regionRepo),
+
 	}
 }
 
@@ -84,7 +97,9 @@ func (a *App) Run(port string) error {
 
 	publicAPI := router.Group("/public")
 	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
+	regionhttp.RegisterHTTPEndpoints(publicAPI, a.regionUC, authMiddleware)
 
+	
 
 	// HTTP Server
 	a.httpServer = &http.Server{

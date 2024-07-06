@@ -12,3 +12,6 @@ mongo:
   user_collection: "users"
   bookmark_collection: "bookmarks"
   job_collection: "jobs"
+  region_collection: "regions"
+  city_collection: "cities"
+  district_collection: "districts"
