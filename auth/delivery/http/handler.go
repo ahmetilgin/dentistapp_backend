@@ -66,7 +66,7 @@ type signInput struct {
 	Password string `json:"password"`
 }
 
-func (h *Handler) SignIn(c *gin.Context) {
+func (h *Handler) SignInNormalUser(c *gin.Context) {
 	inp := new(signInput)
 	fmt.Printf("Received JSON: %+v\n", c.Request.Body)
 
@@ -76,7 +76,30 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	user, token, err := h.useCase.SignIn(c.Request.Context(), inp.Username, inp.Password)
+	_, token, err := h.useCase.SignInNormalUser(c.Request.Context(), inp.Username, inp.Password)
+	if err != nil {
+		if err == auth.ErrUserNotFound {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	c.JSON(http.StatusOK, signInResponse{Token: token})
+}
+
+func (h *Handler) SignInBusinessUser(c *gin.Context) {
+	inp := new(signInput)
+	fmt.Printf("Received JSON: %+v\n", c.Request.Body)
+
+	if err := c.BindJSON(inp); err != nil {
+		fmt.Printf("Error : %s", err.Error())
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	user, token, err := h.useCase.SignInBusinessUser(c.Request.Context(), inp.Username, inp.Password)
 	if err != nil {
 		if err == auth.ErrUserNotFound {
 			c.AbortWithStatus(http.StatusUnauthorized)
@@ -87,14 +110,5 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	switch user := user.(type) {
-		case models.NormalUser:
-		fmt.Println("Normal Kullanıcı:", user.Username)
-		c.JSON(http.StatusOK, signInResponse{Token: token})
-		case models.BusinessUser:
-			fmt.Println("İş Kullanıcısı:", user.Username)
-			c.JSON(http.StatusOK, signInResponseBusiness{Token: token, BusinessName: user.BusinessName, BusinessAddress: user.BusinessAddress})
-		default:
-			fmt.Println("Bilinmeyen kullanıcı türü")
-    }
+	c.JSON(http.StatusOK, signInResponseBusiness{Token: token, BusinessName: user.BusinessName, BusinessAddress: user.BusinessAddress})
 }

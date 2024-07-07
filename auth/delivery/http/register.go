@@ -11,8 +11,10 @@ func RegisterHTTPEndpoints(router *gin.Engine, uc auth.UseCase) {
 
 	authEndpoints := router.Group("/auth")
 	{
-		authEndpoints.POST("/sign-up-business", h.SignUpBusinessUser)
-		authEndpoints.POST("/sign-up-normal", h.SignUpNormalUser)
-		authEndpoints.POST("/sign-in", h.SignIn)
+		authEndpoints.POST("/sign-up-business-user", h.SignUpBusinessUser)
+		authEndpoints.POST("/sign-up-normal-user", h.SignUpNormalUser)
+		authEndpoints.POST("/sign-in-business-user", h.SignInBusinessUser)
+		authEndpoints.POST("/sign-in-normal-user", h.SignInNormalUser)
+
 	}
 }

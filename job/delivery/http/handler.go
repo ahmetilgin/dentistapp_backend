@@ -4,14 +4,15 @@ import (
 	"backend/auth"
 	"backend/job"
 	"backend/models"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type SearchOptions struct {
-    keyword     string          `bson:"keyword"`
-    location    string 			`bson:"location"`
+    Keyword     string          `json:"keyword"`
+    Location    string 			`json:"location"`
 }
 type Handler struct {
 	useCase job.UseCase
@@ -26,13 +27,16 @@ func NewHandler(useCase job.UseCase) *Handler {
 
 func (h *Handler) Create(c *gin.Context) {
 	inp := new(models.Job)
+	
  	if err := c.BindJSON(inp); err != nil {
+		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
+	
 	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
-	inp.UserID = user.ID
+	
 	if err := h.useCase.CreateJob(c.Request.Context(), user, inp); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -47,7 +51,7 @@ func (h *Handler) Search(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-	result,err := h.useCase.Search(c.Request.Context(), inp.location, inp.keyword);
+	result,err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword);
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

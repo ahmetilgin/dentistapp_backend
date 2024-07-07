@@ -16,17 +16,19 @@ type User struct {
 }
 
 type UserRepository struct {
-	db *mongo.Collection
+	normalUserCollection *mongo.Collection
+	businessUserCollection *mongo.Collection
 }
 
-func NewUserRepository(db *mongo.Database, collection string) *UserRepository {
+func NewUserRepository(db *mongo.Database, userCollectionString string, businessCollectionString string ) *UserRepository {
 	return &UserRepository{
-		db: db.Collection(collection),
+		normalUserCollection: db.Collection(userCollectionString),
+		businessUserCollection: db.Collection(businessCollectionString),
 	}
 }
 
 func (r UserRepository) CreateNormalUser(ctx context.Context, user *models.NormalUser) error {
-	_, err := r.db.InsertOne(ctx, user)
+	_, err := r.normalUserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -35,54 +37,41 @@ func (r UserRepository) CreateNormalUser(ctx context.Context, user *models.Norma
 
 
 func (r UserRepository) CreateBusinessUser(ctx context.Context, user *models.BusinessUser) error {
-	_, err := r.db.InsertOne(ctx, user)
+	_, err := r.businessUserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r UserRepository) GetUser(ctx context.Context, username, password string)  (interface{}, error) {
-	baseUser := new(models.BaseUser)
-	err := r.db.FindOne(ctx, bson.M{
-		"baseuser.username": username,
-		"baseuser.password": password,
+func (r UserRepository) GetNormalUser(ctx context.Context, username, password string)  (*models.NormalUser, error) {
+	baseUser := new(models.NormalUser)
+	err := r.normalUserCollection.FindOne(ctx, bson.M{
+		"username": username,
+		"password": password,
 	}).Decode(baseUser)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// Şimdi kullanıcı tipini belirle ve uygun struct'ı döndür
-	var result bson.M
-	err = r.db.FindOne(ctx, bson.M{"_id": baseUser.ID}).Decode(&result)
+	return baseUser, nil
+}
+
+func (r UserRepository) GetBusinessUser(ctx context.Context, username, password string)  (*models.BusinessUser, error) {
+	baseUser := new(models.BusinessUser)
+	err := r.businessUserCollection.FindOne(ctx, bson.M{
+		"username": username,
+		"password": password,
+	}).Decode(baseUser)
+
 	if err != nil {
 		return nil, err
 	}
 
-	if _, hasBusiness := result["business_name"]; hasBusiness {
-		var businessUser models.BusinessUser
-		data, err := bson.Marshal(result)
-		if err != nil {
-			return nil, err
-		}
-		err = bson.Unmarshal(data, &businessUser)
-		if err != nil {
-			return nil, err
-		}
-		return businessUser, nil
-	} else {
-		var normalUser models.NormalUser
-		data, err := bson.Marshal(result)
-		if err != nil {
-			return nil, err
-		}
-		err = bson.Unmarshal(data, &normalUser)
-		if err != nil {
-			return nil, err
-		}
-		return normalUser, nil
-	}
+	return baseUser, nil
 }
+
+
 
 

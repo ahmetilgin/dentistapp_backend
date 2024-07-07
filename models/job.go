@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -19,6 +17,6 @@ type Job struct {
 	Location            string `bson:"location,omitempty"` 
 	SalaryRange         string `bson:"salary_range,omitempty"` 
 	EmploymentType      string `bson:"employment_type,omitempty"`  // full-time, part-time, contract, etc.
-	DatePosted          time.Time `bson:"date_posted,omitempty"`  
-	ApplicationDeadline time.Time `bson:"application_deadline,omitempty"`  
+	DatePosted          int `bson:"date_posted,omitempty"`  
+	ApplicationDeadline int `bson:"application_deadline,omitempty"`  
 }

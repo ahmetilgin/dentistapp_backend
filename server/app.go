@@ -40,7 +40,7 @@ type App struct {
 func NewApp(isProduction bool) *App {
 	db := initDB(isProduction)
 
-	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
+	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.normal_user_collection"), viper.GetString("mongo.business_user_collection") )
 	jobRepo := jobmongo.NewJobRepository(db, 
 		viper.GetString("mongo.profession_collection"), 
 		viper.GetString("mongo.job_collection"))

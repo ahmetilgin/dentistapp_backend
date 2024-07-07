@@ -18,7 +18,7 @@ type AuthClaims struct {
 }
 
 type AuthUseCase struct {
-	userRepo       auth.UserRepository
+	userRepo       		auth.UserRepository
 	hashSalt       string
 	signingKey     []byte
 	expireDuration time.Duration
@@ -57,13 +57,13 @@ func (a *AuthUseCase) SignUpNormalUser(ctx context.Context, user *models.NormalU
 	return a.userRepo.CreateNormalUser(ctx, user)
 }
 
-func (a *AuthUseCase) SignIn(ctx context.Context, username, password string) (interface{}, string, error)  {
+func (a *AuthUseCase) SignInNormalUser(ctx context.Context, username, password string) (*models.NormalUser, string, error)  {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
-	user, err := a.userRepo.GetUser(ctx, username, password)
+	user, err := a.userRepo.GetNormalUser(ctx, username, password)
 	
 	if err != nil {
 		return nil,"", auth.ErrUserNotFound
@@ -83,6 +83,36 @@ func (a *AuthUseCase) SignIn(ctx context.Context, username, password string) (in
     }
 	return user, signedToken, nil
 }
+
+func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, string, error)  {
+	pwd := sha1.New()
+	pwd.Write([]byte(password))
+	pwd.Write([]byte(a.hashSalt))
+	password = fmt.Sprintf("%x", pwd.Sum(nil))
+
+	user, err := a.userRepo.GetBusinessUser(ctx, username, password)
+	
+	if err != nil {
+		return nil,"", auth.ErrUserNotFound
+	}
+
+	claims := AuthClaims{
+		User: user,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, err := token.SignedString(a.signingKey)
+    if err != nil {
+        return nil, "", err
+    }
+	return user, signedToken, nil
+}
+
+
+
 
 func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (interface {}, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {

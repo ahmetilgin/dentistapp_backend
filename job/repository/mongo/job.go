@@ -26,7 +26,7 @@ func NewJobRepository(jobCollection *mongo.Database, professionCollectionName, j
 }
 
 func (r JobRepository) CreateJob(ctx context.Context, user *models.BusinessUser, bm *models.Job) error {
-
+	bm.UserID = user.ID
 	_, err := r.jobCollection.InsertOne(ctx, bm)
 	if err != nil {
 		return err
@@ -84,6 +84,8 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
     for cursor.Next(ctx) {
         var job models.Job
         if err := cursor.Decode(&job); err != nil {
+			// print error
+			fmt.Println(err.Error())
             return nil, err
         }
         jobs = append(jobs, &job)
