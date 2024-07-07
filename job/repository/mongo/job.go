@@ -109,8 +109,12 @@ func (r JobRepository) SearchProfession(ctx context.Context, keyword string) ([]
     // Filtre oluşturma
     filter := bson.M{"name": bson.M{"$regex": keyword, "$options": "i"}} // "i" opsiyonu, aramanın büyük/küçük harf duyarsız olmasını sağlar
 
+	findOptions := options.Find()
+    findOptions.SetSort(bson.D{{Key: "search_counter", Value: -1}}) // Sıralama: count alanına göre azalan
+    findOptions.SetLimit(10) // İlk 10 sonucu al
+
     // Veritabanında arama yapma
-    cursor, err := r.professionCollection.Find(ctx, filter)
+    cursor, err := r.professionCollection.Find(ctx, filter, findOptions)
     if err != nil {
         return nil, fmt.Errorf("error finding professions: %w", err)
     }

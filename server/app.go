@@ -42,8 +42,8 @@ func NewApp(isProduction bool) *App {
 
 	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.user_collection"))
 	jobRepo := jobmongo.NewJobRepository(db, 
-		viper.GetString("mongo.job_collection"), 
-		viper.GetString("mongo.profession_collection"))
+		viper.GetString("mongo.profession_collection"), 
+		viper.GetString("mongo.job_collection"))
 
 	regionRepo := regionmongo.NewRegionRepository(db,
 		viper.GetString("mongo.region_collection"), 

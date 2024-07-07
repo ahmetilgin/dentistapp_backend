@@ -58,15 +58,15 @@ func (h *Handler) Search(c *gin.Context) {
 	})
 }
 type queryResult struct {
-	QueryResult []*models.Profession `json:"query_result"`
+	QueryResult []string `json:"query_result"`
 }
 func (h *Handler) SearchProfession(c *gin.Context) {
-	inp := new(SearchOptions)
- 	if err := c.BindJSON(inp); err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
+	query := c.Query("query")
+	if query == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter is required"})
 		return
 	}
-	result,err := h.useCase.SearchProfession(c.Request.Context(), inp.keyword);
+	result,err := h.useCase.SearchProfession(c.Request.Context(), query);
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

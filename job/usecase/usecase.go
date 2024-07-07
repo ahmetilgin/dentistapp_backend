@@ -32,8 +32,15 @@ func (b JobUseCase) Search(ctx context.Context, location, keyword string) ([]*mo
 	return b.jobRepo.Search(ctx, location, keyword)
 }
 
-func (b JobUseCase) SearchProfession(ctx context.Context, keyword string) ([]*models.Profession, error){
-	return b.jobRepo.SearchProfession(ctx, keyword)
+func (b JobUseCase) SearchProfession(ctx context.Context, keyword string) ([]string, error){
+	professions, _ := b.jobRepo.SearchProfession(ctx, keyword)
+	var queryResult []string
+
+	for _,profession := range professions{
+		queryResult = append(queryResult, profession.Name)
+    }
+
+	return queryResult, nil
 }
 
 

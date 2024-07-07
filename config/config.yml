@@ -10,7 +10,6 @@ mongo:
   development_database: "mongodb://localhost:27017/"
   name: "testdb"
   user_collection: "users"
-  bookmark_collection: "bookmarks"
   job_collection: "jobs"
   region_collection: "regions"
   city_collection: "cities"

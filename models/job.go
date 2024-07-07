@@ -7,7 +7,6 @@ import (
 )
 
 type Profession struct {
-    ProfessionID 	int    	`bson:"professionID"`
     Name         	string 	`bson:"name"`
 	SearchCounter 	int   	`bson:"count"`
 }
