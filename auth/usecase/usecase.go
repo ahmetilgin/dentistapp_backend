@@ -14,7 +14,9 @@ import (
 
 type AuthClaims struct {
 	jwt.StandardClaims
-	User interface {}  `json:"user"`
+	BusinessUser *models.BusinessUser `json:"business_user"`
+	NormalUser *models.NormalUser `json:"normal_user"`
+
 }
 
 type AuthUseCase struct {
@@ -70,7 +72,8 @@ func (a *AuthUseCase) SignInNormalUser(ctx context.Context, username, password s
 	}
 
 	claims := AuthClaims{
-		User: user,
+		NormalUser: user,
+		BusinessUser: nil,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
 		},
@@ -97,7 +100,8 @@ func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, username, password
 	}
 
 	claims := AuthClaims{
-		User: user,
+		NormalUser: nil,
+		BusinessUser: user,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
 		},
@@ -127,7 +131,14 @@ func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (inter
 	}
 
 	if claims, ok := token.Claims.(*AuthClaims); ok && token.Valid {
-		return claims.User, nil
+		if (claims.BusinessUser == nil && claims.NormalUser == nil) {
+			return nil, auth.ErrInvalidAccessToken
+		}
+		if (claims.BusinessUser == nil) {
+			return claims.NormalUser, nil
+		}
+
+		return claims.BusinessUser, nil
 	}
 
 	return nil, auth.ErrInvalidAccessToken
