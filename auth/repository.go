@@ -11,3 +11,4 @@ type UserRepository interface {
 	GetBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, error)
 	GetNormalUser(ctx context.Context, username, password string) (*models.NormalUser, error)
 }
+	

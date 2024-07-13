@@ -43,5 +43,14 @@ func (b JobUseCase) SearchProfession(ctx context.Context, keyword string) ([]str
 	return queryResult, nil
 }
 
+func (b JobUseCase) GetPopulerJobs(ctx context.Context) ([]string, error){
+	professions, _ := b.jobRepo.GetPopulerJobs(ctx)
+	var queryResult []string
 
+	for _,profession := range professions{
+		queryResult = append(queryResult, profession.Name)
+	}
+
+	return queryResult, nil
+}
 

@@ -80,6 +80,8 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
     }
     defer cursor.Close(ctx)
 
+	// keyword ile match olanlari sadece 
+	// profession collection'da search_counter'i arttir
     var jobs []*models.Job
     for cursor.Next(ctx) {
         var job models.Job
@@ -88,6 +90,13 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
 			fmt.Println(err.Error())
             return nil, err
         }
+		filter := bson.M{"name": job.JobTitle}
+		update := bson.M{"$inc": bson.M{"search_counter": 1}}
+		_, err := r.professionCollection.UpdateOne(ctx, filter, update)
+		if err != nil {
+			// handle error
+			return nil, err
+		}
         jobs = append(jobs, &job)
     }
 
@@ -131,3 +140,25 @@ func (r JobRepository) SearchProfession(ctx context.Context, keyword string) ([]
 }
 
 
+
+func (r JobRepository) GetPopulerJobs(ctx context.Context) ([]*models.Profession, error) {
+	// professionlardan search_counter'i en yuksek olanlarin ilk 5 tanesini al
+	filter := bson.M{}
+	opts := options.Find().SetSort(bson.D{{Key: "search_counter", Value: -1}}).SetLimit(5)
+	cursor, err := r.professionCollection.Find(ctx, filter, opts)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var professions []*models.Profession
+	for cursor.Next(ctx) {
+		var profession models.Profession
+		if err := cursor.Decode(&profession); err != nil {
+			return nil, err
+		}
+		professions = append(professions, &profession)
+	}
+	
+	return professions, nil
+}

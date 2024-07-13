@@ -15,6 +15,5 @@ func RegisterHTTPEndpoints(router *gin.Engine, uc auth.UseCase) {
 		authEndpoints.POST("/sign-up-normal-user", h.SignUpNormalUser)
 		authEndpoints.POST("/sign-in-business-user", h.SignInBusinessUser)
 		authEndpoints.POST("/sign-in-normal-user", h.SignInNormalUser)
-
 	}
 }

@@ -13,6 +13,7 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc job.UseCase, authUC gin.H
 		jobs.POST("", authUC, h.Create)
 		jobs.POST("/search", h.Search)
 		jobs.GET("/search_professions", h.SearchProfession)
+		jobs.GET("/get_populer_professions", h.GetPopulerJobs)
 		jobs.GET("", h.Get)
 		jobs.DELETE("",  authUC,h.Delete)
 	}

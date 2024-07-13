@@ -120,3 +120,14 @@ func (h *Handler) Delete(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+func (h *Handler) GetPopulerJobs(c *gin.Context) {
+	result,err := h.useCase.GetPopulerJobs(c.Request.Context());
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, &queryResult{
+		QueryResult: result,
+	})
+}

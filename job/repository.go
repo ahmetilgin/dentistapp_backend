@@ -11,4 +11,5 @@ type Repository interface {
 	DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error
 	Search(ctx context.Context, location, keyword string) ([]*models.Job, error)
 	SearchProfession(ctx context.Context,  keyword string) ([]*models.Profession, error)
+	GetPopulerJobs(ctx context.Context) ([]*models.Profession, error)
 }
