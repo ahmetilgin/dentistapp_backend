@@ -62,6 +62,21 @@ func (r JobRepository) GetJobs(ctx context.Context) ([]*models.Job, error) {
 	return out, nil
 }
 
+func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string) (bool,error){
+	filterProfessions := bson.M{"name": keyword}
+	update := bson.M{"$inc": bson.M{"search_counter": 1}}
+	errProfessions := r.professionCollection.FindOneAndUpdate(ctx, filterProfessions, update)
+	if errProfessions == nil {
+		err :=errProfessions.Err()
+		if err != nil {
+			fmt.Printf("errProfessions.Err().Error(): %v\n", err.Error())
+		}
+		return false,err
+	}
+
+	return true,nil
+}
+
 func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
 	filter := bson.M{
         "$or": []bson.M{
@@ -73,15 +88,21 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
     }
 	
     opts := options.Find().SetSort(bson.D{{Key: "date_posted", Value: -1}})
-
     cursor, err := r.jobCollection.Find(ctx, filter, opts)
     if err != nil {
         return nil, err
     }
     defer cursor.Close(ctx)
 
-	// keyword ile match olanlari sadece 
-	// profession collection'da search_counter'i arttir
+	ret,err := r.IncreaseSearchCounter(ctx, keyword)
+	if !ret {
+		if err != nil{
+			fmt.Printf("err: %v\n", err.Error())
+		}
+		return nil, err
+	}
+
+
     var jobs []*models.Job
     for cursor.Next(ctx) {
         var job models.Job
@@ -90,13 +111,6 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
 			fmt.Println(err.Error())
             return nil, err
         }
-		filter := bson.M{"name": job.JobTitle}
-		update := bson.M{"$inc": bson.M{"search_counter": 1}}
-		_, err := r.professionCollection.UpdateOne(ctx, filter, update)
-		if err != nil {
-			// handle error
-			return nil, err
-		}
         jobs = append(jobs, &job)
     }
 
