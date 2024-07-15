@@ -18,12 +18,14 @@ type User struct {
 type UserRepository struct {
 	normalUserCollection *mongo.Collection
 	businessUserCollection *mongo.Collection
+	passwordResetTokenCollection *mongo.Collection
 }
 
-func NewUserRepository(db *mongo.Database, userCollectionString string, businessCollectionString string ) *UserRepository {
+func NewUserRepository(db *mongo.Database, userCollectionString string, businessCollectionString string, passwordResetTokenCollectioNString string  ) *UserRepository {
 	return &UserRepository{
 		normalUserCollection: db.Collection(userCollectionString),
 		businessUserCollection: db.Collection(businessCollectionString),
+		passwordResetTokenCollection: db.Collection(passwordResetTokenCollectioNString),
 	}
 }
 
@@ -72,6 +74,29 @@ func (r UserRepository) GetBusinessUser(ctx context.Context, username, password 
 	return baseUser, nil
 }
 
+func (r UserRepository) GetNormalUserByEmail(ctx context.Context, email string) (*models.NormalUser, error) {
+	baseUser := new(models.NormalUser)
+	err := r.normalUserCollection.FindOne(ctx, bson.M{ "email": email }).Decode(baseUser)
+	if err != nil {
+		return nil, err
+	}
+	return baseUser, nil
+}
 
+func (r UserRepository) GetBusinessUserByEmail(ctx context.Context, email string) (*models.BusinessUser, error) {
+	baseUser := new(models.BusinessUser)
+	err := r.businessUserCollection.FindOne(ctx, bson.M{ "email": email }).Decode(baseUser)
+	if err != nil {
+		return nil, err
+	}
+	return baseUser, nil
+}
 
+func (r UserRepository) InsetPasswordResetToken(ctx context.Context, token *models.PasswordResetToken) error {
+	_, err := r.passwordResetTokenCollection.InsertOne(ctx, token)
+	if err != nil {
+		return err
+	}
+	return nil	
+}
 

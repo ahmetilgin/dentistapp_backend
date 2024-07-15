@@ -16,3 +16,10 @@ mongo:
   city_collection: "cities"
   district_collection: "districts"
   profession_collection : "professions"
+  password_reset_token_collection : "password_reset"
+
+email_service: 
+  smtpServer: "smtp.gmail.com"
+  smtpPort: "587"
+  from: "karrierese@gmail.com"
+  password: "zvmz mwqj yofo jjon"

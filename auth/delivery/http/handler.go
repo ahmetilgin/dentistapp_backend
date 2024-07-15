@@ -66,6 +66,10 @@ type signInput struct {
 	Password string `json:"password"`
 }
 
+type resetPasswordInput struct {
+	Email string `json:"email"`
+}
+
 func (h *Handler) SignInNormalUser(c *gin.Context) {
 	inp := new(signInput)
 	fmt.Printf("Received JSON: %+v\n", c.Request.Body)
@@ -111,4 +115,37 @@ func (h *Handler) SignInBusinessUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, signInResponseBusiness{Token: token, BusinessName: user.BusinessName, BusinessAddress: user.BusinessAddress})
+}
+
+func (h *Handler) ResetPasswordNormalUser(c *gin.Context) {
+	inp := new(resetPasswordInput)
+
+	if err := c.BindJSON(inp); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := h.useCase.ResetPasswordNormalUser(c.Request.Context(), inp.Email); err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
+
+func (h *Handler) ResetPasswordBusinessUser(c *gin.Context) {
+	inp := new(resetPasswordInput)
+
+	if err := c.BindJSON(inp); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	if err := h.useCase.ResetPasswordBusinessUser(c.Request.Context(), inp.Email); err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.Status(http.StatusOK)
 }

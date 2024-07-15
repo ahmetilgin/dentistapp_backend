@@ -1,6 +1,16 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
+
+type PasswordResetToken struct {
+    Token     string             `bson:"token"`
+    UserID    primitive.ObjectID `bson:"user_id"`
+    ExpiresAt time.Time          `bson:"expires_at"`
+}
 
 // BaseUser model
 type NormalUser struct {

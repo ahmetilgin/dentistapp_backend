@@ -1,15 +1,19 @@
 package usecase
 
 import (
+	"backend/email_service"
 	"backend/models"
 	"context"
+	"crypto/rand"
 	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
 	"time"
 
 	"backend/auth"
 
 	"github.com/dgrijalva/jwt-go/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type AuthClaims struct {
@@ -24,18 +28,22 @@ type AuthUseCase struct {
 	hashSalt       string
 	signingKey     []byte
 	expireDuration time.Duration
+	emailService *email_service.EmailService
 }
 
 func NewAuthUseCase(
 	userRepo auth.UserRepository,
 	hashSalt string,
 	signingKey []byte,
-	tokenTTLSeconds time.Duration) *AuthUseCase {
+	tokenTTLSeconds time.Duration,
+	emailService *email_service.EmailService,
+	) *AuthUseCase {
 	return &AuthUseCase{
 		userRepo:       userRepo,
 		hashSalt:       hashSalt,
 		signingKey:     signingKey,
 		expireDuration: time.Second * tokenTTLSeconds,
+		emailService: emailService,
 	}
 }
 
@@ -142,4 +150,76 @@ func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (inter
 	}
 
 	return nil, auth.ErrInvalidAccessToken
+}
+
+func GenerateResetToken() (string, error) {
+    bytes := make([]byte, 16)
+    if _, err := rand.Read(bytes); err != nil {
+        return "", err
+    }
+    return hex.EncodeToString(bytes), nil
+}
+
+func CreatePasswordResetToken(userID primitive.ObjectID) (*models.PasswordResetToken, error) {
+    token, err := GenerateResetToken()
+    if err != nil {
+        return nil, err
+    }
+
+    resetToken := &models.PasswordResetToken{
+        Token:     token,
+        UserID:    userID,
+        ExpiresAt: time.Now().Add(1 * time.Hour), // Token 1 saat geçerli
+    }
+
+	return resetToken, nil
+}
+
+
+func (a *AuthUseCase) ResetPasswordNormalUser(ctx context.Context, email string) error {
+	user, err := a.userRepo.GetNormalUserByEmail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	resetToken, err := CreatePasswordResetToken(user.ID)
+	if err != nil {
+		return err
+	}
+
+	err = a.userRepo.InsetPasswordResetToken(ctx, resetToken)
+	if err != nil {
+		return err
+	}
+
+	err = a.emailService.SendEmail(email, "Password Reset", "Your password reset token is: " + resetToken.Token)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *AuthUseCase) ResetPasswordBusinessUser(ctx context.Context, email string) error {
+	user, err := a.userRepo.GetBusinessUserByEmail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	resetToken, err := CreatePasswordResetToken(user.ID)
+	if err != nil {
+		return err
+	}
+
+	err = a.userRepo.InsetPasswordResetToken(ctx, resetToken)
+	if err != nil {
+		return err
+	}
+
+	err = a.emailService.SendEmail(email, "Password Reset", "Your password reset token is: " + resetToken.Token)
+	if err != nil {
+		return err
+	}
+	
+	return nil
 }

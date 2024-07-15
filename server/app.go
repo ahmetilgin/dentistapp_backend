@@ -1,17 +1,17 @@
 package server
 
 import (
+	"backend/auth"
+	authhttp "backend/auth/delivery/http"
+	authmongo "backend/auth/repository/mongo"
+	authusecase "backend/auth/usecase"
+	emailservice "backend/email_service"
 	"context"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
-
-	"backend/auth"
-	authhttp "backend/auth/delivery/http"
-	authmongo "backend/auth/repository/mongo"
-	authusecase "backend/auth/usecase"
 
 	"backend/job"
 	jobhttp "backend/job/delivery/http"
@@ -35,12 +35,17 @@ type App struct {
 	jobUC job.UseCase
 	authUC     auth.UseCase
 	regionUC region.UseCase
+	emailService* emailservice.EmailService
 }
 
 func NewApp(isProduction bool) *App {
 	db := initDB(isProduction)
 
-	userRepo := authmongo.NewUserRepository(db, viper.GetString("mongo.normal_user_collection"), viper.GetString("mongo.business_user_collection") )
+	userRepo := authmongo.NewUserRepository(db, 
+		viper.GetString("mongo.normal_user_collection"), 
+		viper.GetString("mongo.business_user_collection"), 
+		viper.GetString("mongo.password_reset_token_collection"))
+
 	jobRepo := jobmongo.NewJobRepository(db, 
 		viper.GetString("mongo.profession_collection"), 
 		viper.GetString("mongo.job_collection"))
@@ -50,6 +55,13 @@ func NewApp(isProduction bool) *App {
 		viper.GetString("mongo.city_collection"), 
 		viper.GetString("mongo.district_collection"))
 
+	emailservice :=	emailservice.NewEmailService(
+		viper.GetString("email_service.smtpServer"),
+		viper.GetString("email_service.smtpPort"),
+		viper.GetString("email_service.from"),
+		viper.GetString("email_service.password"),
+	)
+
 	return &App{
 		jobUC : jobusecase.NewJobUseCase(jobRepo),
 		authUC: authusecase.NewAuthUseCase(
@@ -57,9 +69,10 @@ func NewApp(isProduction bool) *App {
 			viper.GetString("auth.hash_salt"),
 			[]byte(viper.GetString("auth.signing_key")),
 			viper.GetDuration("auth.token_ttl"),
+			emailservice,
 		),
 		regionUC:  regionusecase.NewRegionUseCase(regionRepo),
-
+		emailService: emailservice,
 	}
 }
 
