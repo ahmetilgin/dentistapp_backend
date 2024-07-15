@@ -15,7 +15,9 @@ func RegisterHTTPEndpoints(router *gin.Engine, uc auth.UseCase) {
 		authEndpoints.POST("/sign-up-normal-user", h.SignUpNormalUser)
 		authEndpoints.POST("/sign-in-business-user", h.SignInBusinessUser)
 		authEndpoints.POST("/sign-in-normal-user", h.SignInNormalUser)
-		authEndpoints.POST("/reset-password-normal-user", h.ResetPasswordNormalUser)
-		authEndpoints.POST("/reset-password-business-user", h.ResetPasswordBusinessUser)
+		authEndpoints.POST("/reset-password", h.ResetPassword)
+		authEndpoints.POST("/send-email-normal-user", h.SendEmailNormalUser)
+		authEndpoints.POST("/send-email-business-user", h.SendEmailBusinessUser)
+
 	}
 }

@@ -23,7 +23,7 @@ func NewEmailService(smtpServer, smtpPort, from, password string) *EmailService 
 	}
 }
 
-func (es *EmailService) SendEmail(to, subject, body string) error {
+func (es *EmailService) SendEmail(to, subject, htmlBody, textBody string) error {
 	// Set up authentication information.
 	auth := smtp.PlainAuth("", es.from, es.password, es.smtpServer)
 
@@ -65,7 +65,26 @@ func (es *EmailService) SendEmail(to, subject, body string) error {
 		return fmt.Errorf("failed to create data writer: %v", err)
 	}
 
-	msg := fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n%s", es.from, to, subject, body)
+	boundary := "nhK2RUJRHs5MZ9TH"
+	msg := fmt.Sprintf("From: %s\r\n"+
+		"To: %s\r\n"+
+		"Subject: %s\r\n"+
+		"MIME-Version: 1.0\r\n"+
+		"Content-Type: multipart/alternative; boundary=%s\r\n"+
+		"\r\n"+
+		"--%s\r\n"+
+		"Content-Type: text/plain; charset=\"UTF-8\"\r\n"+
+		"\r\n"+
+		"%s\r\n"+
+		"\r\n"+
+		"--%s\r\n"+
+		"Content-Type: text/html; charset=\"UTF-8\"\r\n"+
+		"\r\n"+
+		"%s\r\n"+
+		"\r\n"+
+		"--%s--",
+		es.from, to, subject, boundary, boundary, textBody, boundary, htmlBody, boundary)
+
 	_, err = writer.Write([]byte(msg))
 	if err != nil {
 		return fmt.Errorf("failed to write email body: %v", err)
@@ -77,4 +96,42 @@ func (es *EmailService) SendEmail(to, subject, body string) error {
 	}
 
 	return client.Quit()
+}
+
+func (es *EmailService) SendPasswordResetEmail(to, host, resetToken string) error {
+	subject := "Password Reset"
+	htmlBody := fmt.Sprintf(`
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Password Reset</title>
+			</head>
+			<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+				<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+					<h1 style="color: #444;">Password Reset</h1>
+					<p>You have requested to reset your password. Click the link below to reset your password:</p>
+					<p>
+						<a href="%s/reset-password/%s" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Reset Password</a>
+					</p>
+					<p>If you did not request a password reset, please ignore this email.</p>
+					<p>This link will expire in 1 hour for security reasons.</p>
+				</div>
+			</body>
+			</html>
+		`, host, resetToken)
+
+	textBody := fmt.Sprintf(`
+	Password Reset
+
+	You have requested to reset your password. Use the link below to reset your password:
+
+	%s/reset-password/%s
+
+	If you did not request a password reset, please ignore this email.
+	This link will expire in 1 hour for security reasons.
+		`, host, resetToken)
+
+	return es.SendEmail(to, subject, htmlBody, textBody)
 }

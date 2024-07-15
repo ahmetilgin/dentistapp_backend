@@ -16,15 +16,15 @@ type User struct {
 }
 
 type UserRepository struct {
-	normalUserCollection *mongo.Collection
-	businessUserCollection *mongo.Collection
+	normalUserCollection         *mongo.Collection
+	businessUserCollection       *mongo.Collection
 	passwordResetTokenCollection *mongo.Collection
 }
 
-func NewUserRepository(db *mongo.Database, userCollectionString string, businessCollectionString string, passwordResetTokenCollectioNString string  ) *UserRepository {
+func NewUserRepository(db *mongo.Database, userCollectionString string, businessCollectionString string, passwordResetTokenCollectioNString string) *UserRepository {
 	return &UserRepository{
-		normalUserCollection: db.Collection(userCollectionString),
-		businessUserCollection: db.Collection(businessCollectionString),
+		normalUserCollection:         db.Collection(userCollectionString),
+		businessUserCollection:       db.Collection(businessCollectionString),
 		passwordResetTokenCollection: db.Collection(passwordResetTokenCollectioNString),
 	}
 }
@@ -37,7 +37,6 @@ func (r UserRepository) CreateNormalUser(ctx context.Context, user *models.Norma
 	return nil
 }
 
-
 func (r UserRepository) CreateBusinessUser(ctx context.Context, user *models.BusinessUser) error {
 	_, err := r.businessUserCollection.InsertOne(ctx, user)
 	if err != nil {
@@ -46,7 +45,7 @@ func (r UserRepository) CreateBusinessUser(ctx context.Context, user *models.Bus
 	return nil
 }
 
-func (r UserRepository) GetNormalUser(ctx context.Context, username, password string)  (*models.NormalUser, error) {
+func (r UserRepository) GetNormalUser(ctx context.Context, username, password string) (*models.NormalUser, error) {
 	baseUser := new(models.NormalUser)
 	err := r.normalUserCollection.FindOne(ctx, bson.M{
 		"username": username,
@@ -60,7 +59,7 @@ func (r UserRepository) GetNormalUser(ctx context.Context, username, password st
 	return baseUser, nil
 }
 
-func (r UserRepository) GetBusinessUser(ctx context.Context, username, password string)  (*models.BusinessUser, error) {
+func (r UserRepository) GetBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, error) {
 	baseUser := new(models.BusinessUser)
 	err := r.businessUserCollection.FindOne(ctx, bson.M{
 		"username": username,
@@ -76,7 +75,7 @@ func (r UserRepository) GetBusinessUser(ctx context.Context, username, password 
 
 func (r UserRepository) GetNormalUserByEmail(ctx context.Context, email string) (*models.NormalUser, error) {
 	baseUser := new(models.NormalUser)
-	err := r.normalUserCollection.FindOne(ctx, bson.M{ "email": email }).Decode(baseUser)
+	err := r.normalUserCollection.FindOne(ctx, bson.M{"email": email}).Decode(baseUser)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +84,7 @@ func (r UserRepository) GetNormalUserByEmail(ctx context.Context, email string) 
 
 func (r UserRepository) GetBusinessUserByEmail(ctx context.Context, email string) (*models.BusinessUser, error) {
 	baseUser := new(models.BusinessUser)
-	err := r.businessUserCollection.FindOne(ctx, bson.M{ "email": email }).Decode(baseUser)
+	err := r.businessUserCollection.FindOne(ctx, bson.M{"email": email}).Decode(baseUser)
 	if err != nil {
 		return nil, err
 	}
@@ -97,6 +96,48 @@ func (r UserRepository) InsetPasswordResetToken(ctx context.Context, token *mode
 	if err != nil {
 		return err
 	}
-	return nil	
+	return nil
 }
 
+func (r UserRepository) CheckPasswordResetToken(ctx context.Context, userID primitive.ObjectID, token string) error {
+	result := r.passwordResetTokenCollection.FindOne(ctx, bson.M{"user_id": userID, "token": token})
+	err := result.Err()
+	if err != nil {
+		return err
+	}
+
+	_, err = r.passwordResetTokenCollection.DeleteOne(ctx, bson.M{"user_id": userID, "token": token})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r UserRepository) UpdatePassword(ctx context.Context, user interface{}, token, newPassword string) error {
+	var userID primitive.ObjectID
+
+	if normalUser, ok := user.(*models.NormalUser); ok {
+		userID = normalUser.ID
+		err := r.CheckPasswordResetToken(ctx, userID, token)
+		if err != nil {
+			return err
+		}
+
+		_, err = r.normalUserCollection.UpdateOne(ctx, bson.M{"_id": userID}, bson.M{"$set": bson.M{"password": newPassword}})
+		if err != nil {
+			return err
+		}
+	} else if businessUser, ok := user.(*models.BusinessUser); ok {
+		userID = businessUser.ID
+		err := r.CheckPasswordResetToken(ctx, userID, token)
+		if err != nil {
+			return err
+		}
+		_, err = r.businessUserCollection.UpdateOne(ctx, bson.M{"_id": userID}, bson.M{"$set": bson.M{"password": newPassword}})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

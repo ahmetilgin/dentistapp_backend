@@ -4,9 +4,7 @@ import (
 	"backend/email_service"
 	"backend/models"
 	"context"
-	"crypto/rand"
 	"crypto/sha1"
-	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -19,16 +17,15 @@ import (
 type AuthClaims struct {
 	jwt.StandardClaims
 	BusinessUser *models.BusinessUser `json:"business_user"`
-	NormalUser *models.NormalUser `json:"normal_user"`
-
+	NormalUser   *models.NormalUser   `json:"normal_user"`
 }
 
 type AuthUseCase struct {
-	userRepo       		auth.UserRepository
+	userRepo       auth.UserRepository
 	hashSalt       string
 	signingKey     []byte
 	expireDuration time.Duration
-	emailService *email_service.EmailService
+	emailService   *email_service.EmailService
 }
 
 func NewAuthUseCase(
@@ -37,50 +34,50 @@ func NewAuthUseCase(
 	signingKey []byte,
 	tokenTTLSeconds time.Duration,
 	emailService *email_service.EmailService,
-	) *AuthUseCase {
+) *AuthUseCase {
 	return &AuthUseCase{
 		userRepo:       userRepo,
 		hashSalt:       hashSalt,
 		signingKey:     signingKey,
 		expireDuration: time.Second * tokenTTLSeconds,
-		emailService: emailService,
+		emailService:   emailService,
 	}
 }
 
 func (a *AuthUseCase) SignUpBusinessUser(ctx context.Context, user *models.BusinessUser) error {
 	pwd := sha1.New()
-	
+
 	pwd.Write([]byte(user.Password))
 	pwd.Write([]byte(a.hashSalt))
-	user.Password = fmt.Sprintf("%x", pwd.Sum(nil));
+	user.Password = fmt.Sprintf("%x", pwd.Sum(nil))
 
 	return a.userRepo.CreateBusinessUser(ctx, user)
 }
 
 func (a *AuthUseCase) SignUpNormalUser(ctx context.Context, user *models.NormalUser) error {
 	pwd := sha1.New()
-	
+
 	pwd.Write([]byte(user.Password))
 	pwd.Write([]byte(a.hashSalt))
-	user.Password = fmt.Sprintf("%x", pwd.Sum(nil));
+	user.Password = fmt.Sprintf("%x", pwd.Sum(nil))
 
 	return a.userRepo.CreateNormalUser(ctx, user)
 }
 
-func (a *AuthUseCase) SignInNormalUser(ctx context.Context, username, password string) (*models.NormalUser, string, error)  {
+func (a *AuthUseCase) SignInNormalUser(ctx context.Context, username, password string) (*models.NormalUser, string, error) {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
 	user, err := a.userRepo.GetNormalUser(ctx, username, password)
-	
+
 	if err != nil {
-		return nil,"", auth.ErrUserNotFound
+		return nil, "", auth.ErrUserNotFound
 	}
 
 	claims := AuthClaims{
-		NormalUser: user,
+		NormalUser:   user,
 		BusinessUser: nil,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
@@ -89,26 +86,26 @@ func (a *AuthUseCase) SignInNormalUser(ctx context.Context, username, password s
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(a.signingKey)
-    if err != nil {
-        return nil, "", err
-    }
+	if err != nil {
+		return nil, "", err
+	}
 	return user, signedToken, nil
 }
 
-func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, string, error)  {
+func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, string, error) {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
 	user, err := a.userRepo.GetBusinessUser(ctx, username, password)
-	
+
 	if err != nil {
-		return nil,"", auth.ErrUserNotFound
+		return nil, "", auth.ErrUserNotFound
 	}
 
 	claims := AuthClaims{
-		NormalUser: nil,
+		NormalUser:   nil,
 		BusinessUser: user,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
@@ -117,16 +114,13 @@ func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, username, password
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(a.signingKey)
-    if err != nil {
-        return nil, "", err
-    }
+	if err != nil {
+		return nil, "", err
+	}
 	return user, signedToken, nil
 }
 
-
-
-
-func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (interface {}, error) {
+func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (interface{}, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &AuthClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -139,10 +133,10 @@ func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (inter
 	}
 
 	if claims, ok := token.Claims.(*AuthClaims); ok && token.Valid {
-		if (claims.BusinessUser == nil && claims.NormalUser == nil) {
+		if claims.BusinessUser == nil && claims.NormalUser == nil {
 			return nil, auth.ErrInvalidAccessToken
 		}
-		if (claims.BusinessUser == nil) {
+		if claims.BusinessUser == nil {
 			return claims.NormalUser, nil
 		}
 
@@ -152,37 +146,46 @@ func (a *AuthUseCase) ParseToken(ctx context.Context, accessToken string) (inter
 	return nil, auth.ErrInvalidAccessToken
 }
 
-func GenerateResetToken() (string, error) {
-    bytes := make([]byte, 16)
-    if _, err := rand.Read(bytes); err != nil {
-        return "", err
-    }
-    return hex.EncodeToString(bytes), nil
-}
+func (a *AuthUseCase) CreatePasswordResetToken(normalUser *models.NormalUser, businessUser *models.BusinessUser) (*models.PasswordResetToken, error) {
 
-func CreatePasswordResetToken(userID primitive.ObjectID) (*models.PasswordResetToken, error) {
-    token, err := GenerateResetToken()
-    if err != nil {
-        return nil, err
-    }
+	claims := AuthClaims{
+		NormalUser:   normalUser,
+		BusinessUser: businessUser,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: jwt.At(time.Now().Add(a.expireDuration)),
+		},
+	}
 
-    resetToken := &models.PasswordResetToken{
-        Token:     token,
-        UserID:    userID,
-        ExpiresAt: time.Now().Add(1 * time.Hour), // Token 1 saat geçerli
-    }
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	signedToken, err := token.SignedString(a.signingKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var userID primitive.ObjectID
+	if normalUser != nil {
+		userID = normalUser.ID
+	} else {
+		userID = businessUser.ID
+	}
+
+	resetToken := &models.PasswordResetToken{
+		Token:     signedToken,
+		UserID:    userID,
+		ExpiresAt: time.Now().Add(1 * time.Hour), // Token 1 saat geçerli
+	}
 
 	return resetToken, nil
 }
 
-
-func (a *AuthUseCase) ResetPasswordNormalUser(ctx context.Context, email string) error {
+func (a *AuthUseCase) SendEmailNormalUser(ctx context.Context, host, email string) error {
 	user, err := a.userRepo.GetNormalUserByEmail(ctx, email)
 	if err != nil {
 		return err
 	}
 
-	resetToken, err := CreatePasswordResetToken(user.ID)
+	resetToken, err := a.CreatePasswordResetToken(user, nil)
 	if err != nil {
 		return err
 	}
@@ -192,7 +195,7 @@ func (a *AuthUseCase) ResetPasswordNormalUser(ctx context.Context, email string)
 		return err
 	}
 
-	err = a.emailService.SendEmail(email, "Password Reset", "Your password reset token is: " + resetToken.Token)
+	err = a.emailService.SendPasswordResetEmail(email, host, resetToken.Token)
 	if err != nil {
 		return err
 	}
@@ -200,13 +203,13 @@ func (a *AuthUseCase) ResetPasswordNormalUser(ctx context.Context, email string)
 	return nil
 }
 
-func (a *AuthUseCase) ResetPasswordBusinessUser(ctx context.Context, email string) error {
+func (a *AuthUseCase) SendEmailBusinessUser(ctx context.Context, host, email string) error {
 	user, err := a.userRepo.GetBusinessUserByEmail(ctx, email)
 	if err != nil {
 		return err
 	}
 
-	resetToken, err := CreatePasswordResetToken(user.ID)
+	resetToken, err := a.CreatePasswordResetToken(nil, user)
 	if err != nil {
 		return err
 	}
@@ -216,10 +219,24 @@ func (a *AuthUseCase) ResetPasswordBusinessUser(ctx context.Context, email strin
 		return err
 	}
 
-	err = a.emailService.SendEmail(email, "Password Reset", "Your password reset token is: " + resetToken.Token)
+	err = a.emailService.SendPasswordResetEmail(email, host, resetToken.Token)
 	if err != nil {
 		return err
 	}
-	
+
+	return nil
+}
+
+func (a *AuthUseCase) ResetPassword(ctx context.Context, user interface{}, token, newPassword string) error {
+	pwd := sha1.New()
+	pwd.Write([]byte(newPassword))
+	pwd.Write([]byte(a.hashSalt))
+	newPassword = fmt.Sprintf("%x", pwd.Sum(nil))
+
+	err := a.userRepo.UpdatePassword(ctx, user, token, newPassword)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

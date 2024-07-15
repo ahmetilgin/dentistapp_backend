@@ -13,5 +13,5 @@ type UserRepository interface {
 	GetNormalUserByEmail(ctx context.Context, email string) (*models.NormalUser, error)
 	GetBusinessUserByEmail(ctx context.Context, email string) (*models.BusinessUser, error)
 	InsetPasswordResetToken(ctx context.Context, token *models.PasswordResetToken) error
+	UpdatePassword(ctx context.Context, user interface{}, token, newPassword string) error
 }
-	
