@@ -18,10 +18,10 @@ import (
 	jobmongo "backend/job/repository/mongo"
 	jobusecase "backend/job/usecase"
 
-	"backend/region"
-	regionhttp "backend/region/delivery/http"
-	regionmongo "backend/region/repository/mongo"
-	regionusecase "backend/region/usecase"
+	"backend/country"
+	regionhttp "backend/country/delivery/http"
+	regionmongo "backend/country/repository/mongo"
+	regionusecase "backend/country/usecase"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -31,31 +31,29 @@ import (
 )
 
 type App struct {
-	httpServer *http.Server
-	jobUC job.UseCase
-	authUC     auth.UseCase
-	regionUC region.UseCase
-	emailService* emailservice.EmailService
+	httpServer   *http.Server
+	jobUC        job.UseCase
+	authUC       auth.UseCase
+	regionUC     country.UseCase
+	emailService *emailservice.EmailService
 }
 
 func NewApp(isProduction bool) *App {
 	db := initDB(isProduction)
 
-	userRepo := authmongo.NewUserRepository(db, 
-		viper.GetString("mongo.normal_user_collection"), 
-		viper.GetString("mongo.business_user_collection"), 
+	userRepo := authmongo.NewUserRepository(db,
+		viper.GetString("mongo.normal_user_collection"),
+		viper.GetString("mongo.business_user_collection"),
 		viper.GetString("mongo.password_reset_token_collection"))
 
-	jobRepo := jobmongo.NewJobRepository(db, 
-		viper.GetString("mongo.profession_collection"), 
+	jobRepo := jobmongo.NewJobRepository(db,
+		viper.GetString("mongo.profession_collection"),
 		viper.GetString("mongo.job_collection"))
 
 	regionRepo := regionmongo.NewRegionRepository(db,
-		viper.GetString("mongo.region_collection"), 
-		viper.GetString("mongo.city_collection"), 
-		viper.GetString("mongo.district_collection"))
+		viper.GetString("mongo.region_collection"))
 
-	emailservice :=	emailservice.NewEmailService(
+	emailservice := emailservice.NewEmailService(
 		viper.GetString("email_service.smtpServer"),
 		viper.GetString("email_service.smtpPort"),
 		viper.GetString("email_service.from"),
@@ -63,7 +61,7 @@ func NewApp(isProduction bool) *App {
 	)
 
 	return &App{
-		jobUC : jobusecase.NewJobUseCase(jobRepo),
+		jobUC: jobusecase.NewJobUseCase(jobRepo),
 		authUC: authusecase.NewAuthUseCase(
 			userRepo,
 			viper.GetString("auth.hash_salt"),
@@ -71,7 +69,7 @@ func NewApp(isProduction bool) *App {
 			viper.GetDuration("auth.token_ttl"),
 			emailservice,
 		),
-		regionUC:  regionusecase.NewRegionUseCase(regionRepo),
+		regionUC:     regionusecase.NewRegionUseCase(regionRepo),
 		emailService: emailservice,
 	}
 }
@@ -102,8 +100,6 @@ func (a *App) Run(port string) error {
 	publicAPI := router.Group("/public")
 	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
 	regionhttp.RegisterHTTPEndpoints(publicAPI, a.regionUC, authMiddleware)
-
-	
 
 	// HTTP Server
 	a.httpServer = &http.Server{

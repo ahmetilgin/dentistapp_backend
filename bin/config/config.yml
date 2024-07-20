@@ -12,9 +12,7 @@ mongo:
   normal_user_collection: "normal_users"
   business_user_collection: "business_users"
   job_collection: "jobs"
-  region_collection: "regions"
-  city_collection: "cities"
-  district_collection: "districts"
+  region_collection: "country"
   profession_collection : "professions"
   password_reset_token_collection : "password_reset"
 

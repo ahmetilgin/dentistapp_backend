@@ -1,0 +1,1955 @@
+{
+  "name": "Albania",
+  "code": "AL",
+  "counties": [
+    {
+      "name": "Qarku i Shkodrës",
+      "latitude": 42.2507002,
+      "longitude": 19.7645597,
+      "districts": [
+        {
+          "name": "Dajç",
+          "latitude": 41.9765255,
+          "longitude": 19.4116522
+        },
+        {
+          "name": "Fushë-Arrëz",
+          "latitude": 42.0935547,
+          "longitude": 20.0073448
+        },
+        {
+          "name": "Shosh",
+          "latitude": 42.2216763,
+          "longitude": 19.7827114
+        },
+        {
+          "name": "Kastrat",
+          "latitude": 42.3298363,
+          "longitude": 19.4688321
+        },
+        {
+          "name": "Gjegjan",
+          "latitude": 41.939276,
+          "longitude": 19.9953583
+        },
+        {
+          "name": "Kelmend",
+          "latitude": 42.5154053,
+          "longitude": 19.6421465
+        },
+        {
+          "name": "Qendër",
+          "latitude": 42.2015981,
+          "longitude": 19.3975143
+        },
+        {
+          "name": "Hajmel",
+          "latitude": 41.9438803,
+          "longitude": 19.6213738
+        },
+        {
+          "name": "Blerim",
+          "latitude": 42.1469686,
+          "longitude": 20.1589601
+        },
+        {
+          "name": "Qafë-Mali",
+          "latitude": 42.060157,
+          "longitude": 20.1123055
+        },
+        {
+          "name": "Bërdicë",
+          "latitude": 41.9943027,
+          "longitude": 19.4858454
+        },
+        {
+          "name": "Ana e Malit",
+          "latitude": 42.022627,
+          "longitude": 19.4182888
+        },
+        {
+          "name": "Qerret",
+          "latitude": 42.0137602,
+          "longitude": 19.8129231
+        },
+        {
+          "name": "Vau-Dejës",
+          "latitude": 42.0237896,
+          "longitude": 19.6731688
+        },
+        {
+          "name": "Temal",
+          "latitude": 42.1540235,
+          "longitude": 19.8146548
+        },
+        {
+          "name": "Shkrel",
+          "latitude": 42.3088042,
+          "longitude": 19.5821486
+        },
+        {
+          "name": "Fierzë",
+          "latitude": 42.2109085,
+          "longitude": 20.0235465
+        },
+        {
+          "name": "Bushat",
+          "latitude": 41.9552862,
+          "longitude": 19.513744
+        },
+        {
+          "name": "Shalë",
+          "latitude": 42.3660036,
+          "longitude": 19.7706952
+        },
+        {
+          "name": "Postribë",
+          "latitude": 42.1337694,
+          "longitude": 19.6369433
+        },
+        {
+          "name": "Shllak",
+          "latitude": 42.1262817,
+          "longitude": 19.7255261
+        },
+        {
+          "name": "Guri i Zi",
+          "latitude": 42.048561,
+          "longitude": 19.590888
+        },
+        {
+          "name": "Pult",
+          "latitude": 42.2469632,
+          "longitude": 19.6755131
+        },
+        {
+          "name": "Iballe",
+          "latitude": 42.1796396,
+          "longitude": 19.9667832
+        },
+        {
+          "name": "Vig-Mnelë",
+          "latitude": 41.9494615,
+          "longitude": 19.7004708
+        },
+        {
+          "name": "Rrethinat",
+          "latitude": 42.0737992,
+          "longitude": 19.4791939
+        },
+        {
+          "name": "Rrapë",
+          "latitude": 42.0470042,
+          "longitude": 19.9746407
+        },
+        {
+          "name": "Koplik",
+          "latitude": 42.2133318,
+          "longitude": 19.4250799
+        },
+        {
+          "name": "Velipojë",
+          "latitude": 41.8983709,
+          "longitude": 19.4380236
+        },
+        {
+          "name": "Qelëz",
+          "latitude": 42.0991928,
+          "longitude": 19.9014076
+        },
+        {
+          "name": "Gruemirë",
+          "latitude": 42.1717353,
+          "longitude": 19.469873
+        },
+        {
+          "name": "Pukë",
+          "latitude": 42.0367409,
+          "longitude": 19.8977016
+        },
+        {
+          "name": "Shkodër",
+          "latitude": 42.0636353,
+          "longitude": 19.4573712
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Lezhës",
+      "latitude": 41.793125,
+      "longitude": 19.8692814,
+      "districts": [
+        {
+          "name": "Shëngjin",
+          "latitude": 41.785196,
+          "longitude": 19.5862804
+        },
+        {
+          "name": "Blinisht",
+          "latitude": 41.8946647,
+          "longitude": 19.664449
+        },
+        {
+          "name": "Fushë-Kuqe",
+          "latitude": 41.6253933,
+          "longitude": 19.6082648
+        },
+        {
+          "name": "Balldren",
+          "latitude": 41.8608691,
+          "longitude": 19.5538859
+        },
+        {
+          "name": "Kaçinar",
+          "latitude": 41.8907586,
+          "longitude": 19.8974705
+        },
+        {
+          "name": "Mamurras",
+          "latitude": 41.597718,
+          "longitude": 19.6952699
+        },
+        {
+          "name": "Selitë",
+          "latitude": 41.7655138,
+          "longitude": 20.0965652
+        },
+        {
+          "name": "Dajç",
+          "latitude": 41.9070804,
+          "longitude": 19.5947656
+        },
+        {
+          "name": "Orosh",
+          "latitude": 41.8766729,
+          "longitude": 20.0781544
+        },
+        {
+          "name": "Laç",
+          "latitude": 41.635003,
+          "longitude": 19.7022031
+        },
+        {
+          "name": "Lezhë",
+          "latitude": 41.7818882,
+          "longitude": 19.6422398
+        },
+        {
+          "name": "Rrëshen",
+          "latitude": 41.7756026,
+          "longitude": 19.9297405
+        },
+        {
+          "name": "Ungrej",
+          "latitude": 41.8909382,
+          "longitude": 19.7908204
+        },
+        {
+          "name": "Kallmet",
+          "latitude": 41.8327378,
+          "longitude": 19.6782634
+        },
+        {
+          "name": "Zejmen",
+          "latitude": 41.7227567,
+          "longitude": 19.7071149
+        },
+        {
+          "name": "Kolsh",
+          "latitude": 41.7787035,
+          "longitude": 19.6753937
+        },
+        {
+          "name": "Rubik",
+          "latitude": 41.7740548,
+          "longitude": 19.7832966
+        },
+        {
+          "name": "Kthellë",
+          "latitude": 41.7495249,
+          "longitude": 19.9582076
+        },
+        {
+          "name": "Milot",
+          "latitude": 41.6440275,
+          "longitude": 19.7538942
+        },
+        {
+          "name": "Shënkoll",
+          "latitude": 41.7044978,
+          "longitude": 19.6296776
+        },
+        {
+          "name": "Fan",
+          "latitude": 41.9476976,
+          "longitude": 20.1702125
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Dibrës",
+      "latitude": 41.6220515,
+      "longitude": 20.1933463,
+      "districts": [
+        {
+          "name": "Ulëz",
+          "latitude": 41.6611906,
+          "longitude": 19.8838817
+        },
+        {
+          "name": "Ostren",
+          "latitude": 41.4319412,
+          "longitude": 20.4112566
+        },
+        {
+          "name": "Xibër",
+          "latitude": 41.4407891,
+          "longitude": 20.0522918
+        },
+        {
+          "name": "Martanesh",
+          "latitude": 41.4136788,
+          "longitude": 20.21193
+        },
+        {
+          "name": "Fushë Çidhën",
+          "latitude": 41.7606023,
+          "longitude": 20.368429
+        },
+        {
+          "name": "Zerqan",
+          "latitude": 41.4789141,
+          "longitude": 20.3597712
+        },
+        {
+          "name": "Klos",
+          "latitude": 41.5021345,
+          "longitude": 20.1122611
+        },
+        {
+          "name": "Rukaj",
+          "latitude": 41.6803762,
+          "longitude": 20.0011749
+        },
+        {
+          "name": "Kala e Dodës",
+          "latitude": 41.8120277,
+          "longitude": 20.4974366
+        },
+        {
+          "name": "Baz",
+          "latitude": 41.6419262,
+          "longitude": 19.9099322
+        },
+        {
+          "name": "Fushë-Bulqizë",
+          "latitude": 41.5198315,
+          "longitude": 20.2755205
+        },
+        {
+          "name": "Komsi",
+          "latitude": 41.587131,
+          "longitude": 19.9332559
+        },
+        {
+          "name": "Gurrë",
+          "latitude": 41.5398877,
+          "longitude": 19.9890079
+        },
+        {
+          "name": "Arras",
+          "latitude": 41.752543,
+          "longitude": 20.2877153
+        },
+        {
+          "name": "Tomin",
+          "latitude": 41.6870241,
+          "longitude": 20.4164419
+        },
+        {
+          "name": "Zall-Reç",
+          "latitude": 41.8674183,
+          "longitude": 20.3039991
+        },
+        {
+          "name": "Suç",
+          "latitude": 41.570074,
+          "longitude": 20.1225586
+        },
+        {
+          "name": "Derjan",
+          "latitude": 41.7046421,
+          "longitude": 20.1116118
+        },
+        {
+          "name": "Shupenzë",
+          "latitude": 41.5750412,
+          "longitude": 20.3708965
+        },
+        {
+          "name": "Maqellarë",
+          "latitude": 41.5963523,
+          "longitude": 20.4849385
+        },
+        {
+          "name": "Kastriot",
+          "latitude": 41.7248221,
+          "longitude": 20.4269046
+        },
+        {
+          "name": "Peshkopi",
+          "latitude": 41.6835294,
+          "longitude": 20.4312155
+        },
+        {
+          "name": "Melan",
+          "latitude": 41.6748947,
+          "longitude": 20.4692008
+        },
+        {
+          "name": "Bulqizë",
+          "latitude": 41.5097678,
+          "longitude": 20.2285177
+        },
+        {
+          "name": "Muhurr",
+          "latitude": 41.6901847,
+          "longitude": 20.2847263
+        },
+        {
+          "name": "Burrel",
+          "latitude": 41.6111141,
+          "longitude": 20.0114801
+        },
+        {
+          "name": "Trebisht",
+          "latitude": 41.3877769,
+          "longitude": 20.4891373
+        },
+        {
+          "name": "Luzni",
+          "latitude": 41.6419586,
+          "longitude": 20.3560531
+        },
+        {
+          "name": "Gjoricë",
+          "latitude": 41.5113982,
+          "longitude": 20.4482317
+        },
+        {
+          "name": "Selishtë",
+          "latitude": 41.6231141,
+          "longitude": 20.2479683
+        },
+        {
+          "name": "Lis",
+          "latitude": 41.6129871,
+          "longitude": 20.1073265
+        },
+        {
+          "name": "Macukull",
+          "latitude": 41.6809832,
+          "longitude": 20.1430889
+        },
+        {
+          "name": "Sllovë",
+          "latitude": 41.7885026,
+          "longitude": 20.4346096
+        },
+        {
+          "name": "Zall-Dardhë",
+          "latitude": 41.8046255,
+          "longitude": 20.3087065
+        },
+        {
+          "name": "Lurë",
+          "latitude": 41.7845289,
+          "longitude": 20.2088224
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Durrësit",
+      "latitude": 41.4280622,
+      "longitude": 19.6499267,
+      "districts": [
+        {
+          "name": "Ishëm",
+          "latitude": 41.5325685,
+          "longitude": 19.5307034
+        },
+        {
+          "name": "Nikël",
+          "latitude": 41.4411058,
+          "longitude": 19.7811412
+        },
+        {
+          "name": "Gjepalaj",
+          "latitude": 41.3166581,
+          "longitude": 19.6057744
+        },
+        {
+          "name": "Fushë-Krujë",
+          "latitude": 41.4758998,
+          "longitude": 19.738504
+        },
+        {
+          "name": "Katundi i Ri",
+          "latitude": 41.4028699,
+          "longitude": 19.467525
+        },
+        {
+          "name": "Xhafzotaj",
+          "latitude": 41.3421884,
+          "longitude": 19.5530342
+        },
+        {
+          "name": "Sukth",
+          "latitude": 41.4274706,
+          "longitude": 19.50805
+        },
+        {
+          "name": "Shijak",
+          "latitude": 41.3444788,
+          "longitude": 19.5642823
+        },
+        {
+          "name": "Thumanë",
+          "latitude": 41.5360292,
+          "longitude": 19.6582129
+        },
+        {
+          "name": "Bubq",
+          "latitude": 41.4739517,
+          "longitude": 19.6355821
+        },
+        {
+          "name": "Manëz",
+          "latitude": 41.4457048,
+          "longitude": 19.5801103
+        },
+        {
+          "name": "Krujë",
+          "latitude": 41.5094072,
+          "longitude": 19.7732815
+        },
+        {
+          "name": "Rashbull",
+          "latitude": 41.3169436,
+          "longitude": 19.5398192
+        },
+        {
+          "name": "Cudhi",
+          "latitude": 41.5257881,
+          "longitude": 19.8284697
+        },
+        {
+          "name": "Durrës",
+          "latitude": 41.3313924,
+          "longitude": 19.4661079
+        },
+        {
+          "name": "Maminas",
+          "latitude": 41.3755291,
+          "longitude": 19.6014909
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Tiranës",
+      "latitude": 41.2575485,
+      "longitude": 19.8382195,
+      "districts": [
+        {
+          "name": "Bërzhitë",
+          "latitude": 41.2283379,
+          "longitude": 19.960046
+        },
+        {
+          "name": "Kashar",
+          "latitude": 41.3437966,
+          "longitude": 19.7246342
+        },
+        {
+          "name": "Kavajë",
+          "latitude": 41.1834692,
+          "longitude": 19.557479
+        },
+        {
+          "name": "Zall-Herr",
+          "latitude": 41.4060528,
+          "longitude": 19.8147043
+        },
+        {
+          "name": "Dajt",
+          "latitude": 41.336769,
+          "longitude": 19.9277295
+        },
+        {
+          "name": "Bërxullë",
+          "latitude": 41.3799735,
+          "longitude": 19.7147472
+        },
+        {
+          "name": "Kryevidh",
+          "latitude": 41.0790552,
+          "longitude": 19.5054144
+        },
+        {
+          "name": "Gosë",
+          "latitude": 41.0549276,
+          "longitude": 19.5521479
+        },
+        {
+          "name": "Prezë",
+          "latitude": 41.432934,
+          "longitude": 19.6657263
+        },
+        {
+          "name": "Sinaballaj",
+          "latitude": 41.096973,
+          "longitude": 19.7067664
+        },
+        {
+          "name": "Zall-Bastar",
+          "latitude": 41.4231073,
+          "longitude": 19.9604978
+        },
+        {
+          "name": "Tiranë",
+          "latitude": 41.3304854,
+          "longitude": 19.8155862
+        },
+        {
+          "name": "Petrelë",
+          "latitude": 41.2548803,
+          "longitude": 19.8731777
+        },
+        {
+          "name": "Golem",
+          "latitude": 41.2170609,
+          "longitude": 19.5351744
+        },
+        {
+          "name": "Vorë",
+          "latitude": 41.3752543,
+          "longitude": 19.647823
+        },
+        {
+          "name": "Rrogozhinë",
+          "latitude": 41.0796116,
+          "longitude": 19.6611249
+        },
+        {
+          "name": "Farkë",
+          "latitude": 41.3024379,
+          "longitude": 19.8402967
+        },
+        {
+          "name": "Lekaj",
+          "latitude": 41.1219044,
+          "longitude": 19.6400841
+        },
+        {
+          "name": "Pezë",
+          "latitude": 41.2068716,
+          "longitude": 19.7202424
+        },
+        {
+          "name": "Synej",
+          "latitude": 41.1617283,
+          "longitude": 19.4969403
+        },
+        {
+          "name": "Kamëz",
+          "latitude": 41.3841212,
+          "longitude": 19.7501905
+        },
+        {
+          "name": "Shëngjergj",
+          "latitude": 41.3310034,
+          "longitude": 20.1152642
+        },
+        {
+          "name": "Baldushk",
+          "latitude": 41.1878823,
+          "longitude": 19.8309256
+        },
+        {
+          "name": "Ndroq",
+          "latitude": 41.2752654,
+          "longitude": 19.6513993
+        },
+        {
+          "name": "Helmas",
+          "latitude": 41.1910494,
+          "longitude": 19.6262606
+        },
+        {
+          "name": "Vaqarr",
+          "latitude": 41.291163,
+          "longitude": 19.7551094
+        },
+        {
+          "name": "Luz i Vogël",
+          "latitude": 41.134873,
+          "longitude": 19.5630252
+        },
+        {
+          "name": "Krrabë",
+          "latitude": 41.2112394,
+          "longitude": 19.958069
+        },
+        {
+          "name": "Paskuqan",
+          "latitude": 41.3631398,
+          "longitude": 19.8158108
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Elbasanit",
+      "latitude": 41.0513553,
+      "longitude": 20.1399108,
+      "districts": [
+        {
+          "name": "Labinot Mal",
+          "latitude": 41.2148212,
+          "longitude": 20.1446247
+        },
+        {
+          "name": "Kajan",
+          "latitude": 40.9042341,
+          "longitude": 19.8980299
+        },
+        {
+          "name": "Qukës",
+          "latitude": 41.0887656,
+          "longitude": 20.4769751
+        },
+        {
+          "name": "Gjoçaj",
+          "latitude": 41.0352871,
+          "longitude": 19.7404047
+        },
+        {
+          "name": "Gostimë",
+          "latitude": 40.9871293,
+          "longitude": 20.0303119
+        },
+        {
+          "name": "Fierzë",
+          "latitude": 40.9120505,
+          "longitude": 19.8438341
+        },
+        {
+          "name": "Pajovë",
+          "latitude": 41.0926003,
+          "longitude": 19.8643864
+        },
+        {
+          "name": "Tunjë",
+          "latitude": 40.8220375,
+          "longitude": 20.0990363
+        },
+        {
+          "name": "Labinot Fushë",
+          "latitude": 41.1469208,
+          "longitude": 20.1468787
+        },
+        {
+          "name": "Shushicë",
+          "latitude": 41.1003707,
+          "longitude": 20.1569956
+        },
+        {
+          "name": "Gjergjan",
+          "latitude": 41.031975,
+          "longitude": 20.0331394
+        },
+        {
+          "name": "Peqin",
+          "latitude": 41.0475328,
+          "longitude": 19.7450548
+        },
+        {
+          "name": "Lunik",
+          "latitude": 41.3012813,
+          "longitude": 20.3432512
+        },
+        {
+          "name": "Stëblevë",
+          "latitude": 41.3389607,
+          "longitude": 20.4229176
+        },
+        {
+          "name": "Mollas",
+          "latitude": 40.9070114,
+          "longitude": 20.0199792
+        },
+        {
+          "name": "Kukur",
+          "latitude": 40.8476788,
+          "longitude": 20.3741839
+        },
+        {
+          "name": "Shirgjan",
+          "latitude": 41.0661263,
+          "longitude": 20.0534588
+        },
+        {
+          "name": "Grekan",
+          "latitude": 40.9105659,
+          "longitude": 19.94869
+        },
+        {
+          "name": "Përrenjas",
+          "latitude": 41.0713439,
+          "longitude": 20.5337947
+        },
+        {
+          "name": "Lënie",
+          "latitude": 40.7899153,
+          "longitude": 20.3980185
+        },
+        {
+          "name": "Skënderbegas",
+          "latitude": 40.7717668,
+          "longitude": 20.2580005
+        },
+        {
+          "name": "Karinë",
+          "latitude": 41.0881411,
+          "longitude": 19.7426076
+        },
+        {
+          "name": "Rrajcë",
+          "latitude": 41.1008222,
+          "longitude": 20.5703749
+        },
+        {
+          "name": "Pishaj",
+          "latitude": 40.8867431,
+          "longitude": 20.1826816
+        },
+        {
+          "name": "Gramsh",
+          "latitude": 40.8658537,
+          "longitude": 20.1851252
+        },
+        {
+          "name": "Polis",
+          "latitude": 41.118036,
+          "longitude": 20.2568522
+        },
+        {
+          "name": "Belsh",
+          "latitude": 40.975357,
+          "longitude": 19.9051754
+        },
+        {
+          "name": "Orenjë",
+          "latitude": 41.303445,
+          "longitude": 20.1924462
+        },
+        {
+          "name": "Zavalinë",
+          "latitude": 40.9711562,
+          "longitude": 20.2644993
+        },
+        {
+          "name": "Hotolisht",
+          "latitude": 41.1663815,
+          "longitude": 20.4268057
+        },
+        {
+          "name": "Gjinar",
+          "latitude": 41.0155469,
+          "longitude": 20.2099277
+        },
+        {
+          "name": "Përparim",
+          "latitude": 41.0809104,
+          "longitude": 19.7926741
+        },
+        {
+          "name": "Cërrik",
+          "latitude": 41.0270668,
+          "longitude": 19.9771168
+        },
+        {
+          "name": "Elbasan",
+          "latitude": 41.1107243,
+          "longitude": 20.0819385
+        },
+        {
+          "name": "Sult",
+          "latitude": 40.9072841,
+          "longitude": 20.100403
+        },
+        {
+          "name": "Papër",
+          "latitude": 41.0848929,
+          "longitude": 19.9470629
+        },
+        {
+          "name": "Tregan",
+          "latitude": 41.0071294,
+          "longitude": 20.1127624
+        },
+        {
+          "name": "Kushovë",
+          "latitude": 40.7625534,
+          "longitude": 20.1732557
+        },
+        {
+          "name": "Shezë",
+          "latitude": 41.0126567,
+          "longitude": 19.8369455
+        },
+        {
+          "name": "Funar",
+          "latitude": 41.2080703,
+          "longitude": 20.0488817
+        },
+        {
+          "name": "Librazhd Qendër",
+          "latitude": 41.2117917,
+          "longitude": 20.3703387
+        },
+        {
+          "name": "Librazhd",
+          "latitude": 41.1822361,
+          "longitude": 20.3215624
+        },
+        {
+          "name": "Stravaj",
+          "latitude": 41.0021455,
+          "longitude": 20.3889967
+        },
+        {
+          "name": "Klos",
+          "latitude": 40.9611336,
+          "longitude": 20.0333119
+        },
+        {
+          "name": "Rrasë",
+          "latitude": 40.9639671,
+          "longitude": 19.8315002
+        },
+        {
+          "name": "Kodovjat",
+          "latitude": 40.8160733,
+          "longitude": 20.2683722
+        },
+        {
+          "name": "Shalës",
+          "latitude": 41.0156315,
+          "longitude": 19.9280203
+        },
+        {
+          "name": "Gracen",
+          "latitude": 41.1581169,
+          "longitude": 19.9505611
+        },
+        {
+          "name": "Poroçan",
+          "latitude": 40.9402609,
+          "longitude": 20.3075232
+        },
+        {
+          "name": "Bradashesh",
+          "latitude": 41.1263864,
+          "longitude": 20.0368374
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Fierit",
+      "latitude": 40.7423245,
+      "longitude": 19.6141562,
+      "districts": [
+        {
+          "name": "Kutë",
+          "latitude": 40.4658314,
+          "longitude": 19.7783206
+        },
+        {
+          "name": "Roskovec",
+          "latitude": 40.7497233,
+          "longitude": 19.6923543
+        },
+        {
+          "name": "Hekal",
+          "latitude": 40.5504131,
+          "longitude": 19.7064631
+        },
+        {
+          "name": "Ngraçan",
+          "latitude": 40.6486049,
+          "longitude": 19.7857966
+        },
+        {
+          "name": "Ballsh",
+          "latitude": 40.5953619,
+          "longitude": 19.7337932
+        },
+        {
+          "name": "Kurjan",
+          "latitude": 40.7025619,
+          "longitude": 19.7648995
+        },
+        {
+          "name": "Divjakë",
+          "latitude": 40.9853648,
+          "longitude": 19.5158327
+        },
+        {
+          "name": "Greshicë",
+          "latitude": 40.5592315,
+          "longitude": 19.7837309
+        },
+        {
+          "name": "Gradishtë",
+          "latitude": 40.9003701,
+          "longitude": 19.5988523
+        },
+        {
+          "name": "Mbrostar Ura",
+          "latitude": 40.7775749,
+          "longitude": 19.6167855
+        },
+        {
+          "name": "Tërbuf",
+          "latitude": 41.0281363,
+          "longitude": 19.5877812
+        },
+        {
+          "name": "Aranitas",
+          "latitude": 40.6172478,
+          "longitude": 19.802932
+        },
+        {
+          "name": "Kuman",
+          "latitude": 40.7222871,
+          "longitude": 19.6855316
+        },
+        {
+          "name": "Fier",
+          "latitude": 40.7268457,
+          "longitude": 19.5613772
+        },
+        {
+          "name": "Grabian",
+          "latitude": 40.9593964,
+          "longitude": 19.6046829
+        },
+        {
+          "name": "Lushnjë",
+          "latitude": 40.9167358,
+          "longitude": 19.6768618
+        },
+        {
+          "name": "Strum",
+          "latitude": 40.7727542,
+          "longitude": 19.7270413
+        },
+        {
+          "name": "Bubullimë",
+          "latitude": 40.8130807,
+          "longitude": 19.6607155
+        },
+        {
+          "name": "Krutje",
+          "latitude": 40.8603764,
+          "longitude": 19.7055803
+        },
+        {
+          "name": "Qendër Dukas",
+          "latitude": 40.6206014,
+          "longitude": 19.7191813
+        },
+        {
+          "name": "Cakran",
+          "latitude": 40.6022382,
+          "longitude": 19.6106117
+        },
+        {
+          "name": "Golem",
+          "latitude": 40.9745582,
+          "longitude": 19.693332
+        },
+        {
+          "name": "Selitë",
+          "latitude": 40.5479034,
+          "longitude": 19.8643122
+        },
+        {
+          "name": "Fier Shegan",
+          "latitude": 40.8828952,
+          "longitude": 19.8001774
+        },
+        {
+          "name": "Kolonjë",
+          "latitude": 40.8419274,
+          "longitude": 19.6276035
+        },
+        {
+          "name": "Qendër",
+          "latitude": 40.7428617,
+          "longitude": 19.5541215
+        },
+        {
+          "name": "Allkaj",
+          "latitude": 40.8439616,
+          "longitude": 19.7600866
+        },
+        {
+          "name": "Dushk",
+          "latitude": 41.0216798,
+          "longitude": 19.6750798
+        },
+        {
+          "name": "Fratar",
+          "latitude": 40.5070099,
+          "longitude": 19.8133784
+        },
+        {
+          "name": "Levan",
+          "latitude": 40.6769158,
+          "longitude": 19.4721208
+        },
+        {
+          "name": "Ruzhdie",
+          "latitude": 40.6549468,
+          "longitude": 19.7136011
+        },
+        {
+          "name": "Karbunarë",
+          "latitude": 40.9258959,
+          "longitude": 19.7666669
+        },
+        {
+          "name": "Portëz",
+          "latitude": 40.6734334,
+          "longitude": 19.6068798
+        },
+        {
+          "name": "Zharrëz",
+          "latitude": 40.7260162,
+          "longitude": 19.6377967
+        },
+        {
+          "name": "Dërmenas",
+          "latitude": 40.7168158,
+          "longitude": 19.42313
+        },
+        {
+          "name": "Frakull",
+          "latitude": 40.6227504,
+          "longitude": 19.5204184
+        },
+        {
+          "name": "Libofshë",
+          "latitude": 40.846179,
+          "longitude": 19.4977371
+        },
+        {
+          "name": "Remas",
+          "latitude": 40.9056264,
+          "longitude": 19.4891368
+        },
+        {
+          "name": "Hysgjokaj",
+          "latitude": 40.9762587,
+          "longitude": 19.7867261
+        },
+        {
+          "name": "Patos",
+          "latitude": 40.6755965,
+          "longitude": 19.6431616
+        },
+        {
+          "name": "Topojë",
+          "latitude": 40.8036084,
+          "longitude": 19.4563883
+        },
+        {
+          "name": "Ballagat",
+          "latitude": 40.9939206,
+          "longitude": 19.7545186
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Beratit",
+      "latitude": 40.6171976,
+      "longitude": 20.0900012,
+      "districts": [
+        {
+          "name": "Sinjë",
+          "latitude": 40.6271625,
+          "longitude": 19.8886398
+        },
+        {
+          "name": "Leshnjë",
+          "latitude": 40.5470378,
+          "longitude": 20.370812
+        },
+        {
+          "name": "Roshnik",
+          "latitude": 40.718574,
+          "longitude": 20.0947138
+        },
+        {
+          "name": "Vërtop",
+          "latitude": 40.6378505,
+          "longitude": 20.0817851
+        },
+        {
+          "name": "Cukalat",
+          "latitude": 40.7164166,
+          "longitude": 19.8022609
+        },
+        {
+          "name": "Velabisht",
+          "latitude": 40.6796051,
+          "longitude": 19.9605463
+        },
+        {
+          "name": "Ura Vajgurore",
+          "latitude": 40.7390577,
+          "longitude": 19.8501099
+        },
+        {
+          "name": "Çorovodë",
+          "latitude": 40.5011452,
+          "longitude": 20.2305133
+        },
+        {
+          "name": "Potom",
+          "latitude": 40.4740784,
+          "longitude": 20.3565672
+        },
+        {
+          "name": "Otllak",
+          "latitude": 40.7492641,
+          "longitude": 19.981638
+        },
+        {
+          "name": "Tërpan",
+          "latitude": 40.5651737,
+          "longitude": 20.0218431
+        },
+        {
+          "name": "Zhepë",
+          "latitude": 40.6841622,
+          "longitude": 20.2452402
+        },
+        {
+          "name": "Bogovë",
+          "latitude": 40.5783236,
+          "longitude": 20.1784581
+        },
+        {
+          "name": "Poshnjë",
+          "latitude": 40.816296,
+          "longitude": 19.8235551
+        },
+        {
+          "name": "Poliçan",
+          "latitude": 40.6016582,
+          "longitude": 20.0931826
+        },
+        {
+          "name": "Vëndreshë",
+          "latitude": 40.5242462,
+          "longitude": 20.1161764
+        },
+        {
+          "name": "Berat",
+          "latitude": 40.7049535,
+          "longitude": 19.975957
+        },
+        {
+          "name": "Kutalli",
+          "latitude": 40.791532,
+          "longitude": 19.7809976
+        },
+        {
+          "name": "Perondi",
+          "latitude": 40.8075979,
+          "longitude": 19.920249
+        },
+        {
+          "name": "Kozare",
+          "latitude": 40.8473655,
+          "longitude": 19.9102339
+        },
+        {
+          "name": "Kuçovë",
+          "latitude": 40.8013689,
+          "longitude": 19.9166313
+        },
+        {
+          "name": "Qendër Skrapar",
+          "latitude": 40.4979535,
+          "longitude": 20.2289638
+        },
+        {
+          "name": "Çepan",
+          "latitude": 40.4010023,
+          "longitude": 20.2957805
+        },
+        {
+          "name": "Gjerbës",
+          "latitude": 40.5989774,
+          "longitude": 20.2717387
+        },
+        {
+          "name": "Lumas",
+          "latitude": 40.8319679,
+          "longitude": 20.0235317
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Korçës",
+      "latitude": 40.5874382,
+      "longitude": 20.6750491,
+      "districts": [
+        {
+          "name": "Drenovë",
+          "latitude": 40.5726308,
+          "longitude": 20.7737938
+        },
+        {
+          "name": "Qendër Bulgarec",
+          "latitude": 40.6486701,
+          "longitude": 20.7761415
+        },
+        {
+          "name": "Gorë",
+          "latitude": 40.7546656,
+          "longitude": 20.5444814
+        },
+        {
+          "name": "Pogradec",
+          "latitude": 40.8980192,
+          "longitude": 20.6615421
+        },
+        {
+          "name": "Novoselë",
+          "latitude": 40.3155248,
+          "longitude": 20.5517101
+        },
+        {
+          "name": "Trebinjë",
+          "latitude": 40.9056286,
+          "longitude": 20.5362256
+        },
+        {
+          "name": "Dardhas",
+          "latitude": 40.8244569,
+          "longitude": 20.6067257
+        },
+        {
+          "name": "Proptisht",
+          "latitude": 40.9822293,
+          "longitude": 20.5267804
+        },
+        {
+          "name": "Çlirim",
+          "latitude": 40.4061214,
+          "longitude": 20.522657
+        },
+        {
+          "name": "Buçimas",
+          "latitude": 40.8810812,
+          "longitude": 20.7016759
+        },
+        {
+          "name": "Bilisht",
+          "latitude": 40.6277103,
+          "longitude": 20.9934639
+        },
+        {
+          "name": "Moglicë",
+          "latitude": 40.671048,
+          "longitude": 20.4097224
+        },
+        {
+          "name": "Vithkuq",
+          "latitude": 40.4980924,
+          "longitude": 20.547505
+        },
+        {
+          "name": "Çërravë",
+          "latitude": 40.860129,
+          "longitude": 20.7667004
+        },
+        {
+          "name": "Vreshtas",
+          "latitude": 40.79095,
+          "longitude": 20.7933321
+        },
+        {
+          "name": "Korçë",
+          "latitude": 40.6178686,
+          "longitude": 20.7796346
+        },
+        {
+          "name": "Barmash",
+          "latitude": 40.2657432,
+          "longitude": 20.595317
+        },
+        {
+          "name": "Pustec",
+          "latitude": 40.8333441,
+          "longitude": 20.9066494
+        },
+        {
+          "name": "Velçan",
+          "latitude": 40.9062164,
+          "longitude": 20.4572548
+        },
+        {
+          "name": "Lekas",
+          "latitude": 40.6047315,
+          "longitude": 20.4880141
+        },
+        {
+          "name": "Qendër Ersekë",
+          "latitude": 40.3355605,
+          "longitude": 20.6969844
+        },
+        {
+          "name": "Voskop",
+          "latitude": 40.6122204,
+          "longitude": 20.6777812
+        },
+        {
+          "name": "Hoçisht",
+          "latitude": 40.6162921,
+          "longitude": 20.8992603
+        },
+        {
+          "name": "Libonik",
+          "latitude": 40.7207155,
+          "longitude": 20.7099413
+        },
+        {
+          "name": "Leskovik",
+          "latitude": 40.1539929,
+          "longitude": 20.6005465
+        },
+        {
+          "name": "Pojan",
+          "latitude": 40.7237956,
+          "longitude": 20.8393821
+        },
+        {
+          "name": "Qendër Bilisht",
+          "latitude": 40.6271095,
+          "longitude": 21.002376
+        },
+        {
+          "name": "Miras",
+          "latitude": 40.50259,
+          "longitude": 20.8823658
+        },
+        {
+          "name": "Qendër Leskovik",
+          "latitude": 40.1668289,
+          "longitude": 20.6149745
+        },
+        {
+          "name": "Pirg",
+          "latitude": 40.7715607,
+          "longitude": 20.6950363
+        },
+        {
+          "name": "Mollaj",
+          "latitude": 40.5306663,
+          "longitude": 20.7093998
+        },
+        {
+          "name": "Voskopojë",
+          "latitude": 40.6247932,
+          "longitude": 20.5945208
+        },
+        {
+          "name": "Ersekë",
+          "latitude": 40.3409177,
+          "longitude": 20.6789194
+        },
+        {
+          "name": "Maliq",
+          "latitude": 40.7022999,
+          "longitude": 20.6516587
+        },
+        {
+          "name": "Progër",
+          "latitude": 40.7044356,
+          "longitude": 20.9438871
+        },
+        {
+          "name": "Mollas",
+          "latitude": 40.4375876,
+          "longitude": 20.6945058
+        },
+        {
+          "name": "Udenisht",
+          "latitude": 41.0002548,
+          "longitude": 20.6107368
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Gjirokastrës",
+      "latitude": 40.1555429,
+      "longitude": 20.1989393,
+      "districts": [
+        {
+          "name": "Tepelenë",
+          "latitude": 40.2983938,
+          "longitude": 20.0179792
+        },
+        {
+          "name": "Memaliaj Fshat",
+          "latitude": 40.3435607,
+          "longitude": 19.9925471
+        },
+        {
+          "name": "Qesarat",
+          "latitude": 40.407858,
+          "longitude": 19.8876508
+        },
+        {
+          "name": "Kurvelesh",
+          "latitude": 40.2397874,
+          "longitude": 19.9028467
+        },
+        {
+          "name": "Odrie",
+          "latitude": 40.1851104,
+          "longitude": 20.1326406
+        },
+        {
+          "name": "Cepo",
+          "latitude": 40.1147015,
+          "longitude": 20.0249125
+        },
+        {
+          "name": "Sukë",
+          "latitude": 40.3747889,
+          "longitude": 20.1675463
+        },
+        {
+          "name": "Libohovë",
+          "latitude": 40.0319063,
+          "longitude": 20.2663909
+        },
+        {
+          "name": "Pogon",
+          "latitude": 40.0777518,
+          "longitude": 20.3679745
+        },
+        {
+          "name": "Krahës",
+          "latitude": 40.4580938,
+          "longitude": 19.8579699
+        },
+        {
+          "name": "Çarçovë",
+          "latitude": 40.12713,
+          "longitude": 20.5103937
+        },
+        {
+          "name": "Antigonë",
+          "latitude": 40.1006597,
+          "longitude": 20.2013344
+        },
+        {
+          "name": "Lazarat",
+          "latitude": 40.0425164,
+          "longitude": 20.1483972
+        },
+        {
+          "name": "Picar",
+          "latitude": 40.177659,
+          "longitude": 19.9752437
+        },
+        {
+          "name": "Petran",
+          "latitude": 40.2233399,
+          "longitude": 20.39545
+        },
+        {
+          "name": "Dropull i Sipërm",
+          "latitude": 39.8693239,
+          "longitude": 20.3198978
+        },
+        {
+          "name": "Zagorie",
+          "latitude": 40.1830201,
+          "longitude": 20.2579495
+        },
+        {
+          "name": "Luftinjë",
+          "latitude": 40.4344723,
+          "longitude": 19.9990894
+        },
+        {
+          "name": "Ballaban",
+          "latitude": 40.4379082,
+          "longitude": 20.1369385
+        },
+        {
+          "name": "Qendër Tepelenë",
+          "latitude": 40.2870947,
+          "longitude": 20.0051644
+        },
+        {
+          "name": "Memaliaj",
+          "latitude": 40.3480771,
+          "longitude": 19.9804995
+        },
+        {
+          "name": "Dishnicë",
+          "latitude": 40.3367217,
+          "longitude": 20.2080768
+        },
+        {
+          "name": "Qendër Libohovë",
+          "latitude": 40.0474597,
+          "longitude": 20.256882
+        },
+        {
+          "name": "Lopës",
+          "latitude": 40.3423035,
+          "longitude": 19.8527294
+        },
+        {
+          "name": "Dropull i Poshtëm",
+          "latitude": 39.9847854,
+          "longitude": 20.2298176
+        },
+        {
+          "name": "Qendër Piskovë",
+          "latitude": 40.3008539,
+          "longitude": 20.3206195
+        },
+        {
+          "name": "Lunxhëri",
+          "latitude": 40.1334548,
+          "longitude": 20.1737145
+        },
+        {
+          "name": "Këlcyrë",
+          "latitude": 40.2726049,
+          "longitude": 20.1672408
+        },
+        {
+          "name": "Frashër",
+          "latitude": 40.3518858,
+          "longitude": 20.4190557
+        },
+        {
+          "name": "Gjirokastër",
+          "latitude": 40.0706797,
+          "longitude": 20.1115121
+        },
+        {
+          "name": "Përmet",
+          "latitude": 40.234458,
+          "longitude": 20.35394
+        },
+        {
+          "name": "Buz",
+          "latitude": 40.4539393,
+          "longitude": 20.0200874
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Vlorës",
+      "latitude": 40.1541115,
+      "longitude": 19.7930334,
+      "districts": [
+        {
+          "name": "Qendër Vlorë",
+          "latitude": 40.4738368,
+          "longitude": 19.41093
+        },
+        {
+          "name": "Horë-Vranisht",
+          "latitude": 40.1967843,
+          "longitude": 19.7472844
+        },
+        {
+          "name": "Mesopotam",
+          "latitude": 39.9165668,
+          "longitude": 20.1581806
+        },
+        {
+          "name": "Shushicë",
+          "latitude": 40.5406117,
+          "longitude": 19.5411293
+        },
+        {
+          "name": "Armen",
+          "latitude": 40.5214266,
+          "longitude": 19.6432516
+        },
+        {
+          "name": "Livadhja",
+          "latitude": 39.7810525,
+          "longitude": 20.1994179
+        },
+        {
+          "name": "Kotë",
+          "latitude": 40.3913709,
+          "longitude": 19.6296239
+        },
+        {
+          "name": "Aliko",
+          "latitude": 39.8173366,
+          "longitude": 20.0698259
+        },
+        {
+          "name": "Xarrë",
+          "latitude": 39.735284,
+          "longitude": 20.0611591
+        },
+        {
+          "name": "Vergo",
+          "latitude": 40.0036402,
+          "longitude": 19.9942415
+        },
+        {
+          "name": "Brataj",
+          "latitude": 40.2967771,
+          "longitude": 19.6949879
+        },
+        {
+          "name": "Vlorë",
+          "latitude": 40.4510739,
+          "longitude": 19.4828521
+        },
+        {
+          "name": "Lukovë",
+          "latitude": 40.0152476,
+          "longitude": 19.9278144
+        },
+        {
+          "name": "Sevaster",
+          "latitude": 40.3826068,
+          "longitude": 19.7428761
+        },
+        {
+          "name": "Ksamil",
+          "latitude": 39.7677239,
+          "longitude": 20.0006504
+        },
+        {
+          "name": "Orikum",
+          "latitude": 40.3052426,
+          "longitude": 19.4609373
+        },
+        {
+          "name": "Himarë",
+          "latitude": 40.1231664,
+          "longitude": 19.7126991
+        },
+        {
+          "name": "Sarandë",
+          "latitude": 39.8442056,
+          "longitude": 20.0180155
+        },
+        {
+          "name": "Delvinë",
+          "latitude": 39.9715182,
+          "longitude": 20.0779104
+        },
+        {
+          "name": "Vllahinë",
+          "latitude": 40.4656969,
+          "longitude": 19.6529516
+        },
+        {
+          "name": "Markat",
+          "latitude": 39.701446,
+          "longitude": 20.2293484
+        },
+        {
+          "name": "Selenicë",
+          "latitude": 40.5326701,
+          "longitude": 19.6382965
+        },
+        {
+          "name": "Finiq",
+          "latitude": 39.8986827,
+          "longitude": 20.0575843
+        },
+        {
+          "name": "Konispol",
+          "latitude": 39.6849988,
+          "longitude": 20.1529998
+        },
+        {
+          "name": "Novoselë",
+          "latitude": 40.6028675,
+          "longitude": 19.4274572
+        },
+        {
+          "name": "Dhivër",
+          "latitude": 39.8497441,
+          "longitude": 20.2115531
+        }
+      ]
+    },
+    {
+      "name": "Qarku i Kukësit",
+      "latitude": 42.1869556,
+      "longitude": 20.2124067,
+      "districts": [
+        {
+          "name": "Fierzë",
+          "latitude": 42.2678049,
+          "longitude": 20.0591323
+        },
+        {
+          "name": "Bicaj",
+          "latitude": 41.9916977,
+          "longitude": 20.4227225
+        },
+        {
+          "name": "Kukës",
+          "latitude": 42.072727,
+          "longitude": 20.4198041
+        },
+        {
+          "name": "Surroj",
+          "latitude": 41.9982205,
+          "longitude": 20.3233694
+        },
+        {
+          "name": "Gjinaj",
+          "latitude": 42.1514603,
+          "longitude": 20.4432086
+        },
+        {
+          "name": "Ujmisht",
+          "latitude": 41.9349021,
+          "longitude": 20.380538
+        },
+        {
+          "name": "Kolsh",
+          "latitude": 42.071421,
+          "longitude": 20.3646879
+        },
+        {
+          "name": "Bajram Curri",
+          "latitude": 42.3565314,
+          "longitude": 20.0789326
+        },
+        {
+          "name": "Kalis",
+          "latitude": 41.8428446,
+          "longitude": 20.3761139
+        },
+        {
+          "name": "Tërthorë",
+          "latitude": 42.1133047,
+          "longitude": 20.4945121
+        },
+        {
+          "name": "Zapod",
+          "latitude": 42.0545983,
+          "longitude": 20.5366752
+        },
+        {
+          "name": "Llugaj",
+          "latitude": 42.3415504,
+          "longitude": 20.1673892
+        },
+        {
+          "name": "Bujan",
+          "latitude": 42.3562044,
+          "longitude": 19.9921079
+        },
+        {
+          "name": "Bytyç",
+          "latitude": 42.26937,
+          "longitude": 20.2406192
+        },
+        {
+          "name": "Shishtavec",
+          "latitude": 41.9762186,
+          "longitude": 20.5739204
+        },
+        {
+          "name": "Golaj",
+          "latitude": 42.243988,
+          "longitude": 20.3716958
+        },
+        {
+          "name": "Topojan",
+          "latitude": 41.9645079,
+          "longitude": 20.5240969
+        },
+        {
+          "name": "Fajzë",
+          "latitude": 42.1524047,
+          "longitude": 20.3387848
+        },
+        {
+          "name": "Grykë-Çaje",
+          "latitude": 41.8977184,
+          "longitude": 20.5093638
+        },
+        {
+          "name": "Shtiqën",
+          "latitude": 42.0421827,
+          "longitude": 20.442096
+        },
+        {
+          "name": "Krumë",
+          "latitude": 42.1903484,
+          "longitude": 20.4001428
+        },
+        {
+          "name": "Arrën",
+          "latitude": 41.9139487,
+          "longitude": 20.2664628
+        },
+        {
+          "name": "Bushtricë",
+          "latitude": 41.8801073,
+          "longitude": 20.402392
+        },
+        {
+          "name": "Malzi",
+          "latitude": 42.1034961,
+          "longitude": 20.2356284
+        },
+        {
+          "name": "Lekbibaj",
+          "latitude": 42.3099033,
+          "longitude": 19.9011018
+        },
+        {
+          "name": "Margegaj",
+          "latitude": 42.4347942,
+          "longitude": 19.953051
+        },
+        {
+          "name": "Tropojë",
+          "latitude": 42.4558141,
+          "longitude": 20.1201337
+        }
+      ]
+    }
+  ]
+}
