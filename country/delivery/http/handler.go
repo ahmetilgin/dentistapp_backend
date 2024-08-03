@@ -41,8 +41,8 @@ type getResponse struct {
 }
 
 func (h *Handler) Get(c *gin.Context) {
-	query := c.Query("query")
-	code := c.Query("code")
+	query := c.Param("region")
+	code := c.Param("keyword")
 
 	if query == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter is required"})

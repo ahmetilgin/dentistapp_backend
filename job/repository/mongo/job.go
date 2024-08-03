@@ -11,16 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
-
 type JobRepository struct {
-	jobCollection *mongo.Collection
+	jobCollection        *mongo.Collection
 	professionCollection *mongo.Collection
 }
 
 func NewJobRepository(jobCollection *mongo.Database, professionCollectionName, jobCollectionName string) *JobRepository {
 	return &JobRepository{
-		jobCollection: jobCollection.Collection(jobCollectionName),
+		jobCollection:        jobCollection.Collection(jobCollectionName),
 		professionCollection: jobCollection.Collection(professionCollectionName),
 	}
 }
@@ -62,63 +60,62 @@ func (r JobRepository) GetJobs(ctx context.Context) ([]*models.Job, error) {
 	return out, nil
 }
 
-func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string) (bool,error){
+func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string) (bool, error) {
 	filterProfessions := bson.M{"name": keyword}
 	update := bson.M{"$inc": bson.M{"search_counter": 1}}
 	errProfessions := r.professionCollection.FindOneAndUpdate(ctx, filterProfessions, update)
 	if errProfessions == nil {
-		err :=errProfessions.Err()
+		err := errProfessions.Err()
 		if err != nil {
 			fmt.Printf("errProfessions.Err().Error(): %v\n", err.Error())
 		}
-		return false,err
+		return false, err
 	}
 
-	return true,nil
+	return true, nil
 }
 
 func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
 	filter := bson.M{
-        "$or": []bson.M{
-            {"location": bson.M{"$regex": location, "$options": "i"}},
-            {"job_title": bson.M{"$regex": keyword, "$options": "i"}},
-            {"description": bson.M{"$regex": keyword, "$options": "i"}},
-            {"requirements": bson.M{"$regex": keyword, "$options": "i"}},
-        },
-    }
-	
-    opts := options.Find().SetSort(bson.D{{Key: "date_posted", Value: -1}})
-    cursor, err := r.jobCollection.Find(ctx, filter, opts)
-    if err != nil {
-        return nil, err
-    }
-    defer cursor.Close(ctx)
+		"$or": []bson.M{
+			{"location": bson.M{"$regex": location, "$options": "i"}},
+			{"job_title": bson.M{"$regex": keyword, "$options": "i"}},
+			{"description": bson.M{"$regex": keyword, "$options": "i"}},
+			{"requirements": bson.M{"$regex": keyword, "$options": "i"}},
+		},
+	}
 
-	ret,err := r.IncreaseSearchCounter(ctx, keyword)
+	opts := options.Find().SetSort(bson.D{{Key: "date_posted", Value: -1}})
+	cursor, err := r.jobCollection.Find(ctx, filter, opts)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	ret, err := r.IncreaseSearchCounter(ctx, keyword)
 	if !ret {
-		if err != nil{
+		if err != nil {
 			fmt.Printf("err: %v\n", err.Error())
 		}
 		return nil, err
 	}
 
-
-    var jobs []*models.Job
-    for cursor.Next(ctx) {
-        var job models.Job
-        if err := cursor.Decode(&job); err != nil {
+	var jobs []*models.Job
+	for cursor.Next(ctx) {
+		var job models.Job
+		if err := cursor.Decode(&job); err != nil {
 			// print error
 			fmt.Println(err.Error())
-            return nil, err
-        }
-        jobs = append(jobs, &job)
-    }
+			return nil, err
+		}
+		jobs = append(jobs, &job)
+	}
 
-    if err := cursor.Err(); err != nil {
-        return nil, err
-    }
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
 
-    return jobs, nil
+	return jobs, nil
 }
 
 func (r JobRepository) DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error {
@@ -127,33 +124,30 @@ func (r JobRepository) DeleteJob(ctx context.Context, user *models.BusinessUser,
 	return err
 }
 
-
 func (r JobRepository) SearchProfession(ctx context.Context, keyword string) ([]*models.Profession, error) {
-    var results []*models.Profession
+	var results []*models.Profession
 
-    // Filtre oluşturma
-    filter := bson.M{"name": bson.M{"$regex": keyword, "$options": "i"}} // "i" opsiyonu, aramanın büyük/küçük harf duyarsız olmasını sağlar
+	// Filtre oluşturma
+	filter := bson.M{"name": bson.M{"$regex": keyword, "$options": "i"}} // "i" opsiyonu, aramanın büyük/küçük harf duyarsız olmasını sağlar
 
 	findOptions := options.Find()
-    findOptions.SetSort(bson.D{{Key: "search_counter", Value: -1}}) // Sıralama: count alanına göre azalan
-    findOptions.SetLimit(10) // İlk 10 sonucu al
+	findOptions.SetSort(bson.D{{Key: "search_counter", Value: -1}}) // Sıralama: count alanına göre azalan
+	findOptions.SetLimit(10)                                        // İlk 10 sonucu al
 
-    // Veritabanında arama yapma
-    cursor, err := r.professionCollection.Find(ctx, filter, findOptions)
-    if err != nil {
-        return nil, fmt.Errorf("error finding professions: %w", err)
-    }
-    defer cursor.Close(ctx) // Cursor'ı kapatmayı unutmayın
+	// Veritabanında arama yapma
+	cursor, err := r.professionCollection.Find(ctx, filter, findOptions)
+	if err != nil {
+		return nil, fmt.Errorf("error finding professions: %w", err)
+	}
+	defer cursor.Close(ctx) // Cursor'ı kapatmayı unutmayın
 
-    // Sonuçları results dilimine yükleme
-    if err = cursor.All(ctx, &results); err != nil {
-        return nil, fmt.Errorf("error decoding professions: %w", err)
-    }
+	// Sonuçları results dilimine yükleme
+	if err = cursor.All(ctx, &results); err != nil {
+		return nil, fmt.Errorf("error decoding professions: %w", err)
+	}
 
-    return results, nil
+	return results, nil
 }
-
-
 
 func (r JobRepository) GetPopulerJobs(ctx context.Context) ([]*models.Profession, error) {
 	// professionlardan search_counter'i en yuksek olanlarin ilk 5 tanesini al
@@ -173,6 +167,6 @@ func (r JobRepository) GetPopulerJobs(ctx context.Context) ([]*models.Profession
 		}
 		professions = append(professions, &profession)
 	}
-	
+
 	return professions, nil
 }

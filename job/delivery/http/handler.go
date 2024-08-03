@@ -11,8 +11,8 @@ import (
 )
 
 type SearchOptions struct {
-    Keyword     string          `json:"keyword"`
-    Location    string 			`json:"location"`
+	Keyword  string `json:"keyword"`
+	Location string `json:"location"`
 }
 type Handler struct {
 	useCase job.UseCase
@@ -24,19 +24,17 @@ func NewHandler(useCase job.UseCase) *Handler {
 	}
 }
 
-
 func (h *Handler) Create(c *gin.Context) {
 	inp := new(models.Job)
-	
- 	if err := c.BindJSON(inp); err != nil {
+
+	if err := c.BindJSON(inp); err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	
 	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
-	
+
 	if err := h.useCase.CreateJob(c.Request.Context(), user, inp); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -47,11 +45,11 @@ func (h *Handler) Create(c *gin.Context) {
 
 func (h *Handler) Search(c *gin.Context) {
 	inp := new(SearchOptions)
- 	if err := c.BindJSON(inp); err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-	result,err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword);
+	location := c.Param("location")
+	inp.Location = location
+	inp.Keyword = c.Param("keyword")
+
+	result, err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -61,16 +59,20 @@ func (h *Handler) Search(c *gin.Context) {
 		Jobs: result,
 	})
 }
+
 type queryResult struct {
 	QueryResult []string `json:"query_result"`
 }
+
 func (h *Handler) SearchProfession(c *gin.Context) {
-	query := c.Query("query")
+
+	query := c.Param("profession")
+
 	if query == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter is required"})
 		return
 	}
-	result,err := h.useCase.SearchProfession(c.Request.Context(), query);
+	result, err := h.useCase.SearchProfession(c.Request.Context(), query)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -80,7 +82,6 @@ func (h *Handler) SearchProfession(c *gin.Context) {
 		QueryResult: result,
 	})
 }
-
 
 type getResponse struct {
 	Jobs []*models.Job `json:"jobs"`
@@ -96,7 +97,7 @@ func (h *Handler) Get(c *gin.Context) {
 	c.JSON(http.StatusOK, &getResponse{
 		Jobs: bms,
 	})
-	
+
 }
 
 type deleteInput struct {
@@ -121,7 +122,7 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) GetPopulerJobs(c *gin.Context) {
-	result,err := h.useCase.GetPopulerJobs(c.Request.Context());
+	result, err := h.useCase.GetPopulerJobs(c.Request.Context())
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

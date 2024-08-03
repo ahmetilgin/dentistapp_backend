@@ -12,6 +12,6 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc country.UseCase, authUC g
 	regions := router.Group("/country")
 	{
 		regions.POST("", authUC, h.Create)
-		regions.GET("", h.Get)
+		regions.GET("/:region/:keyword", h.Get)
 	}
 }
