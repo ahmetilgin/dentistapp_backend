@@ -45,10 +45,13 @@ func (r UserRepository) CreateBusinessUser(ctx context.Context, user *models.Bus
 	return nil
 }
 
-func (r UserRepository) GetNormalUser(ctx context.Context, username, password string) (*models.NormalUser, error) {
+func (r UserRepository) GetNormalUser(ctx context.Context, usernameOrPassword, password string) (*models.NormalUser, error) {
 	baseUser := new(models.NormalUser)
 	err := r.normalUserCollection.FindOne(ctx, bson.M{
-		"username": username,
+		"$or": []bson.M{
+			{"username": usernameOrPassword},
+			{"email": usernameOrPassword},
+		},
 		"password": password,
 	}).Decode(baseUser)
 
@@ -59,10 +62,13 @@ func (r UserRepository) GetNormalUser(ctx context.Context, username, password st
 	return baseUser, nil
 }
 
-func (r UserRepository) GetBusinessUser(ctx context.Context, username, password string) (*models.BusinessUser, error) {
+func (r UserRepository) GetBusinessUser(ctx context.Context, usernameOrPassword, password string) (*models.BusinessUser, error) {
 	baseUser := new(models.BusinessUser)
 	err := r.businessUserCollection.FindOne(ctx, bson.M{
-		"username": username,
+		"$or": []bson.M{
+			{"username": usernameOrPassword},
+			{"email": usernameOrPassword},
+		},
 		"password": password,
 	}).Decode(baseUser)
 
