@@ -3,7 +3,6 @@ package mongo
 import (
 	"backend/models"
 	"context"
-	"regexp"
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -27,71 +26,24 @@ func (r *RegionRepository) CreateRegion(ctx context.Context, country *models.Cou
 	return err
 }
 
-func (r *RegionRepository) Search(ctx context.Context, code, query string) ([]string, error) {
+func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]string, error) {
 	code = strings.ToUpper(code)
-	escapedQuery := regexp.QuoteMeta(query)
 	if code == "EN" {
 		code = "SQ"
 	}
 
 	pipeline := []bson.M{
-		{
-			"$match": bson.M{
-				"code": code,
-				"$or": []bson.M{
-					{"name": bson.M{"$regex": "^" + escapedQuery, "$options": "i"}},
-					{"cities.name": bson.M{"$regex": "^" + escapedQuery, "$options": "i"}},
-					{"cities.districts.name": bson.M{"$regex": "^" + escapedQuery, "$options": "i"}},
-				},
-			},
-		},
-		{
-			"$project": bson.M{
-				"matches": bson.M{
-					"$concatArrays": []interface{}{
-						bson.M{"$filter": bson.M{
-							"input": []string{"$name"},
-							"as":    "name",
-							"cond":  bson.M{"$regexMatch": bson.M{"input": "$$name", "regex": "^" + escapedQuery, "options": "i"}},
-						}},
-						bson.M{"$filter": bson.M{
-							"input": "$cities.name",
-							"as":    "cityName",
-							"cond":  bson.M{"$regexMatch": bson.M{"input": "$$cityName", "regex": "^" + escapedQuery, "options": "i"}},
-						}},
-						bson.M{"$reduce": bson.M{
-							"input":        "$cities",
-							"initialValue": []string{},
-							"in": bson.M{
-								"$concatArrays": []interface{}{
-									"$$value",
-									bson.M{"$filter": bson.M{
-										"input": "$$this.districts.name",
-										"as":    "districtName",
-										"cond":  bson.M{"$regexMatch": bson.M{"input": "$$districtName", "regex": "^" + escapedQuery, "options": "i"}},
-									}},
-								},
-							},
-						}},
-					},
-				},
-			},
-		},
-		{
-			"$unwind": "$matches",
-		},
-		{
-			"$group": bson.M{
-				"_id":     nil,
-				"results": bson.M{"$addToSet": "$matches"},
-			},
-		},
-		{
-			"$project": bson.M{
-				"results": bson.M{"$slice": []interface{}{"$results", 10}},
-				"_id":     0,
-			},
-		},
+		{"$match": bson.M{"code": code}},
+		{"$unwind": "$cities"},
+		{"$unwind": "$cities.districts"},
+		{"$or": []bson.M{
+			{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+			{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+		}},
+		{"$project": []bson.M{
+			{"city_name": "$cities.name"},
+			{"district_name": "$cities.districts.name"},
+		}},
 	}
 
 	cursor, err := r.regionCol.Aggregate(ctx, pipeline)
@@ -101,17 +53,18 @@ func (r *RegionRepository) Search(ctx context.Context, code, query string) ([]st
 	defer cursor.Close(ctx)
 
 	var results []struct {
-		Results []string `bson:"results"`
+		CityName string `bson:"city_name"`
+		District string `bson:"district_name"`
 	}
 
-	err = cursor.All(ctx, &results)
-	if err != nil {
+	if err = cursor.All(ctx, &results); err != nil {
 		return nil, err
 	}
 
-	if len(results) == 0 {
-		return []string{}, nil
+	stringResults := make([]string, len(results))
+	for i, result := range results {
+		stringResults[i] = result.CityName
 	}
 
-	return results[0].Results, nil
+	return stringResults, nil
 }
