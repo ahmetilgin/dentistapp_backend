@@ -76,13 +76,18 @@ func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string
 }
 
 func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
-	filter := bson.M{
-		"$or": []bson.M{
-			{"location": bson.M{"$regex": location, "$options": "i"}},
+	filter := bson.M{}
+
+	if location != "-" {
+		filter["location"] = bson.M{"$regex": location, "$options": "i"}
+	}
+
+	if keyword != "-" {
+		filter["$or"] = []bson.M{
 			{"job_title": bson.M{"$regex": keyword, "$options": "i"}},
 			{"description": bson.M{"$regex": keyword, "$options": "i"}},
 			{"requirements": bson.M{"$regex": keyword, "$options": "i"}},
-		},
+		}
 	}
 
 	opts := options.Find().SetSort(bson.D{{Key: "date_posted", Value: -1}})

@@ -29,21 +29,50 @@ func (r *RegionRepository) CreateRegion(ctx context.Context, country *models.Cou
 func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]string, error) {
 	code = strings.ToUpper(code)
 	if code == "EN" {
-		code = "SQ"
+		code = "AL"
 	}
 
 	pipeline := []bson.M{
 		{"$match": bson.M{"code": code}},
 		{"$unwind": "$cities"},
-		{"$unwind": "$cities.districts"},
-		{"$or": []bson.M{
-			{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
-			{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
-		}},
-		{"$project": []bson.M{
-			{"city_name": "$cities.name"},
-			{"district_name": "$cities.districts.name"},
-		}},
+		{
+			"$facet": bson.M{
+				"cities_located": []bson.M{
+					{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+					{"$project": bson.M{"name": "$cities.name", "_id": 0}},
+					{"$limit": 10},
+				},
+				"districts_located": []bson.M{
+					{"$unwind": "$cities.districts"},
+					{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+					{"$project": bson.M{"name": "$cities.districts.name", "_id": 0}},
+					{"$limit": 10},
+				},
+			},
+		},
+		{
+			"$project": bson.M{
+				"results": bson.M{
+					"$cond": bson.M{
+						"if": bson.M{
+							"$gt": []interface{}{
+								bson.M{"$size": "$cities_located"},
+								0,
+							},
+						},
+						"then": "$cities_located",
+						"else": "$districts_located",
+					},
+				},
+			},
+		},
+		{"$unwind": "$results"},
+		{"$project": bson.M{"name": "$results.name"}},
+		{"$limit": 10},
+	}
+
+	var results []struct {
+		Name string `bson:"name"`
 	}
 
 	cursor, err := r.regionCol.Aggregate(ctx, pipeline)
@@ -52,19 +81,14 @@ func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]st
 	}
 	defer cursor.Close(ctx)
 
-	var results []struct {
-		CityName string `bson:"city_name"`
-		District string `bson:"district_name"`
-	}
-
 	if err = cursor.All(ctx, &results); err != nil {
 		return nil, err
 	}
 
-	stringResults := make([]string, len(results))
-	for i, result := range results {
-		stringResults[i] = result.CityName
+	var cityAndDistricts []string
+	for _, result := range results {
+		cityAndDistricts = append(cityAndDistricts, result.Name)
 	}
 
-	return stringResults, nil
+	return cityAndDistricts, nil
 }

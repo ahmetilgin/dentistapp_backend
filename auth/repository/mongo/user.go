@@ -11,7 +11,7 @@ import (
 
 type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty"`
-	Username string             `bson:"username"`
+	Email    string             `bson:"email"`
 	Password string             `bson:"password"`
 }
 
@@ -45,13 +45,10 @@ func (r UserRepository) CreateBusinessUser(ctx context.Context, user *models.Bus
 	return nil
 }
 
-func (r UserRepository) GetNormalUser(ctx context.Context, usernameOrPassword, password string) (*models.NormalUser, error) {
+func (r UserRepository) GetNormalUser(ctx context.Context, email, password string) (*models.NormalUser, error) {
 	baseUser := new(models.NormalUser)
 	err := r.normalUserCollection.FindOne(ctx, bson.M{
-		"$or": []bson.M{
-			{"username": usernameOrPassword},
-			{"email": usernameOrPassword},
-		},
+		"email":    email,
 		"password": password,
 	}).Decode(baseUser)
 
@@ -62,13 +59,10 @@ func (r UserRepository) GetNormalUser(ctx context.Context, usernameOrPassword, p
 	return baseUser, nil
 }
 
-func (r UserRepository) GetBusinessUser(ctx context.Context, usernameOrPassword, password string) (*models.BusinessUser, error) {
+func (r UserRepository) GetBusinessUser(ctx context.Context, email, password string) (*models.BusinessUser, error) {
 	baseUser := new(models.BusinessUser)
 	err := r.businessUserCollection.FindOne(ctx, bson.M{
-		"$or": []bson.M{
-			{"username": usernameOrPassword},
-			{"email": usernameOrPassword},
-		},
+		"email":    email,
 		"password": password,
 	}).Decode(baseUser)
 

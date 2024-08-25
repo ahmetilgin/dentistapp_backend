@@ -9,7 +9,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "go build -o ${workspaceFolder}/bin/app ${workspaceFolder}/cmd/api/main.go",
+            "command": "go build --gcflags='all=-N -l' -o ${workspaceFolder}/bin/app  ${workspaceFolder}/cmd/api/main.go",
             "dependsOrder": "sequence",
             "dependsOn": ["copyConfig"]
         }
