@@ -101,7 +101,6 @@ func (h *Handler) SignInNormalUser(c *gin.Context) {
 func (h *Handler) SignInBusinessUser(c *gin.Context) {
 	inp := new(signInput)
 	fmt.Printf("Received JSON: %+v\n", c.Request.Body)
-
 	if err := c.BindJSON(inp); err != nil {
 		fmt.Printf("Error : %s", err.Error())
 		c.AbortWithStatus(http.StatusBadRequest)

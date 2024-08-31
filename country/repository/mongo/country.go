@@ -7,6 +7,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type RegionRepository struct {
@@ -27,13 +28,12 @@ func (r *RegionRepository) CreateRegion(ctx context.Context, country *models.Cou
 }
 
 func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]string, error) {
-	code = strings.ToUpper(code)
-	if code == "EN" {
-		code = "AL"
+	if code == "en" {
+		code = "al"
 	}
 
 	pipeline := []bson.M{
-		{"$match": bson.M{"code": code}},
+		{"$match": bson.M{"code": strings.ToUpper(code)}},
 		{"$unwind": "$cities"},
 		{
 			"$facet": bson.M{
@@ -75,7 +75,7 @@ func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]st
 		Name string `bson:"name"`
 	}
 
-	cursor, err := r.regionCol.Aggregate(ctx, pipeline)
+	cursor, err := r.regionCol.Aggregate(ctx, pipeline, options.Aggregate().SetCollation(&options.Collation{Locale: "tr"}))
 	if err != nil {
 		return nil, err
 	}
