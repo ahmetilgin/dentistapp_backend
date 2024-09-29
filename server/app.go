@@ -83,7 +83,7 @@ func (a *App) Run(port string) error {
 	)
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://dentistapp.netlify.app"}, // İzin verilen kaynaklar
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:5174", "https://dentistapp.netlify.app"}, // İzin verilen kaynaklar
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
