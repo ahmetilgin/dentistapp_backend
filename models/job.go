@@ -4,6 +4,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Professions struct {
+	Code        string       `bson:"code"`
+	Professions []Profession `bson:"professions"`
+}
+
 type Profession struct {
 	Name          string `bson:"name"`
 	SearchCounter int    `bson:"count"`
