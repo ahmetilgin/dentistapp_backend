@@ -3,8 +3,8 @@ package mongo
 import (
 	"backend/models"
 	"context"
+	"regexp"
 	"strings"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -32,19 +32,21 @@ func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]st
 		code = "al"
 	}
 
+	sanitizedQuery := regexp.QuoteMeta(query)
+
 	pipeline := []bson.M{
 		{"$match": bson.M{"code": strings.ToUpper(code)}},
 		{"$unwind": "$cities"},
 		{
 			"$facet": bson.M{
 				"cities_located": []bson.M{
-					{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+					{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + sanitizedQuery, "$options": "i"}}},
 					{"$project": bson.M{"name": "$cities.name", "_id": 0}},
 					{"$limit": 10},
 				},
 				"districts_located": []bson.M{
 					{"$unwind": "$cities.districts"},
-					{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + query, "$options": "i"}}},
+					{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + sanitizedQuery, "$options": "i"}}},
 					{"$project": bson.M{"name": "$cities.districts.name", "_id": 0}},
 					{"$limit": 10},
 				},
