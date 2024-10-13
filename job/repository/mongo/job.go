@@ -4,6 +4,7 @@ import (
 	"backend/models"
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,6 +12,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// escapeRegexSpecialChars escapes special characters in a string for use in a regular expression
+func escapeRegexSpecialChars(input string) string {
+	specialChars := []string{".", "^", "$", "*", "+", "?", "(", ")", "[", "]", "{", "}", "|", "\\"}
+	for _, char := range specialChars {
+		input = strings.ReplaceAll(input, char, "\\"+char)
+	}
+	return input
+}
 
 type JobRepository struct {
 	jobCollection        *mongo.Collection
@@ -133,10 +143,12 @@ func (r JobRepository) DeleteJob(ctx context.Context, user *models.BusinessUser,
 func (r JobRepository) SearchProfession(ctx context.Context, keyword, code string) ([]*models.Profession, error) {
 	var results []*models.Profession
 
+	escapedKeyword := escapeRegexSpecialChars(keyword)
+
 	filter := []bson.M{
 		{"$match": bson.M{"code": strings.ToUpper(code)}},                                          // Code eşleşmesi
 		{"$unwind": "$professions"},                                                                // Professions dizisini aç
-		{"$match": bson.M{"professions.name": bson.M{"$regex": keyword, "$options": "i"}}},         // İsim filtreleme
+		{"$match": bson.M{"professions.name": bson.M{"$regex": escapedKeyword, "$options": "i"}}},   // İsim filtreleme
 		{"$project": bson.M{"name": "$professions.name", "count": "$professions.count", "_id": 0}}, // Sonuç olarak sadece name ve count al
 		{"$sort": bson.M{"count": -1}},                                                             // count alanına göre azalan sırala
 		{"$limit": 10},                                                                             // İlk 10 sonucu al
