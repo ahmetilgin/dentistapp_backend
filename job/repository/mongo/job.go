@@ -4,7 +4,6 @@ import (
 	"backend/models"
 	"context"
 	"fmt"
-	"regexp"
 	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -148,7 +147,7 @@ func (r JobRepository) SearchProfession(ctx context.Context, keyword, code strin
 	filter := []bson.M{
 		{"$match": bson.M{"code": strings.ToUpper(code)}},                                          // Code eşleşmesi
 		{"$unwind": "$professions"},                                                                // Professions dizisini aç
-		{"$match": bson.M{"professions.name": bson.M{"$regex": escapedKeyword, "$options": "i"}}},   // İsim filtreleme
+		{"$match": bson.M{"professions.name": bson.M{"$regex": escapedKeyword, "$options": "i"}}},  // İsim filtreleme
 		{"$project": bson.M{"name": "$professions.name", "count": "$professions.count", "_id": 0}}, // Sonuç olarak sadece name ve count al
 		{"$sort": bson.M{"count": -1}},                                                             // count alanına göre azalan sırala
 		{"$limit": 10},                                                                             // İlk 10 sonucu al
