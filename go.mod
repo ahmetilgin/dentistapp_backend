@@ -3,7 +3,7 @@ module backend
 go 1.22
 
 require (
-	github.com/dgrijalva/jwt-go/v4 v4.0.0-20190521221207-07e10bec2a34
+	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/viper v1.4.0
