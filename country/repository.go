@@ -7,5 +7,5 @@ import (
 
 type Repository interface {
 	CreateRegion(ctx context.Context, country *models.Country) error
-	Search(ctx context.Context, query, code string) ([]string, error)
+	Search(ctx context.Context, code, query string) ([]string, error)
 }

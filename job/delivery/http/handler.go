@@ -67,12 +67,18 @@ type queryResult struct {
 func (h *Handler) SearchProfession(c *gin.Context) {
 
 	query := c.Param("profession")
+	location := c.Param("location")
+
+	if location == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "code parameter is required"})
+		return
+	}
 
 	if query == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter is required"})
 		return
 	}
-	result, err := h.useCase.SearchProfession(c.Request.Context(), query)
+	result, err := h.useCase.SearchProfession(c.Request.Context(), query, location)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -122,7 +128,15 @@ func (h *Handler) Delete(c *gin.Context) {
 }
 
 func (h *Handler) GetPopulerJobs(c *gin.Context) {
-	result, err := h.useCase.GetPopulerJobs(c.Request.Context())
+
+	code := c.Param("location")
+
+	if code == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "code parameter is required"})
+		return
+	}
+
+	result, err := h.useCase.GetPopulerJobs(c.Request.Context(), code)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

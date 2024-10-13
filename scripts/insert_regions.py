@@ -39,6 +39,9 @@ def get_country_data(country_name, country_code):
     # Send request to Overpass API for cities
     response = requests.get(overpass_url, params={'data': city_query})
     city_data = response.json()
+    filename = f"{country_name.lower().replace(' ', '_')}_raw.json"
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(city_data, f, ensure_ascii=False, indent=2, default=obj_to_dict)
 
     class District:
         def __init__(self, name, latitude, longitude):
@@ -68,29 +71,41 @@ def get_country_data(country_name, country_code):
         "cities": []
     }
 
+    def replace_turkish_chars(text):
+        turkish_chars = {
+            'ı': 'i', 'ğ': 'g', 'ü': 'u', 'ş': 's', 'ö': 'o', 'ç': 'c',
+            'İ': 'I', 'Ğ': 'G', 'Ü': 'U', 'Ş': 'S', 'Ö': 'O', 'Ç': 'C'
+        }
+        for turkish, english in turkish_chars.items():
+            text = text.replace(turkish, english)
+        return text
+
     for element in city_data['elements']:
         if element['type'] == 'relation':
-            tags = element['tags']
-            name = tags.get('name', '')
+            tags = element.get('tags', {})
+            name = replace_turkish_chars(tags.get('name', ''))
             center = element.get('center', {})
             latitude = center.get('lat', 0)
             longitude = center.get('lon', 0)
+            print(name)
+            # Sadece ismi olan şehirleri ekleyin
+            if name:
+                # Get districts for this city
+                district_response = requests.get(overpass_url, params={'data': district_query.format(name)})
+                district_data = district_response.json()
 
-            # Get districts for this city
-            district_response = requests.get(overpass_url, params={'data': district_query.format(name)})
-            district_data = district_response.json()
+                districts = []
+                for district_element in district_data['elements']:
+                    if district_element['type'] == 'relation':
+                        district_tags = district_element.get('tags', {})
+                        district_name = replace_turkish_chars(district_tags.get('name', ''))
+                        district_center = district_element.get('center', {})
+                        district_latitude = district_center.get('lat', 0)
+                        district_longitude = district_center.get('lon', 0)
+                        if district_name:
+                            districts.append(District(district_name, district_latitude, district_longitude))
 
-            districts = []
-            for district_element in district_data['elements']:
-                if district_element['type'] == 'relation':
-                    district_tags = district_element['tags']
-                    district_name = district_tags.get('name', '')
-                    district_center = district_element.get('center', {})
-                    district_latitude = district_center.get('lat', 0)
-                    district_longitude = district_center.get('lon', 0)
-                    districts.append(District(district_name, district_latitude, district_longitude))
-
-            country['cities'].append(City(name, districts, latitude, longitude))
+                country['cities'].append(City(name, districts, latitude, longitude))
 
     # Create Country object
     country_obj = Country(
@@ -103,8 +118,6 @@ def get_country_data(country_name, country_code):
     country_obj.cities.sort(key=lambda x: x.name)
     for city in country_obj.cities:
         city.districts.sort(key=lambda x: x.name)
-
-
 
     # Save the data to a JSON file
     filename = f"{country_name.lower().replace(' ', '_')}_cities_districts.json"
@@ -193,6 +206,7 @@ def send_to_mongo(country_data):
 
 if __name__ == "__main__":
     # send_to_mongo(get_country_data("Türkiye", "TR"))
+    # send_to_mongo(get_country_data("Shqipëria", "ALB"))
     send_to_mongo(get_albania_data())
 
 

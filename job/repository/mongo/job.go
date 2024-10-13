@@ -4,12 +4,23 @@ import (
 	"backend/models"
 	"context"
 	"fmt"
+	"regexp"
+	"strings"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// escapeRegexSpecialChars escapes special characters in a string for use in a regular expression
+func escapeRegexSpecialChars(input string) string {
+	specialChars := []string{".", "^", "$", "*", "+", "?", "(", ")", "[", "]", "{", "}", "|", "\\"}
+	for _, char := range specialChars {
+		input = strings.ReplaceAll(input, char, "\\"+char)
+	}
+	return input
+}
 
 type JobRepository struct {
 	jobCollection        *mongo.Collection
@@ -76,13 +87,18 @@ func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string
 }
 
 func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
-	filter := bson.M{
-		"$or": []bson.M{
-			{"location": bson.M{"$regex": location, "$options": "i"}},
+	filter := bson.M{}
+
+	if location != "-" {
+		filter["location"] = bson.M{"$regex": location, "$options": "i"}
+	}
+
+	if keyword != "-" {
+		filter["$or"] = []bson.M{
 			{"job_title": bson.M{"$regex": keyword, "$options": "i"}},
 			{"description": bson.M{"$regex": keyword, "$options": "i"}},
 			{"requirements": bson.M{"$regex": keyword, "$options": "i"}},
-		},
+		}
 	}
 
 	opts := options.Find().SetSort(bson.D{{Key: "date_posted", Value: -1}})
@@ -124,24 +140,26 @@ func (r JobRepository) DeleteJob(ctx context.Context, user *models.BusinessUser,
 	return err
 }
 
-func (r JobRepository) SearchProfession(ctx context.Context, keyword string) ([]*models.Profession, error) {
+func (r JobRepository) SearchProfession(ctx context.Context, keyword, code string) ([]*models.Profession, error) {
 	var results []*models.Profession
 
-	// Filtre oluşturma
-	filter := bson.M{"name": bson.M{"$regex": keyword, "$options": "i"}} // "i" opsiyonu, aramanın büyük/küçük harf duyarsız olmasını sağlar
+	escapedKeyword := escapeRegexSpecialChars(keyword)
 
-	findOptions := options.Find()
-	findOptions.SetSort(bson.D{{Key: "search_counter", Value: -1}}) // Sıralama: count alanına göre azalan
-	findOptions.SetLimit(10)                                        // İlk 10 sonucu al
+	filter := []bson.M{
+		{"$match": bson.M{"code": strings.ToUpper(code)}},                                          // Code eşleşmesi
+		{"$unwind": "$professions"},                                                                // Professions dizisini aç
+		{"$match": bson.M{"professions.name": bson.M{"$regex": escapedKeyword, "$options": "i"}}},   // İsim filtreleme
+		{"$project": bson.M{"name": "$professions.name", "count": "$professions.count", "_id": 0}}, // Sonuç olarak sadece name ve count al
+		{"$sort": bson.M{"count": -1}},                                                             // count alanına göre azalan sırala
+		{"$limit": 10},                                                                             // İlk 10 sonucu al
+	}
 
-	// Veritabanında arama yapma
-	cursor, err := r.professionCollection.Find(ctx, filter, findOptions)
+	cursor, err := r.professionCollection.Aggregate(ctx, filter)
 	if err != nil {
 		return nil, fmt.Errorf("error finding professions: %w", err)
 	}
-	defer cursor.Close(ctx) // Cursor'ı kapatmayı unutmayın
+	defer cursor.Close(ctx)
 
-	// Sonuçları results dilimine yükleme
 	if err = cursor.All(ctx, &results); err != nil {
 		return nil, fmt.Errorf("error decoding professions: %w", err)
 	}
@@ -149,10 +167,16 @@ func (r JobRepository) SearchProfession(ctx context.Context, keyword string) ([]
 	return results, nil
 }
 
-func (r JobRepository) GetPopulerJobs(ctx context.Context) ([]*models.Profession, error) {
+func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*models.Profession, error) {
 	// professionlardan search_counter'i en yuksek olanlarin ilk 5 tanesini al
-	filter := bson.M{}
-	opts := options.Find().SetSort(bson.D{{Key: "search_counter", Value: -1}}).SetLimit(5)
+	filter := bson.M{
+		"code": code,
+	}
+	opts := options.Find().SetSort(bson.D{{
+		Key:   "search_counter",
+		Value: -1,
+	}}).SetLimit(5)
+
 	cursor, err := r.professionCollection.Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err

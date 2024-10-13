@@ -2277,18 +2277,18 @@
       "districts": [
         {
           "name": "Aralık",
-          "latitude": 39.8094949,
+          "latitude": 39.8095966,
           "longitude": 44.5510449
         },
         {
           "name": "Iğdır Merkez",
-          "latitude": 39.8645146,
+          "latitude": 39.8646781,
           "longitude": 44.0306892
         },
         {
           "name": "Karakoyunlu",
-          "latitude": 39.9237853,
-          "longitude": 44.2702878
+          "latitude": 39.9238074,
+          "longitude": 44.2703616
         },
         {
           "name": "Tuzluca",
@@ -2695,6 +2695,11 @@
           "longitude": 36.9165785
         },
         {
+          "name": "Nurdağı",
+          "latitude": 37.1781618,
+          "longitude": 36.8537235
+        },
+        {
           "name": "Polateli",
           "latitude": 36.8446472,
           "longitude": 37.1352941
@@ -2749,7 +2754,7 @@
         {
           "name": "Kartepe",
           "latitude": 40.6898728,
-          "longitude": 30.1210551
+          "longitude": 30.1249898
         },
         {
           "name": "Körfez",
@@ -3314,7 +3319,7 @@
       "districts": [
         {
           "name": "Artuklu",
-          "latitude": 37.3358702,
+          "latitude": 37.3359207,
           "longitude": 40.7897975
         },
         {
@@ -3329,7 +3334,7 @@
         },
         {
           "name": "Kızıltepe",
-          "latitude": 37.123818,
+          "latitude": 37.1237309,
           "longitude": 40.4421796
         },
         {
@@ -3344,7 +3349,7 @@
         },
         {
           "name": "Nusaybin",
-          "latitude": 37.2013455,
+          "latitude": 37.2013943,
           "longitude": 41.3265712
         },
         {
@@ -3363,7 +3368,7 @@
           "longitude": 41.008634
         }
       ],
-      "latitude": 37.3250421,
+      "latitude": 37.3249549,
       "longitude": 40.8907533
     },
     {
@@ -3863,7 +3868,7 @@
         {
           "name": "Arifiye",
           "latitude": 40.6771603,
-          "longitude": 30.3774525
+          "longitude": 30.3785816
         },
         {
           "name": "Erenler",
@@ -3912,12 +3917,12 @@
         },
         {
           "name": "Sapanca",
-          "latitude": 40.660026,
+          "latitude": 40.6559813,
           "longitude": 30.2295405
         },
         {
           "name": "Serdivan",
-          "latitude": 40.7795847,
+          "latitude": 40.7810483,
           "longitude": 30.3012343
         },
         {
@@ -4397,7 +4402,7 @@
         {
           "name": "Ortahisar",
           "latitude": 40.8938875,
-          "longitude": 39.7249633
+          "longitude": 39.7251161
         },
         {
           "name": "Sürmene",
@@ -4416,7 +4421,7 @@
         },
         {
           "name": "Yomra",
-          "latitude": 40.8512239,
+          "latitude": 40.8513158,
           "longitude": 39.8346759
         },
         {
@@ -4780,7 +4785,7 @@
         },
         {
           "name": "Eceabat",
-          "latitude": 40.21244,
+          "latitude": 40.2123279,
           "longitude": 26.3195809
         },
         {
@@ -4976,8 +4981,8 @@
         },
         {
           "name": "Arnavutköy",
-          "latitude": 41.2480905,
-          "longitude": 28.6558227
+          "latitude": 41.248359,
+          "longitude": 28.6553507
         },
         {
           "name": "Ataşehir",
@@ -5121,8 +5126,8 @@
         },
         {
           "name": "Sultangazi",
-          "latitude": 41.1205998,
-          "longitude": 28.8728426
+          "latitude": 41.1207048,
+          "longitude": 28.873142
         },
         {
           "name": "Tuzla",
@@ -5330,7 +5335,7 @@
       "districts": [
         {
           "name": "Akçakale",
-          "latitude": 36.8071907,
+          "latitude": 36.8070742,
           "longitude": 39.0445641
         },
         {
@@ -5345,7 +5350,7 @@
         },
         {
           "name": "Ceylanpınar",
-          "latitude": 36.9331511,
+          "latitude": 36.9330847,
           "longitude": 39.8514068
         },
         {
@@ -5394,7 +5399,7 @@
           "longitude": 39.7747964
         }
       ],
-      "latitude": 37.3448097,
+      "latitude": 37.3446933,
       "longitude": 39.0368733
     },
     {
@@ -5407,8 +5412,8 @@
         },
         {
           "name": "Cizre",
-          "latitude": 37.2849602,
-          "longitude": 42.1622292
+          "latitude": 37.2848474,
+          "longitude": 42.1622635
         },
         {
           "name": "Güçlükonak",
@@ -5427,7 +5432,7 @@
         },
         {
           "name": "İdil",
-          "latitude": 37.2863128,
+          "latitude": 37.2861825,
           "longitude": 41.8227799
         },
         {

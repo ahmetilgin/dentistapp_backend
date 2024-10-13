@@ -64,13 +64,13 @@ func (a *AuthUseCase) SignUpNormalUser(ctx context.Context, user *models.NormalU
 	return a.userRepo.CreateNormalUser(ctx, user)
 }
 
-func (a *AuthUseCase) SignInNormalUser(ctx context.Context, usernameOrPassword, password string) (*models.NormalUser, string, error) {
+func (a *AuthUseCase) SignInNormalUser(ctx context.Context, email, password string) (*models.NormalUser, string, error) {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
-	user, err := a.userRepo.GetNormalUser(ctx, usernameOrPassword, password)
+	user, err := a.userRepo.GetNormalUser(ctx, email, password)
 
 	if err != nil {
 		return nil, "", auth.ErrUserNotFound
@@ -92,13 +92,13 @@ func (a *AuthUseCase) SignInNormalUser(ctx context.Context, usernameOrPassword, 
 	return user, signedToken, nil
 }
 
-func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, usernameOrPassword, password string) (*models.BusinessUser, string, error) {
+func (a *AuthUseCase) SignInBusinessUser(ctx context.Context, email, password string) (*models.BusinessUser, string, error) {
 	pwd := sha1.New()
 	pwd.Write([]byte(password))
 	pwd.Write([]byte(a.hashSalt))
 	password = fmt.Sprintf("%x", pwd.Sum(nil))
 
-	user, err := a.userRepo.GetBusinessUser(ctx, usernameOrPassword, password)
+	user, err := a.userRepo.GetBusinessUser(ctx, email, password)
 
 	if err != nil {
 		return nil, "", auth.ErrUserNotFound
