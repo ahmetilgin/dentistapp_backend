@@ -28,12 +28,12 @@ func (b JobUseCase) DeleteJob(ctx context.Context, user *models.BusinessUser, id
 	return b.jobRepo.DeleteJob(ctx, user, id)
 }
 
-func (b JobUseCase) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
-	return b.jobRepo.Search(ctx, location, keyword)
+func (b JobUseCase) Search(ctx context.Context, location, keyword, region string) ([]*models.Job, error) {
+	return b.jobRepo.Search(ctx, location, keyword, region)
 }
 
-func (b JobUseCase) SearchProfession(ctx context.Context, keyword, code string) ([]string, error) {
-	professions, _ := b.jobRepo.SearchProfession(ctx, keyword, code)
+func (b JobUseCase) SearchProfession(ctx context.Context, keyword, region string) ([]string, error) {
+	professions, _ := b.jobRepo.SearchProfession(ctx, keyword, region)
 	var queryResult []string
 
 	for _, profession := range professions {

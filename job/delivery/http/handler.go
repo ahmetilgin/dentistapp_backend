@@ -13,6 +13,7 @@ import (
 type SearchOptions struct {
 	Keyword  string `json:"keyword"`
 	Location string `json:"location"`
+	Region   string `json:"region"`
 }
 type Handler struct {
 	useCase job.UseCase
@@ -46,10 +47,12 @@ func (h *Handler) Create(c *gin.Context) {
 func (h *Handler) Search(c *gin.Context) {
 	inp := new(SearchOptions)
 	location := c.Param("location")
+	region := c.Param("region")
+	keyword := c.Param("keyword")
 	inp.Location = location
-	inp.Keyword = c.Param("keyword")
-
-	result, err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword)
+	inp.Keyword = keyword
+	inp.Region = region
+	result, err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword, inp.Region)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -67,10 +70,10 @@ type queryResult struct {
 func (h *Handler) SearchProfession(c *gin.Context) {
 
 	query := c.Param("profession")
-	location := c.Param("location")
+	location := c.Param("region")
 
 	if location == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "code parameter is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "region parameter is required"})
 		return
 	}
 
@@ -129,10 +132,10 @@ func (h *Handler) Delete(c *gin.Context) {
 
 func (h *Handler) GetPopulerJobs(c *gin.Context) {
 
-	code := c.Param("location")
+	code := c.Param("region")
 
 	if code == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "code parameter is required"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "region parameter is required"})
 		return
 	}
 

@@ -5,6 +5,7 @@ import (
 	"context"
 	"regexp"
 	"strings"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -25,6 +26,35 @@ func NewRegionRepository(db *mongo.Database, countriesCollection string) *Region
 func (r *RegionRepository) CreateRegion(ctx context.Context, country *models.Country) error {
 	_, err := r.regionCol.InsertOne(ctx, country)
 	return err
+}
+
+func createCollation(code string) *options.Collation {
+	var collation *options.Collation
+
+	switch code {
+	case "tr":
+		collation = &options.Collation{
+			Locale:   "tr",
+			Strength: 1,
+		}
+	case "al":
+		collation = &options.Collation{
+			Locale:   "sq",
+			Strength: 1,
+		}
+	case "en":
+		collation = &options.Collation{
+			Locale:   "en",
+			Strength: 1,
+		}
+	default:
+		collation = &options.Collation{
+			Locale:   "en",
+			Strength: 1,
+		}
+	}
+
+	return collation
 }
 
 func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]string, error) {
@@ -77,7 +107,7 @@ func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]st
 		Name string `bson:"name"`
 	}
 
-	cursor, err := r.regionCol.Aggregate(ctx, pipeline, options.Aggregate().SetCollation(&options.Collation{Locale: "tr"}))
+	cursor, err := r.regionCol.Aggregate(ctx, pipeline, options.Aggregate().SetCollation(createCollation(code)))
 	if err != nil {
 		return nil, err
 	}

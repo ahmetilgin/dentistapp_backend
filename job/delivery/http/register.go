@@ -11,9 +11,9 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc job.UseCase, authUC gin.H
 	jobs := router.Group("/jobs")
 	{
 		jobs.POST("", authUC, h.Create)
-		jobs.GET("/search/:location/:keyword", h.Search)
-		jobs.GET("/search_professions/:location/:profession", h.SearchProfession)
-		jobs.GET("/get_populer_professions/:location", h.GetPopulerJobs)
+		jobs.GET("/search/:region/:location/:keyword", h.Search)
+		jobs.GET("/search_professions/:region/:profession", h.SearchProfession)
+		jobs.GET("/get_populer_professions/:region", h.GetPopulerJobs)
 		jobs.GET("", h.Get)
 		jobs.DELETE("", authUC, h.Delete)
 	}

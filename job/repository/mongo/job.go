@@ -70,8 +70,11 @@ func (r JobRepository) GetJobs(ctx context.Context) ([]*models.Job, error) {
 	return out, nil
 }
 
-func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string) (bool, error) {
-	filterProfessions := bson.M{"name": keyword}
+func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword, code string) (bool, error) {
+	filterProfessions := bson.M{
+		"name": keyword,
+		"code": strings.ToUpper(code),
+	}
 	update := bson.M{"$inc": bson.M{"search_counter": 1}}
 	errProfessions := r.professionCollection.FindOneAndUpdate(ctx, filterProfessions, update)
 	if errProfessions == nil {
@@ -85,7 +88,7 @@ func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword string
 	return true, nil
 }
 
-func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]*models.Job, error) {
+func (r JobRepository) Search(ctx context.Context, location, keyword, region string) ([]*models.Job, error) {
 	filter := bson.M{}
 
 	if location != "-" {
@@ -107,7 +110,7 @@ func (r JobRepository) Search(ctx context.Context, location, keyword string) ([]
 	}
 	defer cursor.Close(ctx)
 
-	ret, err := r.IncreaseSearchCounter(ctx, keyword)
+	ret, err := r.IncreaseSearchCounter(ctx, keyword, region)
 	if !ret {
 		if err != nil {
 			fmt.Printf("err: %v\n", err.Error())
@@ -167,16 +170,23 @@ func (r JobRepository) SearchProfession(ctx context.Context, keyword, code strin
 }
 
 func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*models.Profession, error) {
-	// professionlardan search_counter'i en yuksek olanlarin ilk 5 tanesini al
 	filter := bson.M{
-		"code": code,
+		"code": strings.ToUpper(code),
 	}
-	opts := options.Find().SetSort(bson.D{{
-		Key:   "search_counter",
-		Value: -1,
-	}}).SetLimit(5)
 
-	cursor, err := r.professionCollection.Find(ctx, filter, opts)
+	// Professions içindeki en popüler 5 mesleği almak için pipeline oluştur
+	pipeline := []bson.M{
+		{"$match": filter},
+		{"$unwind": "$professions"},
+		{"$sort": bson.M{"professions.count": -1}},
+		{"$limit": 5},
+		{"$project": bson.M{
+			"name":  "$professions.name",
+			"count": "$professions.count",
+		}},
+	}
+
+	cursor, err := r.professionCollection.Aggregate(ctx, pipeline)
 	if err != nil {
 		return nil, err
 	}
@@ -189,6 +199,11 @@ func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*mode
 			return nil, err
 		}
 		professions = append(professions, &profession)
+	}
+
+	// Cursor hatasını kontrol et
+	if err := cursor.Err(); err != nil {
+		return nil, err
 	}
 
 	return professions, nil
