@@ -15,6 +15,17 @@ type User struct {
 	Password string             `bson:"password"`
 }
 
+type BusinessUserData struct {
+	ID                  primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Email               string             `bson:"email" json:"email"`
+	BusinessName        string             `bson:"businessName" json:"businessName"`
+	BusinessAddress     string             `bson:"businessAddress" json:"businessAddress"`
+	BusinessDescription string             `bson:"business_description,omitempty"`
+	BusinessLocation    string             `bson:"business_location,omitempty"`
+	BusinessWebsite     string             `bson:"business_website,omitempty"`
+	BusinessLogo        string             `bson:"business_logo,omitempty"`
+}
+
 type UserRepository struct {
 	normalUserCollection         *mongo.Collection
 	businessUserCollection       *mongo.Collection
@@ -91,6 +102,16 @@ func (r UserRepository) GetBusinessUserByEmail(ctx context.Context, email string
 	return baseUser, nil
 }
 
+func (r UserRepository) GetBusinessUserById(ctx context.Context, userId primitive.ObjectID) (*BusinessUserData,error) {
+	businessUser := new(BusinessUserData)
+	err := r.businessUserCollection.FindOne(ctx, bson.M{"_id": userId} ).Decode(businessUser)
+	if err != nil {
+		return nil,err
+	}
+	return businessUser, nil
+}
+
+
 func (r UserRepository) InsetPasswordResetToken(ctx context.Context, token *models.PasswordResetToken) error {
 	_, err := r.passwordResetTokenCollection.InsertOne(ctx, token)
 	if err != nil {
@@ -141,3 +162,5 @@ func (r UserRepository) UpdatePassword(ctx context.Context, user interface{}, to
 	}
 	return nil
 }
+
+

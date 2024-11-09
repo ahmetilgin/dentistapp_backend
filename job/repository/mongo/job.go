@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	authmongo "backend/auth/repository/mongo"
 	"backend/models"
 	"context"
 	"fmt"
@@ -24,12 +25,19 @@ func escapeRegexSpecialChars(input string) string {
 type JobRepository struct {
 	jobCollection        *mongo.Collection
 	professionCollection *mongo.Collection
+	userRepo  *authmongo.UserRepository
 }
 
-func NewJobRepository(jobCollection *mongo.Database, professionCollectionName, jobCollectionName string) *JobRepository {
+type JobDetails struct {
+	BusinessUserData authmongo.BusinessUserData  `json:"businessUserData"`
+	JobDetail *models.Job  `json:"jobDetail"`
+}
+
+func NewJobRepository(database *mongo.Database,  professionCollectionName, jobCollectionName string, userRepository *authmongo.UserRepository) *JobRepository {
 	return &JobRepository{
-		jobCollection:        jobCollection.Collection(jobCollectionName),
-		professionCollection: jobCollection.Collection(professionCollectionName),
+		jobCollection:        database.Collection(jobCollectionName),
+		professionCollection: database.Collection(professionCollectionName),
+		userRepo : userRepository,
 	}
 }
 
@@ -43,32 +51,6 @@ func (r JobRepository) CreateJob(ctx context.Context, user *models.BusinessUser,
 	return nil
 }
 
-func (r JobRepository) GetJobs(ctx context.Context) ([]*models.Job, error) {
-	cur, err := r.jobCollection.Find(ctx, bson.M{})
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer cur.Close(ctx)
-
-	out := make([]*models.Job, 0)
-
-	for cur.Next(ctx) {
-		user := new(models.Job)
-		err := cur.Decode(user)
-		if err != nil {
-			return nil, err
-		}
-
-		out = append(out, user)
-	}
-	if err := cur.Err(); err != nil {
-		return nil, err
-	}
-
-	return out, nil
-}
 
 func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword, code string) (bool, error) {
 	filterProfessions := bson.M{
@@ -88,7 +70,7 @@ func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword, code 
 	return true, nil
 }
 
-func (r JobRepository) Search(ctx context.Context, location, keyword, region string) ([]*models.Job, error) {
+func (r JobRepository) Search(ctx context.Context, location, keyword, region string) ([]*JobDetails, error) {
 	filter := bson.M{}
 
 	if location != "-" {
@@ -118,7 +100,7 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 		return nil, err
 	}
 
-	var jobs []*models.Job
+	var jobs []*JobDetails
 	for cursor.Next(ctx) {
 		var job models.Job
 		if err := cursor.Decode(&job); err != nil {
@@ -126,12 +108,23 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 			fmt.Println(err.Error())
 			return nil, err
 		}
-		jobs = append(jobs, &job)
+		businessUserData, find_user_err := r.userRepo.GetBusinessUserById(ctx,job.UserID)
+		if find_user_err != nil {
+			continue
+		}
+
+		jobDetail := new(JobDetails)
+		jobDetail.BusinessUserData = *businessUserData
+		jobDetail.JobDetail = &job
+
+
+		jobs = append(jobs, jobDetail)
 	}
 
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
+	
 
 	return jobs, nil
 }

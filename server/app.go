@@ -48,7 +48,8 @@ func NewApp(isProduction bool) *App {
 
 	jobRepo := jobmongo.NewJobRepository(db,
 		viper.GetString("mongo.profession_collection"),
-		viper.GetString("mongo.job_collection"))
+		viper.GetString("mongo.job_collection"),
+		userRepo)
 
 	regionRepo := regionmongo.NewRegionRepository(db,
 		viper.GetString("mongo.region_collection"))

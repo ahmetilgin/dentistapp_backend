@@ -3,6 +3,7 @@ package http
 import (
 	"backend/auth"
 	"backend/job"
+	jobmongo "backend/job/repository/mongo"
 	"backend/models"
 	"fmt"
 	"net/http"
@@ -93,21 +94,9 @@ func (h *Handler) SearchProfession(c *gin.Context) {
 }
 
 type getResponse struct {
-	Jobs []*models.Job `json:"jobs"`
+	Jobs []*jobmongo.JobDetails `json:"jobs"`
 }
 
-func (h *Handler) Get(c *gin.Context) {
-	bms, err := h.useCase.GetJobs(c.Request.Context())
-	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-
-	c.JSON(http.StatusOK, &getResponse{
-		Jobs: bms,
-	})
-
-}
 
 type deleteInput struct {
 	ID string `json:"id"`

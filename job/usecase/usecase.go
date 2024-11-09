@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"backend/job"
+	jobmongo "backend/job/repository/mongo"
 	"backend/models"
 	"context"
 )
@@ -20,15 +21,11 @@ func (b JobUseCase) CreateJob(ctx context.Context, user *models.BusinessUser, jo
 	return b.jobRepo.CreateJob(ctx, user, job)
 }
 
-func (b JobUseCase) GetJobs(ctx context.Context) ([]*models.Job, error) {
-	return b.jobRepo.GetJobs(ctx)
-}
-
 func (b JobUseCase) DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error {
 	return b.jobRepo.DeleteJob(ctx, user, id)
 }
 
-func (b JobUseCase) Search(ctx context.Context, location, keyword, region string) ([]*models.Job, error) {
+func (b JobUseCase) Search(ctx context.Context, location, keyword, region string) ([]*jobmongo.JobDetails, error) {
 	return b.jobRepo.Search(ctx, location, keyword, region)
 }
 
