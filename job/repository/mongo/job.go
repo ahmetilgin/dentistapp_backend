@@ -25,24 +25,25 @@ func escapeRegexSpecialChars(input string) string {
 type JobRepository struct {
 	jobCollection        *mongo.Collection
 	professionCollection *mongo.Collection
-	userRepo  *authmongo.UserRepository
+	userRepo             *authmongo.UserRepository
 }
 
 type JobDetails struct {
-	BusinessUserData authmongo.BusinessUserData  `json:"businessUserData"`
-	JobDetail *models.Job  `json:"jobDetail"`
+	BusinessUserData authmongo.BusinessUserData `json:"businessUserData"`
+	JobDetail        *models.Job                `json:"jobDetail"`
 }
 
-func NewJobRepository(database *mongo.Database,  professionCollectionName, jobCollectionName string, userRepository *authmongo.UserRepository) *JobRepository {
+func NewJobRepository(database *mongo.Database, professionCollectionName, jobCollectionName string, userRepository *authmongo.UserRepository) *JobRepository {
 	return &JobRepository{
 		jobCollection:        database.Collection(jobCollectionName),
 		professionCollection: database.Collection(professionCollectionName),
-		userRepo : userRepository,
+		userRepo:             userRepository,
 	}
 }
 
 func (r JobRepository) CreateJob(ctx context.Context, user *models.BusinessUser, bm *models.Job) error {
 	bm.UserID = user.ID
+	bm.ID = primitive.NewObjectID()
 	_, err := r.jobCollection.InsertOne(ctx, bm)
 	if err != nil {
 		return err
@@ -50,7 +51,6 @@ func (r JobRepository) CreateJob(ctx context.Context, user *models.BusinessUser,
 
 	return nil
 }
-
 
 func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword, code string) (bool, error) {
 	filterProfessions := bson.M{
@@ -108,7 +108,7 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 			fmt.Println(err.Error())
 			return nil, err
 		}
-		businessUserData, find_user_err := r.userRepo.GetBusinessUserById(ctx,job.UserID)
+		businessUserData, find_user_err := r.userRepo.GetBusinessUserById(ctx, job.UserID)
 		if find_user_err != nil {
 			continue
 		}
@@ -117,14 +117,12 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 		jobDetail.BusinessUserData = *businessUserData
 		jobDetail.JobDetail = &job
 
-
 		jobs = append(jobs, jobDetail)
 	}
 
 	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
-	
 
 	return jobs, nil
 }
@@ -200,4 +198,15 @@ func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*mode
 	}
 
 	return professions, nil
+}
+
+func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error {
+
+	objID, _ := primitive.ObjectIDFromHex(jobId)
+	_, err := r.jobCollection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$push": bson.M{"candidates": user.ID}})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
