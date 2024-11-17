@@ -201,11 +201,35 @@ func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*mode
 }
 
 func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error {
-
-	objID, _ := primitive.ObjectIDFromHex(jobId)
-	_, err := r.jobCollection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$push": bson.M{"candidates": user.ID}})
+	objID, err := primitive.ObjectIDFromHex(jobId)
 	if err != nil {
-		return err
+		return fmt.Errorf("invalid job ID: %v", err)
+	}
+
+	job := &models.Job{}
+	err = r.jobCollection.FindOne(ctx, bson.M{
+		"_id": objID,
+		"candidates": user.ID,
+	}).Decode(job)
+	
+	if err == nil {
+		return fmt.Errorf("user has already applied to this job")
+	}
+	if err != mongo.ErrNoDocuments {
+		return fmt.Errorf("error checking job application: %v", err)
+	}
+
+	result, err := r.jobCollection.UpdateOne(
+		ctx,
+		bson.M{"_id": objID},
+		bson.M{"$addToSet": bson.M{"candidates": user.ID}},
+	)
+	if err != nil {
+		return fmt.Errorf("error applying to job: %v", err)
+	}
+
+	if result.MatchedCount == 0 {
+		return fmt.Errorf("job not found")
 	}
 
 	return nil

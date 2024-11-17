@@ -138,8 +138,23 @@ func (h *Handler) GetPopulerJobs(c *gin.Context) {
 	})
 }
 
+
+type applyJobInput struct {
+	ID string `json:"job_id"`
+}
+
 func (h *Handler) ApplyJob(c *gin.Context) {
-	jobId := c.PostForm("job_id")
+	inp := new(applyJobInput)
+	if err := c.BindJSON(inp); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+	jobId := inp.ID
+
+	if jobId == "" {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
 	user := c.MustGet(auth.CtxUserKey).(*models.NormalUser)
 	if err := h.useCase.ApplyJob(c.Request.Context(), user, jobId); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
