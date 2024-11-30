@@ -1,0 +1,531 @@
+{
+  "name": "Italy",
+  "code": "IT",
+  "provinces": [
+    {
+      "name": "Agrigento",
+      "latitude": 37.3122991,
+      "longitude": 13.57465
+    },
+    {
+      "name": "Alessandria",
+      "latitude": 44.83495335,
+      "longitude": 8.745030418605868
+    },
+    {
+      "name": "Ancona",
+      "latitude": 43.4801189,
+      "longitude": 13.218727943815642
+    },
+    {
+      "name": "Aosta",
+      "latitude": 45.7370885,
+      "longitude": 7.3196649
+    },
+    {
+      "name": "Arezzo",
+      "latitude": 43.51714415,
+      "longitude": 11.763928194732205
+    },
+    {
+      "name": "Ascoli Piceno",
+      "latitude": 42.8834204,
+      "longitude": 13.539593040686007
+    },
+    {
+      "name": "Asti",
+      "latitude": 44.826012649999996,
+      "longitude": 8.202686328987273
+    },
+    {
+      "name": "Avellino",
+      "latitude": 40.9965446,
+      "longitude": 15.1405690365004
+    },
+    {
+      "name": "Bari",
+      "latitude": 41.1257843,
+      "longitude": 16.8620293
+    },
+    {
+      "name": "Barletta-Andria-Trani",
+      "latitude": 41.180172,
+      "longitude": 16.1466408
+    },
+    {
+      "name": "Belluno",
+      "latitude": 46.2805407,
+      "longitude": 12.078913722504204
+    },
+    {
+      "name": "Benevento",
+      "latitude": 41.2476307,
+      "longitude": 14.705705363146528
+    },
+    {
+      "name": "Bergamo",
+      "latitude": 45.756655699999996,
+      "longitude": 9.754219200862249
+    },
+    {
+      "name": "Biella",
+      "latitude": 45.5669538,
+      "longitude": 8.086912008297636
+    },
+    {
+      "name": "Bologna",
+      "latitude": 44.4938203,
+      "longitude": 11.3426327
+    },
+    {
+      "name": "Brescia",
+      "latitude": 45.77958045,
+      "longitude": 10.4258729694612
+    },
+    {
+      "name": "Brindisi",
+      "latitude": 40.63591975,
+      "longitude": 17.688443357842537
+    },
+    {
+      "name": "Cagliari",
+      "latitude": 39.2171994,
+      "longitude": 9.113311
+    },
+    {
+      "name": "Caltanissetta",
+      "latitude": 37.4899412,
+      "longitude": 14.0631618
+    },
+    {
+      "name": "Campobasso",
+      "latitude": 41.717264799999995,
+      "longitude": 14.826226697820019
+    },
+    {
+      "name": "Caserta",
+      "latitude": 41.20351925,
+      "longitude": 14.116862382970815
+    },
+    {
+      "name": "Catania",
+      "latitude": 37.5023612,
+      "longitude": 15.0873718
+    },
+    {
+      "name": "Catanzaro",
+      "latitude": 38.82996034999999,
+      "longitude": 16.43155687627833
+    },
+    {
+      "name": "Chieti",
+      "latitude": 42.10269285,
+      "longitude": 14.41590530501923
+    },
+    {
+      "name": "Como",
+      "latitude": 45.939475900000005,
+      "longitude": 9.149410132545793
+    },
+    {
+      "name": "Cosenza",
+      "latitude": 39.596685300000004,
+      "longitude": 16.333055599019605
+    },
+    {
+      "name": "Cremona",
+      "latitude": 45.22086405,
+      "longitude": 10.037037979628856
+    },
+    {
+      "name": "Crotone",
+      "latitude": 39.1873894,
+      "longitude": 16.87828188895307
+    },
+    {
+      "name": "Cuneo",
+      "latitude": 44.45807035,
+      "longitude": 7.558136691151624
+    },
+    {
+      "name": "Enna",
+      "latitude": 37.5667573,
+      "longitude": 14.2807473
+    },
+    {
+      "name": "Fermo",
+      "latitude": 43.0922489,
+      "longitude": 13.638768067263769
+    },
+    {
+      "name": "Ferrara",
+      "latitude": 44.766764249999994,
+      "longitude": 11.827938995640167
+    },
+    {
+      "name": "Firenze",
+      "latitude": 43.7697955,
+      "longitude": 11.2556404
+    },
+    {
+      "name": "Foggia",
+      "latitude": 41.50281055,
+      "longitude": 15.452893911491383
+    },
+    {
+      "name": "Forlì-Cesena",
+      "latitude": 44.0227193,
+      "longitude": 12.0141036
+    },
+    {
+      "name": "Frosinone",
+      "latitude": 41.628546799999995,
+      "longitude": 13.57584977062367
+    },
+    {
+      "name": "Genova",
+      "latitude": 44.40726,
+      "longitude": 8.9338624
+    },
+    {
+      "name": "Gorizia",
+      "latitude": 45.9441278,
+      "longitude": 13.6252288
+    },
+    {
+      "name": "Grosseto",
+      "latitude": 42.7751102,
+      "longitude": 11.287804427628437
+    },
+    {
+      "name": "Imperia",
+      "latitude": 43.95837525,
+      "longitude": 7.866742714674276
+    },
+    {
+      "name": "Isernia",
+      "latitude": 41.64950915,
+      "longitude": 14.208061831039291
+    },
+    {
+      "name": "L'Aquila",
+      "latitude": 42.1368853,
+      "longitude": 13.610341022538911
+    },
+    {
+      "name": "La Spezia",
+      "latitude": 44.23836595,
+      "longitude": 9.691232634547537
+    },
+    {
+      "name": "Latina",
+      "latitude": 41.45952605,
+      "longitude": 13.012591212188894
+    },
+    {
+      "name": "Lecce",
+      "latitude": 40.152217300000004,
+      "longitude": 18.2260628338229
+    },
+    {
+      "name": "Lecco",
+      "latitude": 45.9005485,
+      "longitude": 9.41202482143963
+    },
+    {
+      "name": "Livorno",
+      "latitude": 42.7902379,
+      "longitude": 10.340223929577242
+    },
+    {
+      "name": "Lodi",
+      "latitude": 45.2613104,
+      "longitude": 9.491678060021837
+    },
+    {
+      "name": "Lucca",
+      "latitude": 44.017763900000006,
+      "longitude": 10.454430026192636
+    },
+    {
+      "name": "Macerata",
+      "latitude": 43.15297805,
+      "longitude": 13.150882217502017
+    },
+    {
+      "name": "Mantova",
+      "latitude": 45.1692628,
+      "longitude": 10.670836515673878
+    },
+    {
+      "name": "Massa-Carrara",
+      "latitude": 44.2131486,
+      "longitude": 10.0525615
+    },
+    {
+      "name": "Matera",
+      "latitude": 40.447641899999994,
+      "longitude": 16.47357384028852
+    },
+    {
+      "name": "Messina",
+      "latitude": 38.1937571,
+      "longitude": 15.5542082
+    },
+    {
+      "name": "Milano",
+      "latitude": 45.4641943,
+      "longitude": 9.1896346
+    },
+    {
+      "name": "Modena",
+      "latitude": 44.5384728,
+      "longitude": 10.935960870530739
+    },
+    {
+      "name": "Monza e Brianza",
+      "latitude": 45.6395418,
+      "longitude": 9.278830418070044
+    },
+    {
+      "name": "Napoli",
+      "latitude": 40.8358846,
+      "longitude": 14.2487679
+    },
+    {
+      "name": "Novara",
+      "latitude": 45.584250049999994,
+      "longitude": 8.545996970894572
+    },
+    {
+      "name": "Nuoro",
+      "latitude": 40.12765935,
+      "longitude": 9.342383344552438
+    },
+    {
+      "name": "Oristano",
+      "latitude": 40.02656765,
+      "longitude": 8.679641647435716
+    },
+    {
+      "name": "Padova",
+      "latitude": 45.391408,
+      "longitude": 11.805848677115883
+    },
+    {
+      "name": "Palermo",
+      "latitude": 38.1112268,
+      "longitude": 13.3524434
+    },
+    {
+      "name": "Parma",
+      "latitude": 44.6952006,
+      "longitude": 10.097986896904466
+    },
+    {
+      "name": "Pavia",
+      "latitude": 45.036854649999995,
+      "longitude": 9.137825082826026
+    },
+    {
+      "name": "Perugia",
+      "latitude": 43.1070321,
+      "longitude": 12.402996209906487
+    },
+    {
+      "name": "Pesaro e Urbino",
+      "latitude": 43.694112700000005,
+      "longitude": 12.701443660480004
+    },
+    {
+      "name": "Pescara",
+      "latitude": 42.3102619,
+      "longitude": 13.95759010584892
+    },
+    {
+      "name": "Piacenza",
+      "latitude": 44.8476352,
+      "longitude": 9.666531257696896
+    },
+    {
+      "name": "Pisa",
+      "latitude": 43.4714722,
+      "longitude": 10.679791173704576
+    },
+    {
+      "name": "Pistoia",
+      "latitude": 43.9740957,
+      "longitude": 10.868708114044026
+    },
+    {
+      "name": "Pordenone",
+      "latitude": 45.9562503,
+      "longitude": 12.6597197
+    },
+    {
+      "name": "Potenza",
+      "latitude": 40.51731195,
+      "longitude": 15.821608824871046
+    },
+    {
+      "name": "Prato",
+      "latitude": 43.935718050000006,
+      "longitude": 11.09414726770089
+    },
+    {
+      "name": "Ragusa",
+      "latitude": 36.9256833,
+      "longitude": 14.7307456
+    },
+    {
+      "name": "Ravenna",
+      "latitude": 44.364060699999996,
+      "longitude": 12.059009490863945
+    },
+    {
+      "name": "Reggio Calabria",
+      "latitude": 38.1035389,
+      "longitude": 15.6397556
+    },
+    {
+      "name": "Reggio Emilia",
+      "latitude": 44.6086674,
+      "longitude": 10.594066675914796
+    },
+    {
+      "name": "Rieti",
+      "latitude": 42.41473635,
+      "longitude": 12.885888076510067
+    },
+    {
+      "name": "Rimini",
+      "latitude": 43.946543250000005,
+      "longitude": 12.630749019254939
+    },
+    {
+      "name": "Roma",
+      "latitude": 41.8933203,
+      "longitude": 12.4829321
+    },
+    {
+      "name": "Rovigo",
+      "latitude": 44.9777098,
+      "longitude": 12.272683528362364
+    },
+    {
+      "name": "Salerno",
+      "latitude": 40.419441649999996,
+      "longitude": 15.310608468834516
+    },
+    {
+      "name": "Sassari",
+      "latitude": 40.7778499,
+      "longitude": 8.9219725134863
+    },
+    {
+      "name": "Savona",
+      "latitude": 44.2334238,
+      "longitude": 8.252572737021062
+    },
+    {
+      "name": "Siena",
+      "latitude": 43.167205949999996,
+      "longitude": 11.467561040475552
+    },
+    {
+      "name": "Siracusa",
+      "latitude": 37.0646139,
+      "longitude": 15.2907196
+    },
+    {
+      "name": "Sondrio",
+      "latitude": 46.32336235,
+      "longitude": 10.258413671017703
+    },
+    {
+      "name": "Taranto",
+      "latitude": 40.54881555,
+      "longitude": 17.08058012454743
+    },
+    {
+      "name": "Teramo",
+      "latitude": 42.65811795,
+      "longitude": 13.69787458752063
+    },
+    {
+      "name": "Terni",
+      "latitude": 42.6539486,
+      "longitude": 12.439652829139407
+    },
+    {
+      "name": "Torino",
+      "latitude": 45.0677551,
+      "longitude": 7.6824892
+    },
+    {
+      "name": "Trapani",
+      "latitude": 38.0173961,
+      "longitude": 12.5160225
+    },
+    {
+      "name": "Trento",
+      "latitude": 46.1029536,
+      "longitude": 11.12974249416882
+    },
+    {
+      "name": "Treviso",
+      "latitude": 45.806691349999994,
+      "longitude": 12.206315763116372
+    },
+    {
+      "name": "Trieste",
+      "latitude": 45.6496485,
+      "longitude": 13.7772781
+    },
+    {
+      "name": "Udine",
+      "latitude": 46.0634632,
+      "longitude": 13.2358377
+    },
+    {
+      "name": "Varese",
+      "latitude": 45.839720299999996,
+      "longitude": 8.754133838056571
+    },
+    {
+      "name": "Venezia",
+      "latitude": 45.4371908,
+      "longitude": 12.3345898
+    },
+    {
+      "name": "Verbano-Cusio-Ossola",
+      "latitude": 46.115575500000006,
+      "longitude": 8.383596697318476
+    },
+    {
+      "name": "Vercelli",
+      "latitude": 45.55538265,
+      "longitude": 8.346283678327271
+    },
+    {
+      "name": "Verona",
+      "latitude": 45.442497700000004,
+      "longitude": 10.985737689444763
+    },
+    {
+      "name": "Vibo Valentia",
+      "latitude": 38.6266556,
+      "longitude": 16.098693458946357
+    },
+    {
+      "name": "Vicenza",
+      "latitude": 45.63485905,
+      "longitude": 11.40635425660249
+    },
+    {
+      "name": "Viterbo",
+      "latitude": 42.492952200000005,
+      "longitude": 11.948813551650236
+    }
+  ]
+}
