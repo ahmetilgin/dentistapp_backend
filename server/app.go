@@ -84,9 +84,9 @@ func (a *App) Run(port string) error {
 	)
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4000", "https://karriere.netlify.app"}, // İzin verilen kaynaklar
+		AllowOrigins:     []string{"*"}, // fix me
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"*"}, // fix me
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           6 * time.Hour,
@@ -98,9 +98,9 @@ func (a *App) Run(port string) error {
 
 	// API endpoints
 	authMiddleware := authhttp.NewAuthMiddleware(a.authUC)
-	publicAPI := router.Group("/public")
-	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
-	regionhttp.RegisterHTTPEndpoints(publicAPI, a.regionUC, authMiddleware)
+	api := router.Group("/api")
+	jobhttp.RegisterHTTPEndpoints(api, a.jobUC, authMiddleware)
+	regionhttp.RegisterHTTPEndpoints(api, a.regionUC, authMiddleware)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

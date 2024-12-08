@@ -208,10 +208,10 @@ func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jo
 
 	job := &models.Job{}
 	err = r.jobCollection.FindOne(ctx, bson.M{
-		"_id": objID,
+		"_id":        objID,
 		"candidates": user.ID,
 	}).Decode(job)
-	
+
 	if err == nil {
 		return fmt.Errorf("user has already applied to this job")
 	}
@@ -233,4 +233,23 @@ func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jo
 	}
 
 	return nil
+}
+
+func (r JobRepository) GetJobs(ctx context.Context, user *models.BusinessUser) ([]*models.Job, error) {
+	cursor, err := r.jobCollection.Find(ctx, bson.M{"user_id": user.ID})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var jobs []*models.Job
+	for cursor.Next(ctx) {
+		var job models.Job
+		if err := cursor.Decode(&job); err != nil {
+			return nil, err
+		}
+		jobs = append(jobs, &job)
+	}
+
+	return jobs, nil
 }

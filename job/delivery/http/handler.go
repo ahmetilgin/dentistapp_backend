@@ -59,6 +59,10 @@ func (h *Handler) Search(c *gin.Context) {
 		return
 	}
 
+	for i := 0; i < len(result); i++ {
+		result[i].JobDetail.Candidates = nil
+	}
+
 	c.JSON(http.StatusOK, &JobsResponse{
 		Jobs: result,
 	})
@@ -95,6 +99,10 @@ func (h *Handler) SearchProfession(c *gin.Context) {
 
 type JobsResponse struct {
 	Jobs []*jobmongo.JobDetails `json:"jobs"`
+}
+
+type JobListResponse struct {
+	Jobs []*models.Job `json:"jobs"`
 }
 
 type deleteInput struct {
@@ -138,7 +146,6 @@ func (h *Handler) GetPopulerJobs(c *gin.Context) {
 	})
 }
 
-
 type applyJobInput struct {
 	ID string `json:"job_id"`
 }
@@ -161,4 +168,19 @@ func (h *Handler) ApplyJob(c *gin.Context) {
 		return
 	}
 	c.Status(http.StatusOK)
+}
+
+func (h *Handler) GetJobs(c *gin.Context) {
+
+	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
+
+	result, err := h.useCase.GetJobs(c.Request.Context(), user)
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, &JobListResponse{
+		Jobs: result,
+	})
 }
