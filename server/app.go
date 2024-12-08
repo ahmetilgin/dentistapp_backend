@@ -98,9 +98,9 @@ func (a *App) Run(port string) error {
 
 	// API endpoints
 	authMiddleware := authhttp.NewAuthMiddleware(a.authUC)
-	publicAPI := router.Group("/public")
-	jobhttp.RegisterHTTPEndpoints(publicAPI, a.jobUC, authMiddleware)
-	regionhttp.RegisterHTTPEndpoints(publicAPI, a.regionUC, authMiddleware)
+	api := router.Group("/api")
+	jobhttp.RegisterHTTPEndpoints(api, a.jobUC, authMiddleware)
+	regionhttp.RegisterHTTPEndpoints(api, a.regionUC, authMiddleware)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

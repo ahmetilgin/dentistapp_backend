@@ -54,3 +54,7 @@ func (b JobUseCase) GetPopulerJobs(ctx context.Context, code string) ([]string, 
 func (b JobUseCase) ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error {
 	return b.jobRepo.ApplyJob(ctx, user, jobId)
 }
+
+func (b JobUseCase) GetJobs(ctx context.Context, user *models.BusinessUser) ([]*models.Job, error) {
+	return b.jobRepo.GetJobs(ctx, user)
+}

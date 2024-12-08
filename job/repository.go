@@ -13,4 +13,5 @@ type Repository interface {
 	SearchProfession(ctx context.Context, keyword, region string) ([]*models.Profession, error)
 	GetPopulerJobs(ctx context.Context, code string) ([]*models.Profession, error)
 	ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error
+	GetJobs(ctx context.Context, user *models.BusinessUser) ([]*models.Job, error)
 }
