@@ -15,5 +15,6 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc job.UseCase, authUC gin.H
 		jobs.GET("/search_professions/:region/:profession", h.SearchProfession)
 		jobs.GET("/get_populer_professions/:region", h.GetPopulerJobs)
 		jobs.POST("/apply_job", authUC, h.ApplyJob)
+		jobs.GET("/get_jobs", authUC, h.GetJobs)
 	}
 }
