@@ -35,9 +35,9 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 
-	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
+	user := c.MustGet(auth.CtxUserKey)
 
-	if err := h.useCase.CreateJob(c.Request.Context(), user, inp); err != nil {
+	if err := h.useCase.CreateJob(c.Request.Context(), user.(*models.BusinessUser), inp); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -116,9 +116,9 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 
-	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
+	user := c.MustGet(auth.CtxUserKey)
 
-	if err := h.useCase.DeleteJob(c.Request.Context(), user, inp.ID); err != nil {
+	if err := h.useCase.DeleteJob(c.Request.Context(), user.(*models.BusinessUser), inp.ID); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -156,15 +156,12 @@ func (h *Handler) ApplyJob(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
-	jobId := inp.ID
 
-	if jobId == "" {
-		c.AbortWithStatus(http.StatusBadRequest)
-		return
-	}
-	user := c.MustGet(auth.CtxUserKey).(*models.NormalUser)
-	if err := h.useCase.ApplyJob(c.Request.Context(), user, jobId); err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+	user := c.MustGet(auth.CtxUserKey)
+
+	if err := h.useCase.ApplyJob(c.Request.Context(), user.(*models.NormalUser), inp.ID); err != nil {
+		c.Error(err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": err.Error()})
 		return
 	}
 	c.Status(http.StatusOK)
@@ -172,9 +169,9 @@ func (h *Handler) ApplyJob(c *gin.Context) {
 
 func (h *Handler) GetJobs(c *gin.Context) {
 
-	user := c.MustGet(auth.CtxUserKey).(*models.BusinessUser)
+	user := c.MustGet(auth.CtxUserKey)
 
-	result, err := h.useCase.GetJobs(c.Request.Context(), user)
+	result, err := h.useCase.GetJobs(c.Request.Context(), user.(*models.BusinessUser))
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -183,4 +180,45 @@ func (h *Handler) GetJobs(c *gin.Context) {
 	c.JSON(http.StatusOK, &JobListResponse{
 		Jobs: result,
 	})
+}
+
+// Update handles the job update endpoint
+func (h *Handler) Update(c *gin.Context) {
+	var job models.Job
+	if err := c.ShouldBindJSON(&job); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	user := c.MustGet(auth.CtxUserKey)
+
+	if err := h.useCase.Update(c.Request.Context(), user.(*models.BusinessUser), &job); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "job updated successfully"})
+}
+
+func (h *Handler) GetCandidateDetails(c *gin.Context) {
+	candidateID := c.Param("candidateId")
+	if candidateID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Candidate ID is required"})
+		return
+	}
+
+	// user := c.MustGet(auth.CtxUserKey)
+	// businessUser, ok := user.(*models.BusinessUser)
+	// if !ok {
+	// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+	// 	return
+	// }
+
+	// // candidateDetails, err := h.useCase.GetCandidateDetails(c.Request.Context(), businessUser, candidateID)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 	return
+	// }
+
+	// c.JSON(http.StatusOK, candidateDetails)
 }

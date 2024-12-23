@@ -14,4 +14,5 @@ type UseCase interface {
 	DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error
 	GetPopulerJobs(ctx context.Context, region string) ([]string, error)
 	GetJobs(ctx context.Context, user *models.BusinessUser) ([]*models.Job, error)
+	Update(ctx context.Context, user *models.BusinessUser, job *models.Job) error
 }

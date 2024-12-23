@@ -6,3 +6,6 @@ vendor
 bin/*
 ./bin
 ./bin/app
+bin/
+bin/app
+bin/**

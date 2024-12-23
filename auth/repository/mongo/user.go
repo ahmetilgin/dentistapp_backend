@@ -111,6 +111,15 @@ func (r UserRepository) GetBusinessUserById(ctx context.Context, userId primitiv
 	return businessUser, nil
 }
 
+func (r UserRepository) GetNormalUserById(ctx context.Context, userId primitive.ObjectID) (*models.NormalUser, error) {
+	baseUser := new(models.NormalUser)
+	err := r.normalUserCollection.FindOne(ctx, bson.M{"_id": userId}).Decode(baseUser)
+	if err != nil {
+		return nil, err
+	}
+	return baseUser, nil
+}
+
 func (r UserRepository) InsetPasswordResetToken(ctx context.Context, token *models.PasswordResetToken) error {
 	_, err := r.passwordResetTokenCollection.InsertOne(ctx, token)
 	if err != nil {

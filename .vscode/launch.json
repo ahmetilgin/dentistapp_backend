@@ -9,12 +9,15 @@
             "type": "go",
             "request": "launch",
             "mode": "exec",
+            "debugAdapter": "dlv-dap",
+            "showLog": true,
             "program": "${workspaceFolder}/bin/app",
+            "console": "integratedTerminal",
             "preLaunchTask": "build",
             "env": {},
             "args": ["--prod"],
             "cwd": "${workspaceFolder}/bin",
-        },
-        {"name":"Python Debugger: Attach using Process Id","type":"debugpy","request":"attach","processId":"${command:pickProcess}"},
+            "internalConsoleOptions": "openOnSessionStart"
+        }
     ]
 }

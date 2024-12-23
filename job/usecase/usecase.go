@@ -1,10 +1,13 @@
 package usecase
 
 import (
+	authmongo "backend/auth/repository/mongo"
 	"backend/job"
 	jobmongo "backend/job/repository/mongo"
 	"backend/models"
 	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type JobUseCase struct {
@@ -57,4 +60,37 @@ func (b JobUseCase) ApplyJob(ctx context.Context, user *models.NormalUser, jobId
 
 func (b JobUseCase) GetJobs(ctx context.Context, user *models.BusinessUser) ([]*models.Job, error) {
 	return b.jobRepo.GetJobs(ctx, user)
+}
+
+func (b JobUseCase) Update(ctx context.Context, user *models.BusinessUser, job *models.Job) error {
+	return b.jobRepo.Update(ctx, user, job)
+}
+
+func (b JobUseCase) GetCandidateDetails(ctx context.Context, user *models.BusinessUser, candidateId string) (*models.NormalUser, error) {
+	// Verify that the user owns the job that this candidate applied to
+	_, err := b.jobRepo.GetJobs(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the user repository from the job repository to fetch user details
+	userRepo := b.jobRepo.GetUserRepository()
+
+	// Fetch candidate details using the concrete implementation
+	userRepoMongo, ok := userRepo.(*authmongo.UserRepository)
+	if !ok {
+		return nil, fmt.Errorf("failed to convert user repository")
+	}
+
+	candidateIdPrimitive, err := primitive.ObjectIDFromHex(candidateId)
+	if err != nil {
+		return nil, err
+	}
+
+	candidate, err := userRepoMongo.GetNormalUserById(ctx, candidateIdPrimitive)
+	if err != nil {
+		return nil, err
+	}
+
+	return candidate, nil
 }

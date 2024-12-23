@@ -4,7 +4,7 @@
         {
             "label":"copyConfig",
             "type": "shell",
-            "command": "mkdir ${workspaceFolder}/bin/config; copy ${workspaceFolder}/config/config.yml ${workspaceFolder}/bin/config",
+            "command": "mkdir -p ${workspaceFolder}/bin/config; cp ${workspaceFolder}/config/config.yml ${workspaceFolder}/bin/config",
         },
         {
             "label": "build",

@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	auth "backend/auth"
 	authmongo "backend/auth/repository/mongo"
 	"backend/models"
 	"context"
@@ -252,4 +253,23 @@ func (r JobRepository) GetJobs(ctx context.Context, user *models.BusinessUser) (
 	}
 
 	return jobs, nil
+}
+
+func (r JobRepository) Update(ctx context.Context, user *models.BusinessUser, job *models.Job) error {
+	// Ensure the job belongs to the user
+	filter := bson.M{
+		"_id":     job.ID,
+		"user_id": user.ID,
+	}
+
+	update := bson.M{
+		"$set": job,
+	}
+
+	_, err := r.jobCollection.UpdateOne(ctx, filter, update)
+	return err
+}
+
+func (r JobRepository) GetUserRepository() auth.UserRepository {
+	return r.userRepo
 }
