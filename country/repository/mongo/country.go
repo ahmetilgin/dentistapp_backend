@@ -57,12 +57,35 @@ func createCollation(code string) *options.Collation {
 	return collation
 }
 
+func createTurkishRegexPattern(query string) string {
+	replacements := map[string]string{
+		"i": "[iİ]",
+		"I": "[ıİ]",
+		"u": "[uüÜ]",
+		"U": "[uüÜ]",
+		"o": "[oöÖ]",
+		"O": "[oöÖ]",
+		"c": "[cçÇ]",
+		"C": "[cçÇ]",
+		"s": "[sşŞ]",
+		"S": "[sşŞ]",
+		"g": "[gğĞ]",
+		"G": "[gğĞ]",
+	}
+
+	pattern := regexp.QuoteMeta(query)
+	for eng, tr := range replacements {
+		pattern = strings.ReplaceAll(pattern, eng, tr)
+	}
+	return "^" + pattern
+}
+
 func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]string, error) {
 	if code == "en" {
 		code = "al"
 	}
 
-	sanitizedQuery := regexp.QuoteMeta(query)
+	pattern := createTurkishRegexPattern(query)
 
 	pipeline := []bson.M{
 		{"$match": bson.M{"code": strings.ToUpper(code)}},
@@ -70,13 +93,13 @@ func (r *RegionRepository) Search(ctx context.Context, query, code string) ([]st
 		{
 			"$facet": bson.M{
 				"cities_located": []bson.M{
-					{"$match": bson.M{"cities.name": bson.M{"$regex": "^" + sanitizedQuery, "$options": "i"}}},
+					{"$match": bson.M{"cities.name": bson.M{"$regex": pattern, "$options": "i"}}},
 					{"$project": bson.M{"name": "$cities.name", "_id": 0}},
 					{"$limit": 10},
 				},
 				"districts_located": []bson.M{
 					{"$unwind": "$cities.districts"},
-					{"$match": bson.M{"cities.districts.name": bson.M{"$regex": "^" + sanitizedQuery, "$options": "i"}}},
+					{"$match": bson.M{"cities.districts.name": bson.M{"$regex": pattern, "$options": "i"}}},
 					{"$project": bson.M{"name": "$cities.districts.name", "_id": 0}},
 					{"$limit": 10},
 				},

@@ -71,7 +71,7 @@ func (r JobRepository) IncreaseSearchCounter(ctx context.Context, keyword, code 
 	return true, nil
 }
 
-func (r JobRepository) Search(ctx context.Context, location, keyword, region string) ([]*JobDetails, error) {
+func (r *JobRepository) Search(ctx context.Context, location, keyword string, page, limit int) ([]*JobDetails, error) {
 	filter := bson.M{}
 
 	if location != "-" {
@@ -82,7 +82,6 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 		filter["$or"] = []bson.M{
 			{"job_title": bson.M{"$regex": keyword, "$options": "i"}},
 			{"description": bson.M{"$regex": keyword, "$options": "i"}},
-			{"requirements": bson.M{"$regex": keyword, "$options": "i"}},
 		}
 	}
 
@@ -93,7 +92,7 @@ func (r JobRepository) Search(ctx context.Context, location, keyword, region str
 	}
 	defer cursor.Close(ctx)
 
-	ret, err := r.IncreaseSearchCounter(ctx, keyword, region)
+	ret, err := r.IncreaseSearchCounter(ctx, keyword, location)
 	if !ret {
 		if err != nil {
 			fmt.Printf("err: %v\n", err.Error())
@@ -204,7 +203,7 @@ func (r JobRepository) GetPopulerJobs(ctx context.Context, code string) ([]*mode
 func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error {
 	objID, err := primitive.ObjectIDFromHex(jobId)
 	if err != nil {
-		return fmt.Errorf("invalid job ID: %v", err)
+		return fmt.Errorf(`{"error": "invalid_job_id", "message": "Invalid job ID format"}`)
 	}
 
 	job := &models.Job{}
@@ -214,10 +213,10 @@ func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jo
 	}).Decode(job)
 
 	if err == nil {
-		return fmt.Errorf("user has already applied to this job")
+		return fmt.Errorf(`{"error": "already_applied", "message": "You have already applied to this job"}`) 
 	}
 	if err != mongo.ErrNoDocuments {
-		return fmt.Errorf("error checking job application: %v", err)
+		return fmt.Errorf(`{"error": "db_error", "message": "Error checking job application"}`)
 	}
 
 	result, err := r.jobCollection.UpdateOne(
@@ -226,11 +225,11 @@ func (r JobRepository) ApplyJob(ctx context.Context, user *models.NormalUser, jo
 		bson.M{"$addToSet": bson.M{"candidates": user.ID}},
 	)
 	if err != nil {
-		return fmt.Errorf("error applying to job: %v", err)
+		return fmt.Errorf(`{"error": "db_error", "message": "Error applying to job"}`)
 	}
 
 	if result.MatchedCount == 0 {
-		return fmt.Errorf("job not found")
+		return fmt.Errorf(`{"error": "not_found", "message": "Job not found"}`)
 	}
 
 	return nil

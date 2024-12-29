@@ -5,8 +5,9 @@ import (
 	"backend/job"
 	jobmongo "backend/job/repository/mongo"
 	"backend/models"
-	"fmt"
 	"net/http"
+
+	"backend/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +17,15 @@ type SearchOptions struct {
 	Location string `json:"location"`
 	Region   string `json:"region"`
 }
+
+type SearchRequest struct {
+	Position string `json:"position"`
+	Region   string `json:"region"`
+	Language string `json:"language"`
+	Page     int    `json:"page"`
+	Limit    int    `json:"limit"`
+}
+
 type Handler struct {
 	useCase job.UseCase
 }
@@ -30,8 +40,7 @@ func (h *Handler) Create(c *gin.Context) {
 	inp := new(models.Job)
 
 	if err := c.BindJSON(inp); err != nil {
-		fmt.Println(err.Error())
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -46,16 +55,22 @@ func (h *Handler) Create(c *gin.Context) {
 }
 
 func (h *Handler) Search(c *gin.Context) {
-	inp := new(SearchOptions)
-	location := c.Param("location")
-	region := c.Param("region")
-	keyword := c.Param("keyword")
-	inp.Location = location
-	inp.Keyword = keyword
-	inp.Region = region
-	result, err := h.useCase.Search(c.Request.Context(), inp.Location, inp.Keyword, inp.Region)
+	inp := new(SearchRequest)
+	if err := c.ShouldBindJSON(inp); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if inp.Limit == 0 {
+		inp.Limit = 10
+	}
+	if inp.Page == 0 {
+		inp.Page = 1
+	}
+
+	result, err := h.useCase.Search(c.Request.Context(), inp.Position, inp.Region, inp.Page, inp.Limit)
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -68,13 +83,13 @@ func (h *Handler) Search(c *gin.Context) {
 	})
 }
 
+
 type queryResult struct {
 	QueryResult []string `json:"query_result"`
 }
 
 func (h *Handler) SearchProfession(c *gin.Context) {
-
-	query := c.Param("profession")
+	query := utils.NormalizeString(c.Param("profession"))
 	location := c.Param("region")
 
 	if location == "" {
@@ -86,9 +101,10 @@ func (h *Handler) SearchProfession(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "query parameter is required"})
 		return
 	}
+
 	result, err := h.useCase.SearchProfession(c.Request.Context(), query, location)
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -112,7 +128,7 @@ type deleteInput struct {
 func (h *Handler) Delete(c *gin.Context) {
 	inp := new(deleteInput)
 	if err := c.BindJSON(inp); err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -137,7 +153,7 @@ func (h *Handler) GetPopulerJobs(c *gin.Context) {
 
 	result, err := h.useCase.GetPopulerJobs(c.Request.Context(), code)
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -153,7 +169,7 @@ type applyJobInput struct {
 func (h *Handler) ApplyJob(c *gin.Context) {
 	inp := new(applyJobInput)
 	if err := c.BindJSON(inp); err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -173,7 +189,7 @@ func (h *Handler) GetJobs(c *gin.Context) {
 
 	result, err := h.useCase.GetJobs(c.Request.Context(), user.(*models.BusinessUser))
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

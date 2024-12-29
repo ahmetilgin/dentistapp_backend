@@ -8,7 +8,7 @@ import (
 
 type UseCase interface {
 	CreateJob(ctx context.Context, user *models.BusinessUser, job *models.Job) error
-	Search(ctx context.Context, location, keyword, region string) ([]*jobmongo.JobDetails, error)
+	Search(ctx context.Context, position, region string, page, limit int) ([]*jobmongo.JobDetails, error)
 	SearchProfession(ctx context.Context, keyword, region string) ([]string, error)
 	ApplyJob(ctx context.Context, user *models.NormalUser, jobId string) error
 	DeleteJob(ctx context.Context, user *models.BusinessUser, id string) error

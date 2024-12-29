@@ -7,6 +7,7 @@ import (
 	"backend/models"
 	"context"
 	"fmt"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -28,8 +29,8 @@ func (b JobUseCase) DeleteJob(ctx context.Context, user *models.BusinessUser, id
 	return b.jobRepo.DeleteJob(ctx, user, id)
 }
 
-func (b JobUseCase) Search(ctx context.Context, location, keyword, region string) ([]*jobmongo.JobDetails, error) {
-	return b.jobRepo.Search(ctx, location, keyword, region)
+func (b JobUseCase) Search(ctx context.Context, location, keyword string, page, limit int) ([]*jobmongo.JobDetails, error) {
+	return b.jobRepo.Search(ctx, location, keyword, page, limit)
 }
 
 func (b JobUseCase) SearchProfession(ctx context.Context, keyword, region string) ([]string, error) {

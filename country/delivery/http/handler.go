@@ -56,7 +56,7 @@ func (h *Handler) Get(c *gin.Context) {
 
 	bms, err := h.useCase.Search(c.Request.Context(), query, code)
 	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
